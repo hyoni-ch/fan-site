@@ -1,28 +1,28 @@
 "use client";
-import axios from "axios";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import api from "@/utils/api";
 
 function Join() {
-  const [userName, setUserName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [nickname, setNickname] = useState<string>("");
   const router = useRouter();
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!userName || !password) {
-      console.error("userName 또는 password가 비어 있습니다.");
+    if (!username || !password || !nickname) {
+      console.error("userName 또는 password, nickname이 비어 있습니다.");
       return;
     }
 
-    const body = { username: userName, password: password };
-    axios
-      .post("http://61.99.26.112:3001/member/join", body, {
-        headers: { "Content-Type": "application/json" },
-      })
+    const body = { username: username, password, nickname: nickname };
+
+    api
+      .post("/member/join", body)
       .then((response) => {
-        console.log("📌 서버 응답 데이터:", response.data); // 응답 데이터 확인
+        console.log("📌 서버 응답 데이터:", response.data);
         if (response.data) {
           alert("회원가입 완료");
         }
@@ -40,9 +40,9 @@ function Join() {
           <input
             type="email"
             id="email"
-            value={userName}
+            value={username}
             onChange={(e) => {
-              setUserName(e.currentTarget.value);
+              setUsername(e.currentTarget.value);
             }}
           />
           <input
@@ -53,8 +53,16 @@ function Join() {
               setPassword(e.currentTarget.value);
             }}
           />
+          <input
+            type="string"
+            id="string"
+            value={nickname}
+            onChange={(e) => {
+              setNickname(e.currentTarget.value);
+            }}
+          />
           <div>
-            <button type="submit">submit</button>
+            <button type="submit">회원가입</button>
           </div>
         </form>
       </div>

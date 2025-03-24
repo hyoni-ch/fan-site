@@ -1,72 +1,59 @@
 "use client";
 
-import axios from "axios";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { login } from "@/utils/auth";
+
+interface Credentials {
+  userName: string;
+  password: string;
+}
 
 function Login() {
-  const [userName, setUserName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [credentials, setCredentials] = useState<Credentials>({
+    userName: "",
+    password: "",
+  });
   const router = useRouter();
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCredentials((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!userName || !password) {
-      console.error("userName 또는 password가 비어 있습니다.");
+    if (!credentials.userName || !credentials.password) {
+      alert("아이디와 비밀번호를 입력하세요.");
       return;
     }
 
-    const body = { username: userName, password: password };
-    axios
-      .post("http://61.99.26.112:3001/member/login", body, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.data.code == "F") {
-          alert("완료");
-          router.push("/");
-        } else alert("실패");
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(userName, password);
-      });
+    const result = await login(credentials.userName, credentials.password);
+    alert(result.message);
+
+    router.push("/");
   };
-
-  //!로그아웃
-  // const logout = () => {
-  //   let accessToken = localStorage.getItem('accessToken.');
-  //   localStorage.removeItem('accessToken');
-  //   window.location.reload();
-  // };
-
   return (
     <>
       <div>
         <form onSubmit={onSubmit}>
           <input
             type="email"
-            id="email"
-            value={userName}
-            onChange={(e) => {
-              setUserName(e.currentTarget.value);
-            }}
+            name="userName"
+            value={credentials.userName}
+            onChange={handleChange}
           />
           <input
             type="password"
-            id="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.currentTarget.value);
-            }}
+            name="password"
+            value={credentials.password}
+            onChange={handleChange}
           />
           <div>
-            <button type="submit">submit</button>
+            <button type="submit">로그인</button>
           </div>
         </form>
-        <button type="submit">로그아웃 </button>
       </div>
     </>
   );
