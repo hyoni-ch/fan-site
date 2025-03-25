@@ -3,6 +3,8 @@ import { Roboto } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import type { Metadata } from "next";
 import theme from "@/styles/theme";
+import HeaderNav from "@/components/headerNav";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
