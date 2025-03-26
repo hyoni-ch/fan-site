@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import styles from "./mypage.module.css";
 import api from "@/utils/api";
 import Footer from "@/components/footer";
 
@@ -11,7 +12,9 @@ interface UserInfo {
 
 function Mypage() {
   const [activeTab, setActiveTab] = useState("profile");
-  const [password, setPassword] = useState<string>("");
+  const [oldPassword, setOldPassword] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState<string>("");
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
@@ -19,6 +22,8 @@ function Mypage() {
   useEffect(() => {
     api.get("/home").then((response) => {
       setUserInfo(response.data);
+      setNickname(response.data.nickname);
+      console.log(nickname);
     });
   }, []);
 
@@ -47,22 +52,52 @@ function Mypage() {
     setActiveTab(tab);
   };
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onNicknameSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!password || !nickname) {
-      console.error("password, nickname이 비어 있습니다.");
+    if (!nickname) {
+      alert("닉네임 칸이 비어 있습니다.");
+      console.error("닉네임이 비어 있습니다.");
       return;
     }
 
-    const body = { password, nickname };
+    const body = { nickname };
 
     api
-      .post("/member/join", body)
+      .post("/member/updateNickname", body)
       .then((response) => {
         console.log("📌 서버 응답 데이터:", response.data);
         if (response.data) {
-          alert("비밀번호/닉네임 수정 완료");
+          alert("닉네임 수정 완료");
+        }
+      })
+      .catch((err) => {
+        console.log("❌ 오류 발생:", err);
+      });
+  };
+
+  const onPasswordSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!oldPassword || !newPassword) {
+      alert("모든 칸을 채워주세요!");
+      console.error("현재 비밀번호 또는 새 비밀번호가 비어 있습니다.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      alert("새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      return;
+    }
+
+    const body = { oldPassword, newPassword };
+
+    api
+      .post("/member/updatePassword", body)
+      .then((response) => {
+        console.log("📌 서버 응답 데이터:", response.data);
+        if (response.data) {
+          alert("비밀번호 수정 완료되었습니다!");
         }
       })
       .catch((err) => {
@@ -72,36 +107,94 @@ function Mypage() {
 
   return (
     <>
-      <div>
-        <button onClick={() => handleTabClick("profile")}>PROFILE</button>
-        <button onClick={() => handleTabClick("orderhistory")}>
-          ORDER HISTORY
+      <div style={{ borderBottom: "1px solid #eee" }}>
+        <button
+          className={`${styles.tabButton} ${
+            activeTab === "profile" ? styles.tabButtonActive : ""
+          }`}
+          onClick={() => handleTabClick("profile")}
+        >
+          내프로필
+        </button>
+        <button
+          className={`${styles.tabButton} ${
+            activeTab === "security" ? styles.tabButtonActive : ""
+          }`}
+          onClick={() => handleTabClick("security")}
+        >
+          보안설정
+        </button>
+        <button
+          className={`${styles.tabButton} ${
+            activeTab === "orderhistory" ? styles.tabButtonActive : ""
+          }`}
+          onClick={() => handleTabClick("orderhistory")}
+        >
+          결제내역
         </button>
       </div>
       <div>
         {activeTab === "profile" && userInfo ? (
           <div>
-            <p>이메일 : {userInfo.username}</p>
-            <form onSubmit={onSubmit}>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                placeholder="password"
-                onChange={(e) => {
-                  setPassword(e.currentTarget.value);
-                }}
-              />
-              <input
-                type="text"
-                id="nickname"
-                value={nickname}
-                placeholder="nickname"
-                onChange={(e) => {
-                  setNickname(e.currentTarget.value);
-                }}
-              />
-              <button>APPLY</button>
+            <h3>기본 정보</h3>
+            <p>{userInfo.username}</p>
+
+            <form onSubmit={onNicknameSubmit}>
+              <div>
+                <label>닉네임</label>
+                <input
+                  type="text"
+                  id="nickname"
+                  value={nickname}
+                  onChange={(e) => {
+                    setNickname(e.currentTarget.value);
+                  }}
+                />
+              </div>
+
+              <button>확인</button>
+            </form>
+          </div>
+        ) : activeTab === "security" ? (
+          <div>
+            <h3>비밀번호 변경</h3>
+            <p>안전한 비밀번호로 내 정보를 보호하세요.</p>
+            <p>이전에 사용한 적 없는 비밀번호가 안전합니다.</p>
+
+            <form onSubmit={onPasswordSubmit}>
+              <div>
+                <label>현재 비밀번호</label>
+                <input
+                  type="password"
+                  id="oldPassword"
+                  value={oldPassword}
+                  onChange={(e) => {
+                    setOldPassword(e.currentTarget.value);
+                  }}
+                />
+              </div>
+              <div>
+                <label>새 비밀번호</label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  value={newPassword}
+                  onChange={(e) => {
+                    setNewPassword(e.currentTarget.value);
+                  }}
+                />
+              </div>
+              <div>
+                <label>비밀번호 확인</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+                />
+              </div>
+
+              <button>확인</button>
             </form>
           </div>
         ) : (
