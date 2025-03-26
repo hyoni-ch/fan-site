@@ -16,22 +16,27 @@ function Footer() {
     },
     {
       id: 2,
+      name: "x",
+      icon: XIcon,
+      path: "https://x.com/JOYURI_offcl",
+    },
+    {
+      id: 3,
       name: "facebook",
       icon: FacebookIcon,
       path: "https://www.facebook.com/JOYURI.offcl",
     },
-    { id: 3, name: "x", icon: XIcon, path: "https://x.com/JOYURI_offcl" },
     {
       id: 4,
-      name: "spotify",
-      icon: YouTubeIcon,
-      path: "https://open.spotify.com/artist/3LFFf4EpKn2krneZ9vozyz",
-    },
-    {
-      id: 5,
       name: "youtube",
       icon: YouTubeIcon,
       path: "https://www.youtube.com/channel/UCSEVFgCkKem_c3nIBm7F37g",
+    },
+    {
+      id: 5,
+      name: "spotify",
+      icon: YouTubeIcon,
+      path: "https://open.spotify.com/artist/3LFFf4EpKn2krneZ9vozyz",
     },
     {
       id: 6,
@@ -43,14 +48,7 @@ function Footer() {
 
   return (
     <div style={footerStyle}>
-      <ul
-        style={{
-          listStyleType: "none",
-          display: "flex",
-          gap: 10,
-          justifyContent: "center",
-        }}
-      >
+      <ul style={footerListStyle}>
         {snsData.map((sns) => {
           return (
             <li key={sns.id}>
@@ -62,7 +60,7 @@ function Footer() {
         })}
       </ul>
 
-      <p style={{ textAlign: "center", marginTop: "1rem", color: "#7d7d7d" }}>
+      <p style={{ color: "#7d7d7d" }}>
         COPYRIGHTⓒ 2025 PROJECT. ALL RIGHTS RESERVED.
       </p>
     </div>
@@ -72,6 +70,18 @@ function Footer() {
 export default Footer;
 
 const footerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  justifyItems: "center",
   backgroundColor: "rgba(0, 0, 0, 0.1)",
   padding: "2rem",
+  textAlign: "center",
+};
+
+const footerListStyle = {
+  display: "flex",
+  gap: 10,
+  justifyContent: "center",
+  listStyleType: "none",
 };
