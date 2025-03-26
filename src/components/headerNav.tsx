@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import useScrollAnimation from "@/utils/scrollUtils";
-import { getAccessToken } from "@/utils/token";
 import { AccountCircle, ShoppingBag } from "@mui/icons-material";
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import {
@@ -15,20 +14,34 @@ import {
   menuBoxStyle,
   iconButtonStyle,
 } from "@/styles/headerStyles";
+import useAuthStore from "@/store/authStore";
 
 function HeaderNav() {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const scrolling = useScrollAnimation();
 
+  const { username, accessToken } = useAuthStore();
+
+  //!
+  const [isHydrated, setIsHydrated] = useState(false);
+
   useEffect(() => {
-    const accessToken = getAccessToken();
-    setIsLoggedIn(!!accessToken);
+    setIsHydrated(true);
   }, []);
 
+  useEffect(() => {
+    if (isHydrated) {
+      console.log("헤더에서 상태:", { username, accessToken });
+    }
+  }, [isHydrated, username, accessToken]);
+
   const handleRoute = (path: string) => {
-    router.push(isLoggedIn ? path : "/login");
+    router.push(path);
   };
+
+  if (!isHydrated) {
+    return null;
+  }
 
   return (
     <>
