@@ -1,8 +1,9 @@
 //* 인증 관련 유틸 함수 관리
 import useAuthStore from "@/store/authStore";
 import api from "@/utils/api";
+import { AxiosError } from "axios";
 
-// 로그인 처리 함수
+// 로그인 처리 함수 //!에러 처리 필요
 export const login = async (username: string, password: string) => {
   try {
     const response = await api.post("/login", { username, password });
@@ -19,12 +20,16 @@ export const login = async (username: string, password: string) => {
       return { success: false, message: "로그인 실패" };
     }
   } catch (error) {
-    console.error("로그인 오류: ", error);
+    const axiosError = error as AxiosError;
+
+    if (axiosError.response?.status === 488) {
+      return { success: false, message: "이메일 인증이 완료되지 않았습니다." };
+    }
     return { success: false, message: "로그인 요청 실패" };
   }
 };
 
-// 회원가입 처리 함수
+// 회원가입 처리 함수 //!에러 처리 필요
 export const join = async ({
   username,
   password,

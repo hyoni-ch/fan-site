@@ -21,8 +21,6 @@ function HeaderNav() {
   const scrolling = useScrollAnimation();
 
   const { username, accessToken } = useAuthStore();
-
-  //!
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
