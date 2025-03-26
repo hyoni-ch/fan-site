@@ -1,24 +1,19 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import axios from "axios";
-import {
-  getAccessToken,
-  getUserName,
-  removeAccessToken,
-  setAccessToken,
-} from "./token";
-import router from "next/router";
+import useAuthStore, { getAccessToken, getUserName } from "@/store/authStore";
 
 const api = axios.create({
-  baseURL: "http://121.172.50.141:8080", // 백엔드 기본 URL
-  withCredentials: true, // 세션 쿠키 포함
+  baseURL: "http://121.172.50.141:8080", // 서버 기본 URL
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// API 요청을 보낼 때마다 따로 헤더 설정할 필요 없음
 api.interceptors.request.use(
   (config) => {
-    // JWT 토큰을 자동으로 Authorization 헤더에 포함
     const token = getAccessToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -34,10 +29,9 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     if (error.response) {
-      //401에러 발생하면? 토큰 갱신
+      // 401 에러 발생 시 토큰 갱신
       if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true; //무한 루프 방지
-
+        originalRequest._retry = true; // 무한 루프 방지
         const username = getUserName();
 
         try {
@@ -47,19 +41,26 @@ api.interceptors.response.use(
             { withCredentials: true }
           );
 
-          setAccessToken(data.accessToken);
-          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-
-          return api(originalRequest);
+          if (data.accessToken) {
+            useAuthStore.getState().setAccessToken(data.accessToken);
+            originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+            return api(originalRequest);
+          } else {
+            useAuthStore.getState().logout();
+            const router = useRouter();
+            router.push("/login");
+          }
         } catch (refreshError) {
           console.log("토큰 갱신 실패", refreshError);
-          removeAccessToken();
+          useAuthStore.getState().logout();
+          const router = useRouter();
           router.push("/login");
         }
       }
 
       if (error.response.status === 400) {
-        removeAccessToken();
+        useAuthStore.getState().logout();
+        const router = useRouter();
         router.push("/login");
       }
     }
