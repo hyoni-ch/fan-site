@@ -3,31 +3,28 @@
 import { logout } from "@/api/auth";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 function Page() {
   const router = useRouter();
   const { accessToken } = useAuthStore();
-  const [isAuthChecked, setIsAuthChecked] = useState(false);
 
   useEffect(() => {
-    setIsAuthChecked(true);
-  }, []);
-
-  useEffect(() => {
-    if (isAuthChecked && !accessToken) {
-      router.push("/login");
+    if (!accessToken) {
+      router.replace("/login");
     }
-  }, [isAuthChecked, accessToken, router]);
+  }, [accessToken, router]);
 
-  if (!isAuthChecked) {
+  // 로그인 정보가 없으면 렌더링 안함
+  if (!accessToken) {
     return null;
   }
 
   const handleLogout = () => {
     logout();
-    router.push("/");
+    router.replace("/");
   };
+
   return (
     <div>
       <h1>메롱</h1>
