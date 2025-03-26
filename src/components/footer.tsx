@@ -73,15 +73,13 @@ const footerStyle = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  justifyItems: "center",
+  alignItems: "center",
   backgroundColor: "rgba(0, 0, 0, 0.1)",
   padding: "2rem",
-  textAlign: "center",
 };
 
 const footerListStyle = {
   display: "flex",
   gap: 10,
-  justifyContent: "center",
   listStyleType: "none",
 };
