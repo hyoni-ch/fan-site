@@ -54,9 +54,8 @@ function HeaderNav() {
       <AppBar sx={appBarStyle(scrolling, isMainPage)}>
         <Toolbar sx={toolbarStyle}>
           {/* 로고 */}
-
-          <Box sx={logoBoxStyle}>
-            <Link href="/">
+          <Link href="/">
+            <Box sx={logoBoxStyle}>
               <Image
                 src="/images/jjoul.png"
                 alt="Logo"
@@ -64,8 +63,8 @@ function HeaderNav() {
                 height={120}
                 style={{ objectFit: "cover", cursor: "pointer" }}
               />
-            </Link>
-          </Box>
+            </Box>
+          </Link>
 
           {/* 메뉴바 */}
           <Box sx={menuBoxStyle}>
