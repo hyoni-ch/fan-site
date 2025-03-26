@@ -21,15 +21,20 @@ function HeaderNav() {
   const scrolling = useScrollAnimation();
 
   const { username, accessToken } = useAuthStore();
-
-  //!
   const [isHydrated, setIsHydrated] = useState(false);
+  const [isMainPage, setIsMainPage] = useState(false);
 
   useEffect(() => {
     setIsHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (window.location.pathname === "/") {
+      setIsMainPage(true);
+    } else {
+      setIsMainPage(false);
+    }
+
     if (isHydrated) {
       console.log("헤더에서 상태:", { username, accessToken });
     }
@@ -46,11 +51,12 @@ function HeaderNav() {
   return (
     <>
       {/* 네비게이션 메뉴 */}
-      <AppBar sx={appBarStyle(scrolling)}>
+      <AppBar sx={appBarStyle(scrolling, isMainPage)}>
         <Toolbar sx={toolbarStyle}>
           {/* 로고 */}
-          <Link href="/">
-            <Box sx={logoBoxStyle}>
+
+          <Box sx={logoBoxStyle}>
+            <Link href="/">
               <Image
                 src="/images/jjoul.png"
                 alt="Logo"
@@ -58,8 +64,9 @@ function HeaderNav() {
                 height={120}
                 style={{ objectFit: "cover", cursor: "pointer" }}
               />
-            </Box>
-          </Link>
+            </Link>
+          </Box>
+
           {/* 메뉴바 */}
           <Box sx={menuBoxStyle}>
             {["artist", "discography", "goods", "diary"].map((tab) => (
