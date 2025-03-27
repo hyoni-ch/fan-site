@@ -1,8 +1,10 @@
 "use client";
 
+import { Box } from "@mui/material";
 // import { logout } from "@/utils/auth";
-import Image from "next/image";
+
 import { useEffect, useState } from "react";
+import Section from "@/components/mainSection";
 
 function Home() {
   const [currentSection, setCurrentSection] = useState<number>(0);
@@ -42,35 +44,11 @@ function Home() {
   }, [currentSection, sectionHeight]);
 
   return (
-    <div>
-      <section style={{ position: "relative", width: "100%", height: "100vh" }}>
-        <Image
-          src="/images/mainImg.jpg"
-          alt="mainImg"
-          layout="fill"
-          objectFit="cover"
-          style={{ position: "absolute", top: 0, left: 0 }}
-        />
-      </section>
-
-      <section
-        style={{
-          height: "100vh",
-          backgroundColor: "#aaa",
-        }}
-      >
-        <h1>DISCOGRAPHY</h1>
-      </section>
-
-      <section
-        style={{
-          height: "100vh",
-          backgroundColor: "#bbb",
-        }}
-      >
-        <h1>GOODS</h1>
-      </section>
-    </div>
+    <Box style={{ backgroundColor: "#ECE7E4" }}>
+      <Section backgroundImage="/images/mainImg.jpg" sectionNumber={1} />
+      <Section title="DISCOGRAPHY" sectionNumber={2} moreButtonPath="/" />
+      <Section title="GOODS" sectionNumber={3} moreButtonPath="/" />
+    </Box>
   );
 }
 
