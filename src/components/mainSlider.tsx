@@ -7,6 +7,7 @@ import Slider from "react-slick";
 import api from "@/utils/api";
 import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
+import { API_BASED_URL } from "@/constants/apiUrl";
 
 interface AlbumImage {
   id: number;
@@ -72,7 +73,7 @@ function MainSlider() {
                 <Box key={image.id}>
                   <Box className="slide-image-wrapper">
                     <img
-                      src={`http://61.99.26.112:3001${image.url}`}
+                      src={API_BASED_URL + image.url}
                       alt={`앨범 ${album.id}`}
                     />
                   </Box>
