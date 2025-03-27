@@ -4,6 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import type { Metadata } from "next";
 import theme from "@/styles/theme";
 import HeaderNav from "@/components/headerNav";
+import Footer from "@/components/footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -29,7 +30,8 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <HeaderNav />
-            <div style={{ paddingTop: "100px" }}>{children}</div>
+            <div>{children}</div>
+            <Footer />
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

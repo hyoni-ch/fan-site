@@ -1,30 +1,54 @@
 "use client";
 
+import { Box } from "@mui/material";
 // import { logout } from "@/utils/auth";
-import { Box, Container, Typography } from "@mui/material";
-import Link from "@mui/material/Link";
-import NextLink from "next/link";
+
+import { useEffect, useState } from "react";
+import Section from "@/components/mainSection";
 
 function Home() {
+  const [currentSection, setCurrentSection] = useState<number>(0);
+  const [sectionHeight, setSectionHeight] = useState<number>(0);
+  const sections = [0, 1, 2, 3];
+
+  useEffect(() => {
+    setSectionHeight(window.innerHeight);
+  }, []);
+
+  const handleScroll = (e: WheelEvent) => {
+    if (e.deltaY > 0) {
+      if (currentSection < sections.length - 1) {
+        setCurrentSection((prev) => prev + 1);
+      }
+    } else {
+      if (currentSection > 0) {
+        setCurrentSection((prev) => prev - 1);
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("wheel", handleScroll);
+    return () => {
+      window.removeEventListener("wheel", handleScroll);
+    };
+  }, [currentSection]);
+
+  useEffect(() => {
+    if (sectionHeight > 0) {
+      window.scrollTo({
+        top: currentSection * sectionHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [currentSection, sectionHeight]);
+
   return (
-    <Container maxWidth="lg">
-      <Box
-        sx={{
-          my: 4,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-          Material UI - Next.js App Router example in TypeScript
-        </Typography>
-        <Link href="/about" color="secondary" component={NextLink}>
-          Go to the about page
-        </Link>
-      </Box>
-    </Container>
+    <Box style={{ backgroundColor: "#ECE7E4" }}>
+      <Section backgroundImage="/images/mainImg.jpg" sectionNumber={1} />
+      <Section title="DISCOGRAPHY" sectionNumber={2} moreButtonPath="/" />
+      <Section title="GOODS" sectionNumber={3} moreButtonPath="/" />
+    </Box>
   );
 }
 

@@ -22,12 +22,19 @@ function HeaderNav() {
 
   const { username, accessToken } = useAuthStore();
   const [isHydrated, setIsHydrated] = useState(false);
+  const [isMainPage, setIsMainPage] = useState(false);
 
   useEffect(() => {
     setIsHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (window.location.pathname === "/") {
+      setIsMainPage(true);
+    } else {
+      setIsMainPage(false);
+    }
+
     if (isHydrated) {
       console.log("헤더에서 상태:", { username, accessToken });
     }
@@ -44,7 +51,7 @@ function HeaderNav() {
   return (
     <>
       {/* 네비게이션 메뉴 */}
-      <AppBar sx={appBarStyle(scrolling)}>
+      <AppBar sx={appBarStyle(scrolling, isMainPage)}>
         <Toolbar sx={toolbarStyle}>
           {/* 로고 */}
           <Link href="/">
@@ -58,6 +65,7 @@ function HeaderNav() {
               />
             </Box>
           </Link>
+
           {/* 메뉴바 */}
           <Box sx={menuBoxStyle}>
             {["artist", "discography", "goods", "diary"].map((tab) => (

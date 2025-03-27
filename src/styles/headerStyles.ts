@@ -1,6 +1,6 @@
 // styles/headerStyles.ts
-export const appBarStyle = (scrolling: boolean) => ({
-  position: "fixed",
+export const appBarStyle = (scrolling: boolean, isMainPage: boolean) => ({
+  position: isMainPage ? "absolute" : "fixed",
   top: 0,
   left: 0,
   right: 0,
