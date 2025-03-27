@@ -3,9 +3,10 @@
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import useAuthStore, { getAccessToken, getUserName } from "@/store/authStore";
+import { API_BASED_URL } from "@/constants/apiUrl";
 
 const api = axios.create({
-  baseURL: "http://61.99.26.112:3001", // 서버 기본 URL
+  baseURL: `${API_BASED_URL}`, // 서버 기본 URL
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -36,7 +37,7 @@ api.interceptors.response.use(
 
         try {
           const { data } = await axios.post(
-            "http://61.99.26.112:3001/refresh",
+            `${API_BASED_URL}/refresh`,
             { username },
             { withCredentials: true }
           );
