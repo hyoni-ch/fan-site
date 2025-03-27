@@ -30,7 +30,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <HeaderNav />
-            <div>{children}</div>
+            <div style={{ marginTop: "100px" }}>{children}</div>
             <Footer />
           </ThemeProvider>
         </AppRouterCacheProvider>

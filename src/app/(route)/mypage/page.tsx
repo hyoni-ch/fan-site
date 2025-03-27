@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./mypage.module.css";
 import api from "@/utils/api";
-import Footer from "@/components/footer";
 
 interface UserInfo {
   username: string;
@@ -217,7 +216,6 @@ function Mypage() {
           </div>
         )}
       </div>
-      <Footer />
     </>
   );
 }

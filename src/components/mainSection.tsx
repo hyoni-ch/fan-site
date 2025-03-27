@@ -34,11 +34,7 @@ const MainSection = ({
         />
       </Box>
     )}
-    <Typography
-      variant="h4"
-      component="h1"
-      sx={{ textAlign: "center", pt: 10, pb: 5 }}
-    >
+    <Typography variant="h4" component="h1" sx={{ textAlign: "center", pb: 5 }}>
       {title}
     </Typography>
 
