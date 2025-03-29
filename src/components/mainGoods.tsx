@@ -4,6 +4,7 @@ import api from "@/utils/api";
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { API_BASED_URL } from "@/constants/apiUrl";
+import { getGoodsList } from "@/api/goods";
 
 interface GoodsImage {
   id: number;
@@ -24,18 +25,22 @@ function MainGoods() {
   const [recentGoods, setRecentGoods] = useState<GoodsList>([]);
 
   useEffect(() => {
-    api
-      .get(`/goods/list`, {
-        params: {
+    const fetchGoods = async () => {
+      try {
+        const params = {
           sort: "last",
           name: "",
           page: 0,
           size: 10,
-        },
-      })
-      .then((response) => {
-        setGoodsList(response.data.content);
-      });
+        };
+        const goods = await getGoodsList(params);
+        setGoodsList(goods.content);
+      } catch (err) {
+        alert("굿즈 리스트를 불러오는데 실패했습니다.");
+        console.error(err);
+      }
+    };
+    fetchGoods();
   }, []);
 
   useEffect(() => {

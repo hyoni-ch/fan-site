@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/styles/slideStyles.css";
 import Slider from "react-slick";
-import api from "@/utils/api";
+import { getAlbumList } from "@/api/discography";
 import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { API_BASED_URL } from "@/constants/apiUrl";
@@ -58,9 +58,16 @@ function MainSlider() {
   };
 
   useEffect(() => {
-    api.get("/album/list").then((response) => {
-      setAlbumList(response.data);
-    });
+    const fetchAlbum = async () => {
+      try {
+        const album = await getAlbumList();
+        setAlbumList(album);
+      } catch (err) {
+        alert("앨범 리스트를 불러오는데 실패했습니다.");
+        console.error(err);
+      }
+    };
+    fetchAlbum();
   }, []);
 
   return (
