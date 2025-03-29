@@ -4,8 +4,10 @@ import { persist, createJSONStorage } from "zustand/middleware";
 interface AuthState {
   username: string | null;
   accessToken: string | null;
+  userNickname: string | null;
   setUsername: (username: string | null) => void;
   setAccessToken: (accessToken: string | null) => void;
+  setUserNickname: (userNickname: string | null) => void;
   logout: () => void;
 }
 
@@ -14,9 +16,12 @@ const useAuthStore = create<AuthState>()(
     (set) => ({
       username: null,
       accessToken: null,
+      userNickname: null,
       setUsername: (username) => set({ username }),
       setAccessToken: (accessToken) => set({ accessToken }),
-      logout: () => set({ username: null, accessToken: null }),
+      setUserNickname: (userNickname) => set({ userNickname }),
+      logout: () =>
+        set({ username: null, accessToken: null, userNickname: null }),
     }),
     {
       name: "auth-storage", // localStorage에 저장될 key 값
@@ -27,5 +32,6 @@ const useAuthStore = create<AuthState>()(
 
 export const getAccessToken = () => useAuthStore.getState().accessToken;
 export const getUserName = () => useAuthStore.getState().username;
+export const getUserNickname = () => useAuthStore.getState().userNickname;
 
 export default useAuthStore;
