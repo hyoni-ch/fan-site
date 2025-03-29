@@ -12,6 +12,7 @@ function VerifyEmail() {
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
 
+  //! 여기 인증 완료 되면 login페이지로 라우팅 되기 직전 alert창 또는 다른 육감적인 표시 해주기
   useEffect(() => {
     if (token) {
       axios
