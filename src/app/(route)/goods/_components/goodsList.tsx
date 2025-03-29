@@ -51,6 +51,7 @@ function GoodsListPage() {
       })
       .then((response) => {
         setGoodsList(response.data.content);
+        console.log(response);
         setTotalPages(response.data.totalPages);
       });
   };
@@ -146,8 +147,8 @@ function GoodsListPage() {
       </Box>
 
       <Grid container spacing={2}>
-        {goodsList?.map((goods, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
+        {goodsList?.map((goods) => (
+          <Grid item xs={12} sm={6} md={3} key={goods.id}>
             {goods.goodsImages.length > 0 && (
               <Link href={`/goods/${goods.id}`}>
                 <Box key={goods.goodsImages[0].id}>

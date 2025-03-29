@@ -64,6 +64,7 @@ const DiaryDetail = () => {
   //! 유저 인증
   const username = useAuthStore((state) => state.username);
   const accessToken = useAuthStore((state) => state.accessToken);
+  const userNickname = useAuthStore((state) => state.userNickname);
   //! 댓글
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<CommentType[]>([]);
@@ -166,7 +167,6 @@ const DiaryDetail = () => {
       }));
 
       setReplyTexts((prev) => ({ ...prev, [commentId]: "" }));
-      // setShowReplies((prev) => ({ ...prev, [commentId]: true }));
       if (comments.find((comment) => comment.id === commentId)) {
         setComments((prevComments) =>
           prevComments.map((comment) =>
@@ -204,6 +204,32 @@ const DiaryDetail = () => {
       } catch (error) {
         console.error(error);
       }
+    }
+  };
+
+  //! 대댓글 삭제
+
+  const handleDeleteReplyComment = async (
+    replyId: number,
+    parentId: number
+  ) => {
+    try {
+      await deleteComment(replyId);
+      setReplies((prevReplies) => ({
+        ...prevReplies,
+        [parentId]: prevReplies[parentId].filter(
+          (reply) => reply.id !== replyId
+        ),
+      }));
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === parentId
+            ? { ...comment, children: comment.children - 1 }
+            : comment
+        )
+      );
+    } catch (error) {
+      console.error(error);
     }
   };
   if (!article) return <Typography>Loading...</Typography>;
@@ -260,15 +286,6 @@ const DiaryDetail = () => {
                   {comment.createDate}
                 </span>
               </Typography>
-              {username === comment.author && (
-                <Button
-                  size="small"
-                  color="error"
-                  onClick={() => handleDeleteComment(comment.id)}
-                >
-                  삭제
-                </Button>
-              )}
               <Typography variant="body2">{comment.content}</Typography>
               <Button
                 variant="text"
@@ -283,6 +300,22 @@ const DiaryDetail = () => {
               >
                 답글
               </Button>
+              {userNickname === comment.author && (
+                <Button
+                  variant="text"
+                  sx={{
+                    position: "absolute",
+                    right: "48px",
+                    top: "30px",
+                    fontSize: "0.75rem",
+                    padding: "4px",
+                    color: "red",
+                  }}
+                  onClick={() => handleDeleteComment(comment.id)}
+                >
+                  삭제
+                </Button>
+              )}
               {replyVisible[comment.id] && (
                 <Box sx={{ paddingTop: "16px", paddingLeft: "16px" }}>
                   <TextField
@@ -343,6 +376,23 @@ const DiaryDetail = () => {
                     >
                       {reply.createDate}
                     </Typography>
+                    {userNickname === reply.author && (
+                      <Button
+                        variant="text"
+                        sx={{
+                          position: "absolute",
+                          right: "8px",
+                          top: "80px",
+                          fontSize: "0.75rem",
+                          padding: "4px",
+                        }}
+                        onClick={() =>
+                          handleDeleteReplyComment(reply.id, comment.id)
+                        }
+                      >
+                        삭제
+                      </Button>
+                    )}
                   </Box>
                 ))}
             </Box>
