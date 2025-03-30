@@ -1,6 +1,5 @@
 "use client";
 
-import api from "@/utils/api";
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { API_BASED_URL } from "@/constants/apiUrl";
