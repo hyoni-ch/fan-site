@@ -2,6 +2,7 @@ import { API_BASED_URL } from "@/constants/apiUrl";
 import React, { useState } from "react";
 import Image from "next/image";
 import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
+import useCartStore from "@/store/cartStore";
 
 interface GoodsImage {
   id: number;
@@ -23,6 +24,7 @@ interface GoodsProps {
 function GoodsDetail({ goods }: GoodsProps) {
   const [count, setCount] = useState<number>(1);
   const [tabValue, setTabValue] = useState<string>("info");
+  const addItemToCart = useCartStore((state) => state.addItemToCart);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -33,7 +35,22 @@ function GoodsDetail({ goods }: GoodsProps) {
     setCount(value);
   };
 
-  console.log(goods);
+  const handleAddToCart = () => {
+    const imageUrl =
+      goods.goodsImages.length > 0
+        ? API_BASED_URL + goods.goodsImages[0].url
+        : "";
+
+    const cartItem = {
+      id: goods.id,
+      goodsName: goods.goodsName,
+      price: goods.price,
+      quantity: count,
+      imageUrl: imageUrl,
+    };
+
+    addItemToCart(cartItem);
+  };
 
   if (!goods) {
     return <div>게시물을 찾을 수 없습니다.</div>;
@@ -87,7 +104,7 @@ function GoodsDetail({ goods }: GoodsProps) {
             />
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button>장바구니</Button>
+            <Button onClick={handleAddToCart}>장바구니</Button>
             <Button>구매하기</Button>
           </Box>
         </Box>
