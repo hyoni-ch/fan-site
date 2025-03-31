@@ -54,21 +54,21 @@ function HeaderNav() {
       <AppBar sx={appBarStyle(scrolling, isMainPage)}>
         <Toolbar sx={toolbarStyle}>
           {/* 로고 */}
-          <Link href="/">
-            <Box sx={logoBoxStyle}>
+          <Box sx={logoBoxStyle}>
+            <Link href="/">
               <Image
                 src="/images/jjoul.png"
                 alt="Logo"
-                width={120}
-                height={120}
+                width={140}
+                height={140}
                 style={{ objectFit: "cover", cursor: "pointer" }}
               />
-            </Box>
-          </Link>
+            </Link>
+          </Box>
 
           {/* 메뉴바 */}
           <Box sx={menuBoxStyle}>
-            {["artist", "discography", "goods", "diary"].map((tab) => (
+            {["diary", "goods", "discography", "artist"].map((tab) => (
               <Typography
                 key={tab}
                 variant="h6"
@@ -76,7 +76,7 @@ function HeaderNav() {
                 href={`/${tab}`}
                 sx={{
                   textDecoration: "none",
-                  color: "black",
+                  color: "#FCC422",
                   fontWeight: "bold",
                   "&:hover": { opacity: 0.5 },
                 }}
@@ -88,10 +88,10 @@ function HeaderNav() {
           {/* 마이페이지 & 장바구니 아이콘 */}
           <Box sx={iconButtonStyle}>
             <IconButton color="inherit" onClick={() => handleRoute("/mypage")}>
-              <AccountCircle sx={{ color: "black" }} />
+              <AccountCircle sx={{ color: "#FCC422" }} />
             </IconButton>
             <IconButton color="inherit" onClick={() => handleRoute("/cart")}>
-              <ShoppingBag sx={{ color: "black" }} />
+              <ShoppingBag sx={{ color: "#FCC422" }} />
             </IconButton>
           </Box>
         </Toolbar>

@@ -20,22 +20,25 @@ export const toolbarStyle = {
 };
 
 export const logoBoxStyle = {
-  width: "120px",
-  height: "120px",
-  overflow: "hidden",
   display: "flex",
+  flex: "20%",
+  width: "140px",
+  height: "140px",
+  overflow: "hidden",
   alignItems: "center",
   justifyContent: "center",
-  marginLeft: "400px",
 };
 
 export const menuBoxStyle = {
   display: "flex",
+  flex: "70%",
   gap: 5,
-  marginLeft: "400px",
+  flexDirection: "row-reverse",
 };
 
 export const iconButtonStyle = {
   display: "flex",
+  flex: "10%",
   gap: 2,
+  flexDirection: "row-reverse",
 };
