@@ -110,6 +110,7 @@ const AuthPage = () => {
     <Box
       sx={{
         width: "100%",
+        height: "100vh",
         maxWidth: 540,
         mx: "auto",
         mt: 10,
