@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./mypage.module.css";
 import api from "@/utils/api";
+import useAuthStore from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 interface UserInfo {
   username: string;
@@ -16,6 +18,14 @@ function Mypage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState<string>("");
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const router = useRouter();
+  const { accessToken } = useAuthStore();
+
+  useEffect(() => {
+    if (!accessToken) {
+      router.push("/login");
+    }
+  }, [accessToken, router]);
 
   // 회원 정보 get
   useEffect(() => {
@@ -25,11 +35,6 @@ function Mypage() {
       console.log(nickname);
     });
   }, []);
-
-  // 결제 내역 get
-  // api.get("/home").then((response) => {
-  //   console.log(response.data);
-  // });
 
   // 결제 내역 목업 데이터
   const data = [

@@ -26,15 +26,7 @@ function HeaderNav() {
 
   useEffect(() => {
     setIsHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (window.location.pathname === "/") {
-      setIsMainPage(true);
-    } else {
-      setIsMainPage(false);
-    }
-
+    setIsMainPage(window.location.pathname === "/");
     if (isHydrated) {
       console.log("헤더에서 상태:", { username, accessToken });
     }
@@ -44,8 +36,16 @@ function HeaderNav() {
     router.push(path);
   };
 
+  const handleMyPageClick = () => {
+    if (accessToken) {
+      router.push("/mypage");
+    } else {
+      router.push("/login");
+    }
+  };
+
   if (!isHydrated) {
-    return null;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -87,7 +87,7 @@ function HeaderNav() {
           </Box>
           {/* 마이페이지 & 장바구니 아이콘 */}
           <Box sx={iconButtonStyle}>
-            <IconButton color="inherit" onClick={() => handleRoute("/mypage")}>
+            <IconButton color="inherit" onClick={handleMyPageClick}>
               <AccountCircle sx={{ color: "#FCC422" }} />
             </IconButton>
             <IconButton color="inherit" onClick={() => handleRoute("/cart")}>
