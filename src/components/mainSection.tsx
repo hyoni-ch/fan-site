@@ -29,8 +29,8 @@ const MainSection = ({
         <Image
           src={backgroundImage}
           alt="main image"
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{ objectFit: "cover" }}
         />
       </Box>
     )}
