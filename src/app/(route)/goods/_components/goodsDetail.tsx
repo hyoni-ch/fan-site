@@ -50,6 +50,11 @@ function GoodsDetail({ goods }: GoodsProps) {
     };
 
     addItemToCart(cartItem);
+    alert("장바구니에 추가 되었습니다.");
+  };
+
+  const handleBuy = () => {
+    alert("구매가 완료 되었습니다.");
   };
 
   if (!goods) {
@@ -105,7 +110,7 @@ function GoodsDetail({ goods }: GoodsProps) {
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button onClick={handleAddToCart}>장바구니</Button>
-            <Button>구매하기</Button>
+            <Button onClick={handleBuy}>구매하기</Button>
           </Box>
         </Box>
       </Box>
