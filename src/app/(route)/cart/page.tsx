@@ -19,6 +19,14 @@ function Page() {
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
+  const handleSelectAllChange = () => {
+    if (selectedItems.length === items.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(items.map((item) => item.id));
+    }
+  };
+
   const handleCheckboxChange = (itemId: number) => {
     setSelectedItems((prev) => {
       if (prev.includes(itemId)) {
@@ -27,6 +35,18 @@ function Page() {
         return [...prev, itemId];
       }
     });
+  };
+
+  const handleBuy = () => {
+    if (selectedItems.length === 0) {
+      alert("구매할 상품을 체크해주세요!");
+    } else {
+      alert("구매가 완료 되었습니다.");
+      selectedItems.forEach((itemId) => {
+        removeItemFromCart(itemId);
+      });
+      setSelectedItems([]);
+    }
   };
 
   const handleQuantityChange = (itemId: number, newQuantity: number) => {
@@ -86,6 +106,24 @@ function Page() {
           </Typography>
         ) : (
           <Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                mb: 2,
+                borderBottom: "1px solid #ddd",
+                pb: 2,
+              }}
+            >
+              <Checkbox
+                checked={selectedItems.length === items.length}
+                onChange={handleSelectAllChange}
+                sx={{
+                  mr: 2,
+                }}
+              />
+              <Typography>전체 선택</Typography>
+            </Box>
             {items.map((item) => (
               <Box
                 key={item.id}
@@ -205,7 +243,7 @@ function Page() {
             </Typography>
           </Box>
           <Box>
-            <Button variant="contained" sx={{}}>
+            <Button variant="contained" onClick={handleBuy}>
               구매하기
             </Button>
           </Box>
