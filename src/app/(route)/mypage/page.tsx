@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "./mypage.module.css";
 import api from "@/utils/api";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
+import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
 
 interface UserInfo {
   username: string;
@@ -36,24 +36,8 @@ function Mypage() {
     });
   }, []);
 
-  // 결제 내역 목업 데이터
-  const data = [
-    {
-      title: "조유리의 반짝반짝 키보드",
-      price: 30000,
-      date: "2025-03-24",
-      status: "구매확정",
-    },
-    {
-      title: "조유리의 반짝반짝 키보드",
-      price: 30000,
-      date: "2025-03-22",
-      status: "취소완료",
-    },
-  ];
-
-  const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    setActiveTab(newValue);
   };
 
   const onNicknameSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -110,118 +94,129 @@ function Mypage() {
   };
 
   return (
-    <>
-      <div style={{ borderBottom: "1px solid #eee" }}>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === "profile" ? styles.tabButtonActive : ""
-          }`}
-          onClick={() => handleTabClick("profile")}
-        >
-          내프로필
-        </button>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === "security" ? styles.tabButtonActive : ""
-          }`}
-          onClick={() => handleTabClick("security")}
-        >
-          보안설정
-        </button>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === "orderhistory" ? styles.tabButtonActive : ""
-          }`}
-          onClick={() => handleTabClick("orderhistory")}
-        >
-          결제내역
-        </button>
-      </div>
-      <div>
+    <Box sx={{ padding: 3, maxWidth: 900, margin: "0 auto" }}>
+      <Tabs
+        aria-label="mypage Tabs"
+        value={activeTab}
+        onChange={handleTabChange}
+        sx={{ borderBottom: 1, borderColor: "divider" }}
+      >
+        <Tab label="내프로필" value="profile" />
+        <Tab label="보안설정" value="security" />
+        {/* <Tab abel="결제내역" value="orderhistory" /> */}
+      </Tabs>
+      <Box sx={{ paddingTop: 3 }}>
         {activeTab === "profile" && userInfo ? (
-          <div>
-            <h3>기본 정보</h3>
-            <p>{userInfo.username}</p>
+          <Box
+            sx={{
+              padding: 3,
+              borderRadius: 2,
+              boxShadow: 1,
+            }}
+          >
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>
+              기본 정보
+            </Typography>
+            <Typography sx={{ marginBottom: 2 }}>
+              {userInfo.username}
+            </Typography>
 
             <form onSubmit={onNicknameSubmit}>
-              <div>
-                <label>닉네임</label>
-                <input
-                  type="text"
-                  id="nickname"
-                  value={nickname}
-                  onChange={(e) => {
-                    setNickname(e.currentTarget.value);
-                  }}
-                />
-              </div>
+              <TextField
+                label="닉네임"
+                variant="outlined"
+                fullWidth
+                value={nickname}
+                onChange={(e) => setNickname(e.currentTarget.value)}
+                sx={{
+                  marginBottom: 2,
+                }}
+              />
 
-              <button>확인</button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{
+                  padding: 1.5,
+                  textTransform: "none",
+                }}
+              >
+                닉네임 수정
+              </Button>
             </form>
-          </div>
+          </Box>
         ) : activeTab === "security" ? (
-          <div>
-            <h3>비밀번호 변경</h3>
-            <p>안전한 비밀번호로 내 정보를 보호하세요.</p>
-            <p>이전에 사용한 적 없는 비밀번호가 안전합니다.</p>
+          <Box
+            sx={{
+              padding: 3,
+              borderRadius: 2,
+              boxShadow: 1,
+            }}
+          >
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>
+              비밀번호 변경
+            </Typography>
+            <Typography sx={{ marginBottom: 2 }}>
+              안전한 비밀번호로 내 정보를 보호하세요.
+            </Typography>
 
             <form onSubmit={onPasswordSubmit}>
-              <div>
-                <label>현재 비밀번호</label>
-                <input
-                  type="password"
-                  id="oldPassword"
-                  value={oldPassword}
-                  onChange={(e) => {
-                    setOldPassword(e.currentTarget.value);
-                  }}
-                />
-              </div>
-              <div>
-                <label>새 비밀번호</label>
-                <input
-                  type="password"
-                  id="newPassword"
-                  value={newPassword}
-                  onChange={(e) => {
-                    setNewPassword(e.currentTarget.value);
-                  }}
-                />
-              </div>
-              <div>
-                <label>비밀번호 확인</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.currentTarget.value)}
-                />
-              </div>
-
-              <button>확인</button>
+              <TextField
+                label="현재 비밀번호"
+                type="password"
+                variant="outlined"
+                fullWidth
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.currentTarget.value)}
+                sx={{
+                  marginBottom: 2,
+                }}
+              />
+              <TextField
+                label="새 비밀번호"
+                type="password"
+                variant="outlined"
+                fullWidth
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.currentTarget.value)}
+                sx={{
+                  marginBottom: 2,
+                }}
+              />
+              <TextField
+                label="비밀번호 확인"
+                type="password"
+                variant="outlined"
+                fullWidth
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+                sx={{
+                  marginBottom: 2,
+                }}
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{
+                  padding: 1.5,
+                  textTransform: "none",
+                }}
+              >
+                비밀번호 변경
+              </Button>
             </form>
-          </div>
+          </Box>
         ) : (
-          <div>
-            <h2>결제 내역</h2>
-            {data.length === 0 ? (
-              <div>
-                <p>아직 결제한 내역이 없습니다.</p>
-              </div>
-            ) : (
-              data.map((item, idx) => (
-                <ul key={idx}>
-                  <li>{item.title}</li>
-                  <li>{item.price}</li>
-                  <li>{item.status}</li>
-                  <li>{item.date}</li>
-                </ul>
-              ))
-            )}
-          </div>
+          <Box>
+            <Typography variant="h6">결제 내역</Typography>
+          </Box>
         )}
-      </div>
-    </>
+      </Box>
+    </Box>
   );
 }
 

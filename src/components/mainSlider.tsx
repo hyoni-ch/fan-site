@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/styles/slideStyles.css";
 import Slider from "react-slick";
+import Image from "next/image";
 import { getAlbumList } from "@/api/discography";
 import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
@@ -79,11 +80,14 @@ function MainSlider() {
               {album.albumImages.map((image) => (
                 <Box key={image.id}>
                   <Box className="slide-image-wrapper">
-                    <img
+                    <Image
                       src={API_BASED_URL + image.url}
                       alt={`앨범 ${album.id}`}
+                      width={300}
+                      height={300}
                     />
                   </Box>
+
                   <Box className="slide-album-info">
                     <Box>{album.title}</Box>
                     <Box sx={{ color: "#757575" }}>{album.releaseDate}</Box>
