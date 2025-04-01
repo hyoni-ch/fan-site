@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 import GoodsDetail from "../_components/goodsDetail";
 import { Box } from "@mui/material";
 import { getGoodsDetail } from "@/api/goods";
+import { useParams } from "next/navigation";
 
-function GoodsDetailPage({ params }: { params: { id: string } }) {
+function GoodsDetailPage() {
   const [goods, setGoods] = useState<null>(null);
-  const { id } = React.use(params);
-  const goodsId = parseInt(id);
-
+  const { id } = useParams();
+  const goodsId = Number(id);
   useEffect(() => {
     const fetchGoods = async (goodsId: number) => {
       try {

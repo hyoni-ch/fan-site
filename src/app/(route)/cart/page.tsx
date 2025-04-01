@@ -1,7 +1,5 @@
 "use client";
 
-import { logout } from "@/api/auth";
-import useAuthStore from "@/store/authStore";
 import useCartStore from "@/store/cartStore";
 import {
   Box,
@@ -11,32 +9,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import adaptV4Theme from "./../../../../node_modules/@mui/material/modern/styles/adaptV4Theme";
+import React, { useState } from "react";
 import Image from "next/image";
 import ClearIcon from "@mui/icons-material/Clear";
 
 function Page() {
-  // const router = useRouter();
-  // const { accessToken } = useAuthStore();
-
-  // useEffect(() => {
-  //   if (!accessToken) {
-  //     router.replace("/login");
-  //   }
-  // }, [accessToken, router]);
-
-  // // 로그인 정보가 없으면 렌더링 안함
-  // if (!accessToken) {
-  //   return null;
-  // }
-
-  // const handleLogout = () => {
-  //   logout();
-  //   router.replace("/");
-  // };
-
   const { items, removeItemFromCart, clearCart, updateItemQuantity } =
     useCartStore();
 

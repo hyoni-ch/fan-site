@@ -103,11 +103,7 @@ function GoodsListPage() {
             </Paper>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <ButtonGroup
-              variant="text"
-              aria-label="sort button group"
-              color="gray"
-            >
+            <ButtonGroup variant="text" aria-label="sort button group">
               <Button
                 onClick={() => {
                   setSort("last");

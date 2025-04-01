@@ -69,7 +69,7 @@ function Footer() {
 
 export default Footer;
 
-const footerStyle = {
+const footerStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
