@@ -13,82 +13,27 @@ export interface AlbumImage {
   url: string;
 }
 
-// export const mockAlbumsList: AlbumInfo[] = [
-//   {
-//     id: 1,
-//     title: "앨범 1",
-//     description: "앨범 1 설명",
-//     releaseDate: "2023-01-01",
-//     tags: "Regular",
-//     albumImages: [{ id: 1, url: "/images/diary1.png" }],
-//   },
-//   {
-//     id: 2,
-//     title: "앨범 2",
-//     description: "앨범 2 설명",
-//     releaseDate: "2023-02-01",
-//     tags: "Single",
-//     albumImages: [{ id: 2, url: "/images/diary1.png" }],
-//   },
-//   {
-//     id: 3,
-//     title: "앨범 3",
-//     description: "앨범 3 설명",
-//     releaseDate: "2023-03-01",
-//     tags: "Ost",
-//     albumImages: [{ id: 3, url: "/images/diary1.png" }],
-//   },
-//   {
-//     id: 4,
-//     title: "앨범 3",
-//     description: "앨범 3 설명",
-//     releaseDate: "2023-03-01",
-//     tags: "Mini",
-//     albumImages: [{ id: 4, url: "/images/diary1.png" }],
-//   },
-//   {
-//     id: 5,
-//     title: "앨범 3",
-//     description: "앨범 3 설명",
-//     releaseDate: "2023-03-01",
-//     tags: "Mini",
-//     albumImages: [{ id: 5, url: "/images/diary1.png" }],
-//   },
-//   {
-//     id: 6,
-//     title: "앨범 3",
-//     description: "앨범 3 설명",
-//     releaseDate: "2023-03-01",
-//     tags: "Mini",
-//     albumImages: [{ id: 6, url: "/images/diary1.png" }],
-//   },
-//   {
-//     id: 7,
-//     title: "앨범 3",
-//     description: "앨범 3 설명",
-//     releaseDate: "2023-03-01",
-//     tags: "Mini",
-//     albumImages: [{ id: 7, url: "/images/diary1.png" }],
-//   },
-// ];
-
 // 앨범 디테일 인터페이스 및 목업 데이터
 export interface AlbumDetailInfo {
   id: number;
   title: string;
   description: string;
-  intro: string;
   releaseDate: string;
   tags: string;
-  albumImages: AlbumImage[];
+  albumImages: AlbumDetailImage[];
   tracks: Track[];
+}
+
+export interface AlbumDetailImage {
+  id: number;
+  url: string;
 }
 
 export interface Track {
   id: number;
   title: string;
   description: string;
-  youtubeLink: string;
+  youtubeUrl: string;
 }
 
 // export const mockAlbumDetails: AlbumDetailInfo[] = [
