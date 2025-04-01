@@ -46,8 +46,12 @@ function Home() {
   return (
     <Box style={{ backgroundColor: "#ECE7E4" }}>
       <Section backgroundImage="/images/mainImg.jpg" sectionNumber={1} />
-      <Section title="DISCOGRAPHY" sectionNumber={2} moreButtonPath="/" />
-      <Section title="GOODS" sectionNumber={3} moreButtonPath="/" />
+      <Section
+        title="DISCOGRAPHY"
+        sectionNumber={2}
+        moreButtonPath="/discography"
+      />
+      <Section title="GOODS" sectionNumber={3} moreButtonPath="/goods" />
     </Box>
   );
 }

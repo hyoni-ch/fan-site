@@ -1,7 +1,8 @@
 "use client";
 
-import { Box } from "@mui/material";
+import { Box, Link } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { API_BASED_URL } from "@/constants/apiUrl";
 import { getGoodsList } from "@/api/goods";
 
@@ -62,17 +63,21 @@ function MainGoods() {
     >
       {recentGoods.map((goods) => (
         <Box key={goods.id}>
-          {goods.goodsImages.length > 0 && (
-            <Box key={goods.goodsImages[0].id}>
-              <img
-                src={API_BASED_URL + goods.goodsImages[0].url}
-                alt={`굿즈 ${goods.id}`}
-                height={400}
-                width={300}
-                style={{ objectFit: "cover" }}
-              />
-            </Box>
-          )}
+          <Link href={`/goods/${goods.id}`}>
+            {goods.goodsImages.length > 0 && (
+              <Box key={goods.goodsImages[0].id}>
+                <Image
+                  src={API_BASED_URL + goods.goodsImages[0].url}
+                  alt={`굿즈 ${goods.id}`}
+                  width={300}
+                  height={400}
+                  objectFit="cover"
+                  layout="intrinsic"
+                />
+              </Box>
+            )}
+          </Link>
+
           <Box
             sx={{
               display: "flex",
