@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -19,6 +17,7 @@ import { API_BASED_URL } from "@/constants/apiUrl";
 import Link from "next/link";
 import Image from "next/image";
 import { getGoodsList } from "@/api/goods";
+import useAuthStore from "@/store/authStore";
 
 interface GoodsImage {
   id: number;
@@ -45,6 +44,7 @@ function GoodsListPage() {
     { label: "낮은가격순", value: "asc" },
     { label: "높은가격순", value: "desc" },
   ];
+  const roles = useAuthStore((state) => state.roles);
 
   const fetchGoodsList = async () => {
     try {
@@ -73,68 +73,93 @@ function GoodsListPage() {
 
   return (
     <Box sx={{ pl: 4, pr: 4, pb: 4 }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 3 }}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          <Box>
-            <Paper
-              component="form"
-              sx={{
-                p: "8px 16px",
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                maxWidth: 500,
-                borderRadius: "25px",
-                boxShadow: 1,
-              }}
-              onSubmit={SearchHandler}
-            >
-              <InputBase
+      <Box sx={{ mb: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
+          {roles && roles.includes("ROLE_ADMIN") ? (
+            <Link href="/goods/create">
+              <Button
+                variant="contained"
                 sx={{
-                  ml: 1,
-                  flex: 1,
-                  fontSize: "16px",
-                  color: "#333",
+                  backgroundColor: "#FCC422",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  borderRadius: "25px",
+                  p: "8px 16px",
+                  ":hover": {
+                    backgroundColor: "#f8b602",
+                  },
                 }}
-                inputProps={{ "aria-label": "search google maps" }}
-                type="text"
-                value={searchTerm}
-                placeholder="원하는 굿즈를 검색하세요"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setSearchTerm(e.currentTarget.value)
-                }
-                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (e.key === "Enter")
-                    SearchHandler(
-                      e as unknown as React.FormEvent<HTMLFormElement>
-                    );
+              >
+                굿즈 추가
+              </Button>
+            </Link>
+          ) : (
+            <Box></Box>
+          )}
+
+          <Paper
+            component="form"
+            sx={{
+              p: "8px 16px",
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              maxWidth: 500,
+              borderRadius: "25px",
+              boxShadow: 1,
+            }}
+            onSubmit={SearchHandler}
+          >
+            <InputBase
+              sx={{
+                ml: 1,
+                flex: 1,
+                fontSize: "16px",
+                color: "#333",
+              }}
+              inputProps={{ "aria-label": "search google maps" }}
+              type="text"
+              value={searchTerm}
+              placeholder="원하는 굿즈를 검색하세요"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchTerm(e.currentTarget.value)
+              }
+              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                if (e.key === "Enter")
+                  SearchHandler(
+                    e as unknown as React.FormEvent<HTMLFormElement>
+                  );
+              }}
+            />
+            <IconButton aria-label="search" sx={{ p: 1 }}>
+              <SearchIcon sx={{ color: "black" }} />
+            </IconButton>
+          </Paper>
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <ButtonGroup variant="text" aria-label="sort button group">
+            {sortData.map((button) => (
+              <Button
+                key={button.value}
+                onClick={() => setSort(button.value as "last" | "asc" | "desc")}
+                sx={{
+                  borderColor: sort === button.value ? "black" : "transparent",
+                  color: sort === button.value ? "black" : "gray",
                 }}
-              />
-              <IconButton aria-label="search" sx={{ p: 1 }}>
-                <SearchIcon sx={{ color: "black" }} />
-              </IconButton>
-            </Paper>
-          </Box>
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-start" }}>
-            <ButtonGroup variant="text" aria-label="sort button group">
-              {sortData.map((button) => (
-                <Button
-                  key={button.value}
-                  onClick={() =>
-                    setSort(button.value as "last" | "asc" | "desc")
-                  }
-                  sx={{
-                    borderColor:
-                      sort === button.value ? "black" : "transparent",
-                    color: sort === button.value ? "black" : "gray",
-                  }}
-                  startIcon={sort === button.value ? <CheckIcon /> : null}
-                >
-                  {button.label}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </Box>
+                startIcon={sort === button.value ? <CheckIcon /> : null}
+              >
+                {button.label}
+              </Button>
+            ))}
+          </ButtonGroup>
         </Box>
       </Box>
 

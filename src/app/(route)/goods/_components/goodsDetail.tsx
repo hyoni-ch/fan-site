@@ -1,7 +1,16 @@
 import { API_BASED_URL } from "@/constants/apiUrl";
 import React, { useState } from "react";
 import Image from "next/image";
-import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Link,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
+import ListIcon from "@mui/icons-material/List";
 import useCartStore from "@/store/cartStore";
 
 interface GoodsImage {
@@ -186,6 +195,26 @@ function GoodsDetail({ goods }: GoodsProps) {
             아직 리뷰가 없습니다.
           </Typography>
         )}
+      </Box>
+
+      <Box sx={{ position: "fixed", bottom: 16, right: 16 }}>
+        <Link href="/goods">
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#FCC422",
+              borderRadius: "50%",
+              minWidth: "50px",
+              height: "50px",
+              boxShadow: 3,
+              "&:hover": {
+                backgroundColor: "#f8b602",
+              },
+            }}
+          >
+            <ListIcon sx={{ color: "white", fontSize: "24px" }} />
+          </Button>
+        </Link>
       </Box>
     </Box>
   );
