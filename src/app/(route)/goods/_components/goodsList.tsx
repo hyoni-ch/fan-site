@@ -10,9 +10,12 @@ import {
   IconButton,
   InputBase,
   Paper,
+  Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CheckIcon from "@mui/icons-material/Check";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { API_BASED_URL } from "@/constants/apiUrl";
 import Link from "next/link";
 import Image from "next/image";
@@ -38,6 +41,11 @@ function GoodsListPage() {
   const size = 8;
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const sortData = [
+    { label: "최신등록순", value: "last" },
+    { label: "낮은가격순", value: "asc" },
+    { label: "높은가격순", value: "desc" },
+  ];
 
   const getGoodsList = () => {
     api
@@ -67,22 +75,30 @@ function GoodsListPage() {
   };
 
   return (
-    <Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1 }}>
+    <Box sx={{ pl: 4, pr: 4, pb: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 3 }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <Box>
             <Paper
               component="form"
               sx={{
-                p: "2px 4px",
+                p: "8px 16px",
                 display: "flex",
                 alignItems: "center",
-                width: 400,
+                width: "100%",
+                maxWidth: 500,
+                borderRadius: "25px",
+                boxShadow: 1,
               }}
               onSubmit={SearchHandler}
             >
               <InputBase
-                sx={{ ml: 1, flex: 1 }}
+                sx={{
+                  ml: 1,
+                  flex: 1,
+                  fontSize: "16px",
+                  color: "#333",
+                }}
                 inputProps={{ "aria-label": "search google maps" }}
                 type="text"
                 value={searchTerm}
@@ -97,107 +113,108 @@ function GoodsListPage() {
                     );
                 }}
               />
-              <IconButton aria-label="search">
+              <IconButton aria-label="search" sx={{ p: 1 }}>
                 <SearchIcon sx={{ color: "black" }} />
               </IconButton>
             </Paper>
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-start" }}>
             <ButtonGroup variant="text" aria-label="sort button group">
-              <Button
-                onClick={() => {
-                  setSort("last");
-                }}
-                sx={{
-                  color: sort === "last" ? "black" : "gray",
-                }}
-                startIcon={sort === "last" ? <CheckIcon /> : null}
-              >
-                최신등록순
-              </Button>
-              <Button
-                onClick={() => {
-                  setSort("asc");
-                }}
-                sx={{
-                  color: sort === "asc" ? "black" : "gray",
-                }}
-                startIcon={sort === "asc" ? <CheckIcon /> : null}
-              >
-                낮은가격순
-              </Button>
-              <Button
-                onClick={() => {
-                  setSort("desc");
-                }}
-                sx={{
-                  color: sort === "desc" ? "black" : "gray",
-                }}
-                startIcon={sort === "desc" ? <CheckIcon /> : null}
-              >
-                높은가격순
-              </Button>
+              {sortData.map((button) => (
+                <Button
+                  key={button.value}
+                  onClick={() =>
+                    setSort(button.value as "last" | "asc" | "desc")
+                  }
+                  sx={{
+                    borderColor:
+                      sort === button.value ? "black" : "transparent",
+                    color: sort === button.value ? "black" : "gray",
+                  }}
+                  startIcon={sort === button.value ? <CheckIcon /> : null}
+                >
+                  {button.label}
+                </Button>
+              ))}
             </ButtonGroup>
           </Box>
         </Box>
       </Box>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={3}>
         {goodsList?.map((goods) => (
           <Grid item xs={12} sm={6} md={3} key={goods.id}>
-            {goods.goodsImages.length > 0 && (
-              <Link href={`/goods/${goods.id}`}>
-                <Box key={goods.goodsImages[0].id}>
-                  <Image
-                    src={API_BASED_URL + goods.goodsImages[0].url}
-                    alt={`굿즈 ${goods.id}`}
-                    width={100}
-                    height={100}
-                    layout="responsive"
-                  />
-                </Box>
-              </Link>
-            )}
             <Box
               sx={{
+                height: "100%",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 1,
+                justifyContent: "space-between",
+                backgroundColor: "#fff",
+                borderRadius: 2,
+                boxShadow: 2,
+                overflow: "hidden",
+                textAlign: "center",
+                transition: "transform 0.3s ease-in-out",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  boxShadow: 4,
+                },
               }}
             >
-              <Box>{goods.goodsName}</Box>
-              <Box sx={{ color: "#757575" }}>
-                ₩{goods.price.toLocaleString()}
+              {goods.goodsImages.length > 0 && (
+                <Link href={`/goods/${goods.id}`}>
+                  <Box
+                    key={goods.goodsImages[0].id}
+                    sx={{
+                      position: "relative",
+                      width: "100%",
+                      height: 300,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Image
+                      src={API_BASED_URL + goods.goodsImages[0].url}
+                      alt={`굿즈 ${goods.id}`}
+                      layout="fill"
+                      objectFit="cover"
+                      priority
+                    />
+                  </Box>
+                </Link>
+              )}
+              <Box sx={{ p: 2 }}>
+                <Typography sx={{ fontWeight: "bold", mb: 1 }}>
+                  {goods.goodsName}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ color: "#757575", fontSize: "16px" }}
+                >
+                  ₩{goods.price.toLocaleString()}
+                </Typography>
               </Box>
             </Box>
           </Grid>
         ))}
       </Grid>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <IconButton
           disabled={currentPage === 0}
           onClick={() => setCurrentPage(currentPage - 1)}
         >
-          이전
-        </Button>
-        <span>
+          <ArrowBackIosNewIcon />
+        </IconButton>
+        <Typography variant="body2" sx={{ alignSelf: "center" }}>
           {currentPage + 1} / {totalPages}
-        </span>
-        <Button
+        </Typography>
+        <IconButton
           disabled={currentPage === totalPages - 1}
           onClick={() => setCurrentPage(currentPage + 1)}
         >
-          다음
-        </Button>
+          <ArrowForwardIosIcon />
+        </IconButton>
       </Box>
     </Box>
   );
