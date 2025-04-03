@@ -1,0 +1,53 @@
+name: Deploy Next.js to EC2 with CodeDeploy
+
+on:
+  push:
+    branches: [main] # 배포 브랜치!
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22' 
+
+      - name: Install dependencies & build
+        run: |
+          npm ci
+          npm install
+          npm run build
+
+      - name: Prepare deploy artifact
+        run: |
+          mkdir -p codedeploy
+          cp -r .next public package.json next.config.js appspec.yml scripts codedeploy/
+          cd codedeploy
+          zip -r ../joruri.zip .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp joyuri.zip s3://mybucket-ces-joyuri/front/joyuri.zip
+          
+
+      # - name: Trigger CodeDeploy deployment
+      #   run: |
+      #     aws deploy create-deployment \
+      #       --application-name ${{ env.APP_NAME }} \
+      #       --deployment-group-name ${{ env.DEPLOYMENT_GROUP }} \
+      #       --s3-location bucket=${{ env.S3_BUCKET }},key=nextjs/${{ env.ZIP_FILE }},bundleType=zip \
+      #       --deployment-config-name CodeDeployDefault.AllAtOnce \
+      #       --file-exists-behavior OVERWRITE
