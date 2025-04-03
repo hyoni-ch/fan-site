@@ -7,12 +7,14 @@ import { useEffect, useState } from "react";
 
 function ConcertTab() {
   const [concerts, setConcerts] = useState<ConcertList[]>([]);
+
   //마운트시 getConcerList함수 실행 후 목록 저장.
   useEffect(() => {
     const fetchConcertList = async () => {
       const concertList = await getConcertList();
       setConcerts(concertList);
     };
+    console.log("AlbumTab 렌더링됨");
     fetchConcertList();
   }, []);
 

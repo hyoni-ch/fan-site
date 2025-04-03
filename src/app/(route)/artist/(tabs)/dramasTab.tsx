@@ -3,18 +3,23 @@ import { API_BASED_URL } from "@/constants/apiUrl";
 import { DramaList } from "@/types/iprofile";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-function DramasTab() {
+function DramasTab({ inView }: { inView: boolean }) {
   const [dramas, setDramas] = useState<DramaList[]>([]);
+  const isFetched = useRef(false);
 
   useEffect(() => {
-    const fetchDramaList = async () => {
-      const DramaList = await getDramaList();
-      setDramas(DramaList);
-    };
-    fetchDramaList();
-  }, []);
+    if (inView && !isFetched.current) {
+      const fetchDramaList = async () => {
+        const dramaList = await getDramaList();
+        setDramas(dramaList);
+        console.log("메롱", dramaList);
+        isFetched.current = true;
+      };
+      fetchDramaList();
+    }
+  }, [inView]);
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">

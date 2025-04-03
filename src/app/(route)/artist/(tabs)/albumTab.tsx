@@ -16,12 +16,15 @@ function AlbumTab() {
   });
 
   useEffect(() => {
-    const fetchAlbumList = async () => {
-      const albumList = await getAlbumList();
-      setAlbums(albumList);
-    };
-    fetchAlbumList();
-  }, []);
+    if (inView) {
+      const fetchAlbumList = async () => {
+        const albumList = await getAlbumList();
+        setAlbums(albumList);
+        console.log(albumList);
+      };
+      fetchAlbumList();
+    }
+  }, [inView]);
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" ref={ref}>

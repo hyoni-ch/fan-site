@@ -1,6 +1,5 @@
 "use client";
 
-import { API_BASED_URL } from "@/constants/apiUrl";
 import useDiaryStore from "@/store/diaryStore";
 import {
   Box,
@@ -85,7 +84,7 @@ function EveryDiary() {
                 // image={`${API_BASED_URL}${diary.articleImageList[0].url}`}
                 image={
                   diary.articleImageList[0]?.url
-                    ? `${API_BASED_URL}${diary.articleImageList[0].url}`
+                    ? `/api/${diary.articleImageList[0].url}`
                     : "/images/diary1.png"
                 }
                 alt={diary.title}
