@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import api from "@/utils/api";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
-import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { getUserInfo, logout } from "@/api/auth";
 
 interface UserInfo {
@@ -13,7 +13,7 @@ interface UserInfo {
 }
 
 function Mypage() {
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeMenu, setActiveMenu] = useState("profile");
   const [oldPassword, setOldPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -42,10 +42,6 @@ function Mypage() {
   useEffect(() => {
     fetchUserInfo();
   }, []);
-
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
-    setActiveTab(newValue);
-  };
 
   const handleLogout = () => {
     logout();
@@ -106,19 +102,46 @@ function Mypage() {
   };
 
   return (
-    <Box sx={{ padding: 3, maxWidth: 900, margin: "0 auto" }}>
-      <Tabs
-        aria-label="mypage Tabs"
-        value={activeTab}
-        onChange={handleTabChange}
-        sx={{ borderBottom: 1, borderColor: "divider" }}
+    <Box sx={{ display: "flex", padding: 3, maxWidth: 1200, margin: "0 auto" }}>
+      {/* 왼쪽 메뉴 */}
+      <Box
+        sx={{
+          width: "250px",
+          borderRight: "1px solid #ddd",
+          paddingRight: 2,
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
       >
-        <Tab label="내프로필" value="profile" />
-        <Tab label="보안설정" value="security" />
-        {/* <Tab abel="결제내역" value="orderhistory" /> */}
-      </Tabs>
-      <Box sx={{ paddingTop: 3 }}>
-        {activeTab === "profile" && userInfo ? (
+        <Button
+          variant="text"
+          color={activeMenu === "profile" ? "primary" : "inherit"}
+          onClick={() => setActiveMenu("profile")}
+          sx={{ textAlign: "left", fontWeight: "bold" }}
+        >
+          내프로필
+        </Button>
+        <Button
+          variant="text"
+          color={activeMenu === "security" ? "primary" : "inherit"}
+          onClick={() => setActiveMenu("security")}
+          sx={{ textAlign: "left", fontWeight: "bold" }}
+        >
+          보안설정
+        </Button>
+        <Button
+          variant="text"
+          onClick={handleLogout}
+          sx={{ textAlign: "left", fontWeight: "bold", marginTop: "auto" }}
+        >
+          로그아웃
+        </Button>
+      </Box>
+
+      {/* 오른쪽 내용 */}
+      <Box sx={{ flex: 1, paddingLeft: 3 }}>
+        {activeMenu === "profile" && userInfo ? (
           <Box
             sx={{
               padding: 3,
@@ -159,7 +182,7 @@ function Mypage() {
               </Button>
             </form>
           </Box>
-        ) : activeTab === "security" ? (
+        ) : activeMenu === "security" ? (
           <Box
             sx={{
               padding: 3,
@@ -227,19 +250,6 @@ function Mypage() {
             <Typography variant="h6">결제 내역</Typography>
           </Box>
         )}
-
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleLogout}
-          sx={{
-            fontWeight: "bold",
-            padding: "12px",
-            textTransform: "none",
-          }}
-        >
-          로그아웃
-        </Button>
       </Box>
     </Box>
   );
