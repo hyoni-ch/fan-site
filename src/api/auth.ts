@@ -13,6 +13,7 @@ export const login = async (username: string, password: string) => {
         username: response.data.username,
         accessToken: response.data.accessToken,
         userNickname: response.data.nickname,
+        roles: response.data.roles,
       });
       console.log("로그인 후 상태:", useAuthStore.getState());
 
