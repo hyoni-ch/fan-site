@@ -4,7 +4,6 @@ import api from "@/utils/api";
 export const getDramaList = async () => {
   try {
     const response = await api.get("/career/list");
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -15,8 +14,6 @@ export const getDramaList = async () => {
 export const getConcertList = async () => {
   try {
     const response = await api.get("/concert/list");
-    console.log(response);
-
     return response.data;
   } catch (error) {
     console.error(error);
