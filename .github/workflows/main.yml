@@ -25,7 +25,7 @@ jobs:
   
       - name: Prepare deploy artifact
         run: |
-          zip -r joyuri.zip .
+          zip -r joyuri.zip . -x ".next/*" "node_modules/*" ".git/*" "*.DS_Store"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
