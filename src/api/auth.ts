@@ -60,3 +60,13 @@ export const logout = () => {
   useAuthStore.getState().logout();
   alert("로그아웃 완료");
 };
+
+// 회원 정보 get 요청!
+export const getUserInfo = () => {
+  try {
+    const response = api.get("/home");
+    return response;
+  } catch (error) {
+    console.error("회원정보를 가지고 오는데 실패했습니다!", error);
+  }
+};
