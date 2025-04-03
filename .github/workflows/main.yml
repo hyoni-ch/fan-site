@@ -27,7 +27,7 @@ jobs:
       - name: Prepare deploy artifact
         run: |
           mkdir -p codedeploy
-          cp -r .next codedeploy/
+          cp -r . codedeploy/
           cd codedeploy
           zip -r ../joyuri.zip .
 
@@ -46,8 +46,8 @@ jobs:
       # - name: Trigger CodeDeploy deployment
       #   run: |
       #     aws deploy create-deployment \
-      #       --application-name ${{ env.APP_NAME }} \
-      #       --deployment-group-name ${{ env.DEPLOYMENT_GROUP }} \
-      #       --s3-location bucket=${{ env.S3_BUCKET }},key=nextjs/${{ env.ZIP_FILE }},bundleType=zip \
+      #       --application-name nextjs-app \
+      #       --deployment-group-name nextjs-dg \
+      #       --s3-location bucket=mybucket-ces-joyuri,bundleType=zip,key=front/joyuri.zip \
       #       --deployment-config-name CodeDeployDefault.AllAtOnce \
       #       --file-exists-behavior OVERWRITE
