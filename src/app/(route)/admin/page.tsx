@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import UserListTable from "./_component/userListTable";
 import { CircularProgress } from "@mui/material";
 import { User } from "@/types/iadmin";
-import useAuthStore, { getUserRole } from "@/store/authStore";
+import useAuthStore, { getUserRoles } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 
 const AdminUserListPage: React.FC = () => {
@@ -17,7 +17,7 @@ const AdminUserListPage: React.FC = () => {
 
   useEffect(() => {
     const checkAdminRole = () => {
-      const storedRoles = getUserRole() || roles;
+      const storedRoles = getUserRoles() || roles;
 
       if (!storedRoles || !storedRoles.includes("ROLE_ADMIN")) {
         router.push("/");
