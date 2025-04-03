@@ -5,6 +5,7 @@ import api from "@/utils/api";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { Box, Button, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { getUserInfo } from "@/api/auth";
 
 interface UserInfo {
   username: string;
@@ -28,12 +29,18 @@ function Mypage() {
   }, [accessToken, router]);
 
   // 회원 정보 get
+  const fetchUserInfo = async () => {
+    const fetchUser = await getUserInfo();
+    try {
+      setUserInfo(fetchUser?.data);
+      setNickname(fetchUser?.data.nickname);
+    } catch (error) {
+      console.error("유저 정보를 불러오지 못했습니다.", error);
+    }
+  };
+
   useEffect(() => {
-    api.get("/home").then((response) => {
-      setUserInfo(response.data);
-      setNickname(response.data.nickname);
-      console.log(nickname);
-    });
+    fetchUserInfo();
   }, []);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
