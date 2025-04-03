@@ -5,7 +5,7 @@ import api from "@/utils/api";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { getUserInfo } from "@/api/auth";
+import { getUserInfo, logout } from "@/api/auth";
 
 interface UserInfo {
   username: string;
@@ -21,7 +21,6 @@ function Mypage() {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const router = useRouter();
   const { accessToken } = useAuthStore();
-  const logout = useAuthStore((state) => state.logout);
 
   useEffect(() => {
     if (!accessToken) {
