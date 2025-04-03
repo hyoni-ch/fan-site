@@ -62,68 +62,130 @@ function GoodsDetail({ goods }: GoodsProps) {
   }
 
   return (
-    <Box>
-      <Box sx={{ display: "flex", gap: 10 }}>
-        <Box>
+    <Box sx={{ maxWidth: "1200px", margin: "0 auto", padding: 4 }}>
+      <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+        <Box sx={{ flex: 1, maxWidth: "500px" }}>
           {goods.goodsImages && goods.goodsImages.length > 0 ? (
             goods.goodsImages.map((image, index) => (
-              <Image
+              <Box
                 key={index}
-                src={API_BASED_URL + image.url}
-                alt={`Goods Image ${index + 1}`}
-                width={100}
-                height={100}
-                layout="responsive"
-              />
+                sx={{
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                  marginBottom: "16px",
+                  boxShadow: 2,
+                }}
+              >
+                <Image
+                  src={API_BASED_URL + image.url}
+                  alt={`Goods Image ${index + 1}`}
+                  width={500}
+                  height={500}
+                  layout="responsive"
+                  objectFit="cover"
+                />
+              </Box>
             ))
           ) : (
-            <p>이미지가 없습니다.</p>
+            <Typography variant="body2" sx={{ color: "gray" }}>
+              이미지가 없습니다.
+            </Typography>
           )}
         </Box>
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 3,
+            flex: 1,
+            maxWidth: "500px",
             border: 1,
-            borderRadius: 1,
+            borderRadius: 2,
             borderColor: "#ddd",
-            p: 5,
+            p: 3,
+            boxShadow: 2,
           }}
         >
-          <Box>{goods.goodsName}</Box>
-          <Box>₩{goods.price.toLocaleString()}</Box>
-          <Box
-            sx={{
-              borderTop: 1,
-              borderBottom: 1,
-              borderColor: "#ddd",
-              p: 5,
-            }}
-          >
-            <Typography>수량</Typography>
+          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
+            {goods.goodsName}
+          </Typography>
+          <Typography variant="h6" sx={{ color: "#757575", mb: 3 }}>
+            ₩{goods.price.toLocaleString()}
+          </Typography>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ mb: 1 }}>
+              수량
+            </Typography>
             <TextField
               type="number"
               value={count}
               onChange={handleCountChange}
+              sx={{
+                width: "100%",
+                mb: 2,
+                padding: "8px",
+                fontSize: "16px",
+                borderRadius: "8px",
+              }}
             />
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button onClick={handleAddToCart}>장바구니</Button>
-            <Button onClick={handleBuy}>구매하기</Button>
+
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                borderRadius: "8px",
+                textTransform: "none",
+                padding: "12px",
+                fontWeight: "bold",
+              }}
+              onClick={handleAddToCart}
+            >
+              장바구니
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                borderRadius: "8px",
+                textTransform: "none",
+                padding: "12px",
+                fontWeight: "bold",
+              }}
+              onClick={handleBuy}
+            >
+              구매하기
+            </Button>
           </Box>
         </Box>
       </Box>
 
-      <Box>
+      <Box sx={{ mt: 4 }}>
         <Tabs
           value={tabValue}
           onChange={handleTabChange}
           aria-label="굿즈 Tabs"
+          sx={{
+            borderBottom: 1,
+            borderColor: "#ddd",
+            mb: 2,
+          }}
         >
           <Tab label="상품 정보" value="info" />
           <Tab label="리뷰/평점" value="review" />
         </Tabs>
+
+        {tabValue === "info" && (
+          <Typography variant="body1" sx={{ color: "#555" }}>
+            {goods.description}
+          </Typography>
+        )}
+
+        {tabValue === "review" && (
+          <Typography variant="body2" sx={{ color: "gray" }}>
+            아직 리뷰가 없습니다.
+          </Typography>
+        )}
       </Box>
     </Box>
   );
