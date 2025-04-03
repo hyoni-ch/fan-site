@@ -25,7 +25,7 @@ jobs:
   
       - name: Prepare deploy artifact
         run: |
-          zip -r joyuri.zip . -x ".next/*" "node_modules/*" ".git/*" "*.DS_Store"
+          zip -r joyuri.zip . -x ".next/*" "node_modules/*" ".github/*" "*.DS_Store" 
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -39,11 +39,11 @@ jobs:
           aws s3 cp joyuri.zip s3://mybucket-ces-joyuri/front/joyuri.zip
           
 
-      # - name: Trigger CodeDeploy deployment
-      #   run: |
-      #     aws deploy create-deployment \
-      #       --application-name nextjs-app \
-      #       --deployment-group-name nextjs-dg \
-      #       --s3-location bucket=mybucket-ces-joyuri,bundleType=zip,key=front/joyuri.zip \
-      #       --deployment-config-name CodeDeployDefault.AllAtOnce \
-      #       --file-exists-behavior OVERWRITE
+      - name: Trigger CodeDeploy deployment
+        run: |
+          aws deploy create-deployment \
+            --application-name next-js-app \
+            --deployment-group-name next-js-dg \
+            --s3-location bucket=mybucket-ces-joyuri,bundleType=zip,key=front/joyuri.zip \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --file-exists-behavior OVERWRITE
