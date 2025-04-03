@@ -1,5 +1,5 @@
 "use client";
-import { AlbumDetailInfo } from "@/types/mockAlbumList";
+import { AlbumDetailInfo } from "@/types/idiscography";
 import { createYouTubeIframe, getYouTubeVideoId } from "@/utils/youtube";
 import { Box, Container, IconButton, Typography } from "@mui/material";
 import YouTubeIcon from "@mui/icons-material/YouTube";

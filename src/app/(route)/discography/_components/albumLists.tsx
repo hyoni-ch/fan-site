@@ -5,7 +5,7 @@
 // 앨범 클릭시 상위 컴포넌트의 albumclick 함수 호출하기
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { AlbumInfo } from "@/types/mockAlbumList";
+import { AlbumInfo } from "@/types/idiscography";
 import { Box, Container, IconButton, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
