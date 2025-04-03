@@ -26,7 +26,7 @@ interface DiaryState {
 
 const useDiaryStore = create<DiaryState>((set) => ({
   diaryList: [],
-  page: 1,
+  page: 0,
   hasMore: true,
   getDiaryList: async (page) => {
     console.log("API 요청 페이지:", page);
@@ -35,7 +35,7 @@ const useDiaryStore = create<DiaryState>((set) => ({
         params: { page },
       });
       const newData = response.data;
-      console.log(newData);
+      console.log("다이어리 정보:", newData);
       set((state) => ({
         diaryList: [...state.diaryList, ...newData],
         page: page + 1,
@@ -45,7 +45,7 @@ const useDiaryStore = create<DiaryState>((set) => ({
       console.error("일기 목록을 불러오는 중 오류가 발생했습니다.", error);
     }
   },
-  resetDiaryList: () => set({ diaryList: [], page: 1, hasMore: true }),
+  resetDiaryList: () => set({ diaryList: [], page: 0, hasMore: true }),
 }));
 
 export default useDiaryStore;
