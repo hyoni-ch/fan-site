@@ -6,7 +6,7 @@ import useAuthStore, { getAccessToken, getUserName } from "@/store/authStore";
 import { API_BASED_URL } from "@/constants/apiUrl";
 
 const api = axios.create({
-  baseURL: `${API_BASED_URL}`, // 서버 기본 URL
+  baseURL: "/api", // 서버 기본 URL
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
