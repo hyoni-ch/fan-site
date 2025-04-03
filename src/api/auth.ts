@@ -1,5 +1,6 @@
 //* 인증 관련 유틸 함수 관리
 import useAuthStore from "@/store/authStore";
+import { User } from "@/types/iadmin";
 import api from "@/utils/api";
 import { AxiosError } from "axios";
 
@@ -63,11 +64,13 @@ export const logout = () => {
 };
 
 // 회원 정보 get 요청!
-export const getUserInfo = () => {
+export const getUserInfo = async (): Promise<User[]> => {
   try {
-    const response = api.get("/home");
-    return response;
+    const response = await api.get("/admin/userlist");
+    console.log("유저 정보", response);
+    return response.data;
   } catch (error) {
-    console.error("회원정보를 가지고 오는데 실패했습니다!", error);
+    console.error(error);
+    throw error;
   }
 };

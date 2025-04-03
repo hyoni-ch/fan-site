@@ -5,11 +5,12 @@ interface AuthState {
   username: string | null;
   accessToken: string | null;
   userNickname: string | null;
-  roles: string[];
+
+  roles: string[] | null;
   setUsername: (username: string | null) => void;
   setAccessToken: (accessToken: string | null) => void;
   setUserNickname: (userNickname: string | null) => void;
-  setRoles: (roles: string[]) => void;
+  setRoles: (roles: string[] | null) => void;
   logout: () => void;
 }
 
@@ -19,16 +20,19 @@ const useAuthStore = create<AuthState>()(
       username: null,
       accessToken: null,
       userNickname: null,
-      roles: [],
+
+      roles: null,
       setUsername: (username) => set({ username }),
       setAccessToken: (accessToken) => set({ accessToken }),
       setUserNickname: (userNickname) => set({ userNickname }),
       setRoles: (roles) => set({ roles }),
+
       logout: () => {
         set({
           username: null,
           accessToken: null,
           userNickname: null,
+        }),
           roles: [],
         });
       },

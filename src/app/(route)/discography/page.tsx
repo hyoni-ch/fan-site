@@ -7,7 +7,7 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AlbumLists from "./_components/albumLists";
-import { AlbumDetailInfo, AlbumInfo } from "@/types/mockAlbumList";
+import { AlbumDetailInfo, AlbumInfo } from "@/types/idiscography";
 import AlbumDetail from "./_components/albumDetail";
 import { getAlbumDetail, getAlbumList } from "@/api/discography";
 

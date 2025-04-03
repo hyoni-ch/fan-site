@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import useScrollAnimation from "@/utils/scrollUtils";
-import { AccountCircle, ShoppingBag } from "@mui/icons-material";
+import {
+  AccountCircle,
+  ShoppingBag,
+  AdminPanelSettings,
+} from "@mui/icons-material";
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import {
   appBarStyle,
@@ -20,7 +24,7 @@ function HeaderNav() {
   const router = useRouter();
   const scrolling = useScrollAnimation();
 
-  const { username, accessToken } = useAuthStore();
+  const { username, accessToken, roles } = useAuthStore();
   const [isHydrated, setIsHydrated] = useState(false);
   const [isMainPage, setIsMainPage] = useState(false);
 
@@ -28,9 +32,9 @@ function HeaderNav() {
     setIsHydrated(true);
     setIsMainPage(window.location.pathname === "/");
     if (isHydrated) {
-      console.log("헤더에서 상태:", { username, accessToken });
+      console.log("헤더에서 상태:", { username, accessToken, roles });
     }
-  }, [isHydrated, username, accessToken]);
+  }, [isHydrated, username, accessToken, roles]);
 
   const handleRoute = (path: string) => {
     router.push(path);
@@ -42,6 +46,11 @@ function HeaderNav() {
     } else {
       router.push("/login");
     }
+  };
+
+  // admin만 이동 가능
+  const handleAdminPageClick = () => {
+    router.push("/admin");
   };
 
   if (!isHydrated) {
@@ -87,6 +96,11 @@ function HeaderNav() {
           </Box>
           {/* 마이페이지 & 장바구니 아이콘 */}
           <Box sx={iconButtonStyle}>
+            {roles && roles.includes("ROLE_ADMIN") && (
+              <IconButton color="inherit" onClick={handleAdminPageClick}>
+                <AdminPanelSettings sx={{ color: "#FCC422" }} />
+              </IconButton>
+            )}
             <IconButton color="inherit" onClick={handleMyPageClick}>
               <AccountCircle sx={{ color: "#FCC422" }} />
             </IconButton>
