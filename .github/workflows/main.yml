@@ -27,7 +27,7 @@ jobs:
       - name: Prepare deploy artifact
         run: |
           mkdir -p codedeploy
-          cp -r .next 
+          cp -r .next codedeploy/
           cd codedeploy
           zip -r ../joruri.zip .
 
