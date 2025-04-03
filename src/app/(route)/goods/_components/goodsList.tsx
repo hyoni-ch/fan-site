@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import api from "@/utils/api";
 import {
   Box,
   Button,
@@ -19,6 +18,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { API_BASED_URL } from "@/constants/apiUrl";
 import Link from "next/link";
 import Image from "next/image";
+import { getGoodsList } from "@/api/goods";
 
 interface GoodsImage {
   id: number;
@@ -38,7 +38,6 @@ function GoodsListPage() {
   const [goodsList, setGoodsList] = useState<GoodsList | null>(null);
   const [sort, setSort] = useState<"last" | "asc" | "desc">("last");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const size = 8;
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const sortData = [
@@ -47,31 +46,29 @@ function GoodsListPage() {
     { label: "높은가격순", value: "desc" },
   ];
 
-  const getGoodsList = () => {
-    api
-      .get(`/goods/list`, {
-        params: {
-          sort,
-          name: searchTerm,
-          page: currentPage,
-          size,
-        },
-      })
-      .then((response) => {
-        setGoodsList(response.data.content);
-        console.log(response);
-        setTotalPages(response.data.totalPages);
+  const fetchGoodsList = async () => {
+    try {
+      const fetchGoods = await getGoodsList({
+        sort,
+        name: searchTerm,
+        page: currentPage,
+        size: 8,
       });
+      setGoodsList(fetchGoods.content);
+      setTotalPages(fetchGoods.totalPages);
+    } catch (error) {
+      console.error("굿즈 리스트를 불러오지 못했습니다.", error);
+    }
   };
 
   useEffect(() => {
-    getGoodsList();
-  }, [currentPage, sort, searchTerm, size]);
+    fetchGoodsList();
+  }, [currentPage, sort, searchTerm]);
 
   const SearchHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCurrentPage(0);
-    getGoodsList();
+    fetchGoodsList();
   };
 
   return (
@@ -176,9 +173,10 @@ function GoodsListPage() {
                     <Image
                       src={API_BASED_URL + goods.goodsImages[0].url}
                       alt={`굿즈 ${goods.id}`}
-                      layout="fill"
-                      objectFit="cover"
+                      fill
                       priority
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      style={{ objectFit: "cover" }}
                     />
                   </Box>
                 </Link>
