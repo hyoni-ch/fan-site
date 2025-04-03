@@ -27,7 +27,7 @@ jobs:
       - name: Prepare deploy artifact
         run: |
           mkdir -p codedeploy
-          cp -r .next public package.json next.config.js appspec.yml scripts codedeploy/
+          cp -r .next 
           cd codedeploy
           zip -r ../joruri.zip .
 
