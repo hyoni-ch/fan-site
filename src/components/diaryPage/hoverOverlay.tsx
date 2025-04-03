@@ -1,5 +1,6 @@
 "use client";
 
+import useDiaryStore from "@/store/diaryStore";
 import { Box, Button, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
@@ -22,9 +23,13 @@ function HoverOverlay({
   onDiaryClick,
 }: HoverOverlayProps) {
   const router = useRouter();
+  const getDiaryList = useDiaryStore((state) => state.getDiaryList);
+  const resetDiaryList = useDiaryStore((state) => state.resetDiaryList);
 
   const handleViewAllClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    resetDiaryList();
+    getDiaryList(0);
     router.push("/diary/everydiary");
   };
 
