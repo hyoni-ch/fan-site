@@ -18,13 +18,13 @@ function EveryDiary() {
   const page = useDiaryStore((state) => state.page);
   const hasMore = useDiaryStore((state) => state.hasMore);
   const getDiaryList = useDiaryStore((state) => state.getDiaryList);
-  const resetDiaryList = useDiaryStore((state) => state.resetDiaryList);
 
   const router = useRouter();
 
   useEffect(() => {
-    getDiaryList(page);
-    return () => resetDiaryList();
+    if (diaryList.length === 0) {
+      getDiaryList(page);
+    }
   }, []);
 
   const handleScroll = () => {
