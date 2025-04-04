@@ -5,7 +5,7 @@ import api from "@/utils/api";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { getUserInfo, logout } from "@/api/auth";
+import { getUser, logout } from "@/api/auth";
 
 interface UserInfo {
   username: string;
@@ -30,7 +30,7 @@ function Mypage() {
 
   // 회원 정보 get
   const fetchUserInfo = async () => {
-    const fetchUser = await getUserInfo();
+    const fetchUser = await getUser();
     try {
       setUserInfo(fetchUser?.data);
       setNickname(fetchUser?.data.nickname);
@@ -45,7 +45,6 @@ function Mypage() {
 
   const handleLogout = () => {
     logout();
-    alert("로그아웃 되었습니다!");
   };
 
   const onNicknameSubmit = (event: React.FormEvent<HTMLFormElement>) => {

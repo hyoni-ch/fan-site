@@ -63,7 +63,7 @@ export const logout = () => {
   alert("로그아웃 완료");
 };
 
-// 회원 정보 get 요청!
+// 회원 정보 all get 요청!
 export const getUserInfo = async (): Promise<User[]> => {
   try {
     const response = await api.get("/admin/userlist");
@@ -72,5 +72,15 @@ export const getUserInfo = async (): Promise<User[]> => {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+};
+
+// 현재 로그인한 회원 정보 get 요청!
+export const getUser = () => {
+  try {
+    const response = api.get("/home");
+    return response;
+  } catch (error) {
+    console.error("회원정보를 가지고 오는데 실패했습니다!", error);
   }
 };
