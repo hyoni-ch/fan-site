@@ -1,5 +1,4 @@
 import { getConcertList } from "@/api/profile";
-import { API_BASED_URL } from "@/constants/apiUrl";
 import { ConcertList } from "@/types/iprofile";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
@@ -31,7 +30,7 @@ function ConcertTab() {
           }}
         >
           <Image
-            src={`${API_BASED_URL}${concert.concertImages[0]?.url}`}
+            src={`/api${concert.concertImages[0]?.url}`}
             alt={concert.title}
             width={200}
             height={282}

@@ -7,7 +7,6 @@ import {
   insertChildComment,
   insertComment,
 } from "@/api/diaryDetail";
-import { API_BASED_URL } from "@/constants/apiUrl";
 import useFetchArticle from "@/hooks/useFetchArticle";
 import useLikeHandler from "@/hooks/useLikeHandler";
 import useAuthStore from "@/store/authStore";
@@ -240,7 +239,7 @@ const DiaryDetail = () => {
         <Image
           src={
             article.images?.[0].url
-              ? `${API_BASED_URL}${article.images[0].url}`
+              ? `/api${article.images[0].url}`
               : "/images/diary1.png"
           }
           alt="Diary Detail Image"

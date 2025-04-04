@@ -13,7 +13,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import CheckIcon from "@mui/icons-material/Check";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { API_BASED_URL } from "@/constants/apiUrl";
 import Link from "next/link";
 import Image from "next/image";
 import { getGoodsList } from "@/api/goods";
@@ -196,7 +195,7 @@ function GoodsListPage() {
                     }}
                   >
                     <Image
-                      src={API_BASED_URL + goods.goodsImages[0].url}
+                      src={`/api${goods.goodsImages[0].url}`}
                       alt={`굿즈 ${goods.id}`}
                       fill
                       priority

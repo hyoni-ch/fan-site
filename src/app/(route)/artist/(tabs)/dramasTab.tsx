@@ -1,5 +1,4 @@
 import { getDramaList } from "@/api/profile";
-import { API_BASED_URL } from "@/constants/apiUrl";
 import { DramaList } from "@/types/iprofile";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
@@ -34,7 +33,7 @@ function DramasTab({ inView }: { inView: boolean }) {
           }}
         >
           <Image
-            src={`${API_BASED_URL}${drama.careerImages[0]?.url}`}
+            src={`/api${drama.careerImages[0]?.url}`}
             alt={drama.careerName}
             width={200}
             height={282}

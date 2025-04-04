@@ -9,7 +9,6 @@ import Image from "next/image";
 // selectedAlbum 상태를 통해 데이터 전달받기.
 
 import React from "react";
-import { API_BASED_URL } from "@/constants/apiUrl";
 
 interface AlbumDetailProps {
   album: AlbumDetailInfo | null;
@@ -35,7 +34,7 @@ function AlbumDetail({ album }: AlbumDetailProps) {
             }}
           >
             <Image
-              src={`${API_BASED_URL}${album.albumImages[0]?.url}`}
+              src={`/api${album.albumImages[0]?.url}`}
               alt={album.title}
               fill
               objectFit="cover"
