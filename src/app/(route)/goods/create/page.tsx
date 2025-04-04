@@ -11,9 +11,9 @@ function Create() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!roles.includes("ROLE_ADMIN")) {
-      console.log("접근할 수 없는 페이지입니다.");
+    if (!roles?.includes("ROLE_ADMIN")) {
       router.push("/");
+      alert("접근할 수 없는 페이지입니다.");
     }
   }, [roles, router]);
 
