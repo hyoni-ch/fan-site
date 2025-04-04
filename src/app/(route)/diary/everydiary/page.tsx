@@ -19,20 +19,23 @@ function EveryDiary() {
   const page = useDiaryStore((state) => state.page);
   const hasMore = useDiaryStore((state) => state.hasMore);
   const getDiaryList = useDiaryStore((state) => state.getDiaryList);
+  const isLoading = useDiaryStore((state) => state.isLoading);
 
   const router = useRouter();
 
   useEffect(() => {
-    if (diaryList.length === 0) {
+    if (diaryList.length === 0 && !isLoading) {
+      // 데이터가 없고 로딩 중이 아닐 때만 요청
       getDiaryList(page);
-    }
-  }, []);
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [diaryList.length, page, isLoading, getDiaryList]);
 
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop ===
         document.documentElement.offsetHeight &&
-      hasMore
+      hasMore &&
+      !isLoading
     ) {
       const currentPage = useDiaryStore.getState().page;
       getDiaryList(currentPage);
@@ -42,7 +45,8 @@ function EveryDiary() {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [hasMore]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMore, isLoading]);
 
   const handleCardClick = (id: number | undefined) => {
     if (id !== undefined) {
