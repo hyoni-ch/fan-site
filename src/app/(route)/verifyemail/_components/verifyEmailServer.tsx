@@ -1,7 +1,6 @@
 "use client";
 
-import { API_BASED_URL } from "@/constants/apiUrl";
-import axios from "axios";
+import { verifyEmail } from "@/api/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -11,26 +10,32 @@ function VerifyEmailServer() {
   const token = searchParams.get("token");
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
+  const [verificationMessage, setVerificationMessage] = useState<string>("");
 
   //! 여기 인증 완료 되면 login페이지로 라우팅 되기 직전 alert창 또는 다른 육감적인 표시 해주기
   useEffect(() => {
+    const handleVerifyEmail = async (verificationToken: string) => {
+      setLoading(true);
+      const result = await verifyEmail(verificationToken);
+      setIsVerified(result.success);
+      setVerificationMessage(result.message);
+
+      if (result.success) {
+        alert(result.message + "\n로그인 페이지로 이동합니다.");
+        router.push("/login");
+      } else {
+        alert(
+          "이메일 인증에 실패했습니다: " +
+            result.message +
+            "에러 페이지로 이동합니다."
+        );
+        router.push("/error");
+      }
+      setLoading(false);
+    };
+
     if (token) {
-      axios
-        .post(`${API_BASED_URL}/member/verify-email?token=` + token)
-        .then((response) => {
-          console.log(response);
-          setIsVerified(true);
-          // setTimeout(() => router.push("/login"), 1000);
-          router.push("/login");
-        })
-        .catch((error) => {
-          console.error("인증 실패:", error);
-          setIsVerified(false);
-          router.push("/error");
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      handleVerifyEmail(token);
     }
   }, [token, router]);
 
@@ -41,9 +46,9 @@ function VerifyEmailServer() {
   return (
     <div>
       {isVerified ? (
-        <p>이메일 인증이 완료되었습니다! 환영합니다.</p>
+        <p>{verificationMessage}</p>
       ) : (
-        <p>인증에 실패했습니다. 다시 시도해주세요.</p>
+        <p>{verificationMessage || "인증을 진행하는 동안 오류가 발생"}</p>
       )}
     </div>
   );
