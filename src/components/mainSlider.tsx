@@ -8,7 +8,6 @@ import Image from "next/image";
 import { getAlbumList } from "@/api/discography";
 import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
-import { API_BASED_URL } from "@/constants/apiUrl";
 
 interface AlbumImage {
   id: number;
@@ -81,7 +80,7 @@ function MainSlider() {
                 <Box key={image.id}>
                   <Box className="slide-image-wrapper">
                     <Image
-                      src={API_BASED_URL + image.url}
+                      src={`/api${image.url}`}
                       alt={`앨범 ${album.id}`}
                       width={300}
                       height={300}

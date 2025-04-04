@@ -1,5 +1,4 @@
 import { getAlbumList } from "@/api/discography";
-import { API_BASED_URL } from "@/constants/apiUrl";
 import { Album } from "@/types/iprofile";
 import { Box, Typography } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
@@ -47,7 +46,7 @@ function AlbumTab() {
                 }}
               >
                 <Image
-                  src={`${API_BASED_URL}${album.albumImages[0]?.url}`}
+                  src={`/api${album.albumImages[0]?.url}`}
                   alt={album.title}
                   width={200}
                   height={200}

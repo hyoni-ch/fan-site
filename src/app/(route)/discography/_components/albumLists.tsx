@@ -9,7 +9,6 @@ import { AlbumInfo } from "@/types/idiscography";
 import { Box, Container, IconButton, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { API_BASED_URL } from "@/constants/apiUrl";
 
 interface AlbumListsProps {
   albums: AlbumInfo[] | null;
@@ -106,7 +105,7 @@ function AlbumLists({ albums, category, onAlbumClick }: AlbumListsProps) {
                 }}
               >
                 <Image
-                  src={`${API_BASED_URL}${album.albumImages[0]?.url}`}
+                  src={`/api${album.albumImages[0]?.url}`}
                   alt={album.title}
                   fill
                   objectFit="cover"

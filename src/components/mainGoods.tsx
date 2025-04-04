@@ -3,7 +3,6 @@
 import { Box, Link } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { API_BASED_URL } from "@/constants/apiUrl";
 import { getGoodsList } from "@/api/goods";
 
 interface GoodsImage {
@@ -67,7 +66,7 @@ function MainGoods() {
             {goods.goodsImages.length > 0 && (
               <Box key={goods.goodsImages[0].id}>
                 <Image
-                  src={API_BASED_URL + goods.goodsImages[0].url}
+                  src={`/api${goods.goodsImages[0].url}`}
                   alt={`굿즈 ${goods.id}`}
                   width={300}
                   height={400}
