@@ -1,6 +1,5 @@
 //* 인증 관련 유틸 함수 관리
 import useAuthStore from "@/store/authStore";
-import { User } from "@/types/iadmin";
 import api from "@/utils/api";
 import { AxiosError, AxiosResponse } from "axios";
 
@@ -61,18 +60,6 @@ export const join = async ({
 export const logout = () => {
   useAuthStore.getState().logout();
   alert("로그아웃 완료");
-};
-
-// 회원 정보 all get 요청!
-export const getUserInfo = async (): Promise<User[]> => {
-  try {
-    const response = await api.get("/admin/userlist");
-    console.log("유저 정보", response);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
 };
 
 // 현재 로그인한 회원 정보 get 요청!
