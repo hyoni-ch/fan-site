@@ -13,6 +13,7 @@ import {
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import EditIcon from "@mui/icons-material/Edit";
+import useAuthStore from "@/store/authStore";
 
 function EveryDiary() {
   const diaryList = useDiaryStore((state) => state.diaryList);
@@ -21,6 +22,7 @@ function EveryDiary() {
   const getDiaryList = useDiaryStore((state) => state.getDiaryList);
   const isLoading = useDiaryStore((state) => state.isLoading);
 
+  const roles = useAuthStore((state) => state.roles);
   const router = useRouter();
 
   useEffect(() => {
@@ -71,32 +73,36 @@ function EveryDiary() {
         }}
       >
         {/* 글쓰기 버튼 */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            marginBottom: 4,
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<EditIcon />}
-            onClick={handleWriteClick}
+        {roles && roles.includes("ROLE_ARTIST") ? (
+          <Box
             sx={{
-              backgroundColor: "#FCC422",
-              color: "white",
-              padding: "8px 16px",
-              borderRadius: "4px",
-              fontSize: "0.875rem",
-              "&:hover": {
-                backgroundColor: "#F2A800",
-              },
+              display: "flex",
+              justifyContent: "flex-start",
+              marginBottom: 4,
             }}
           >
-            글쓰기
-          </Button>
-        </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<EditIcon />}
+              onClick={handleWriteClick}
+              sx={{
+                backgroundColor: "#FCC422",
+                color: "white",
+                padding: "8px 16px",
+                borderRadius: "4px",
+                fontSize: "0.875rem",
+                "&:hover": {
+                  backgroundColor: "#F2A800",
+                },
+              }}
+            >
+              글쓰기
+            </Button>
+          </Box>
+        ) : (
+          <Box></Box>
+        )}
         <Box
           sx={{
             display: "flex",
