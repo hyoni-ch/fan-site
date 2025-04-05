@@ -1,6 +1,6 @@
 // hooks/useFetchArticle.ts
 import { useState, useEffect } from "react";
-import { fetchArticle } from "@/api/diaryDetail";
+import { fetchArticle } from "@/api/diary/diaryDetail";
 
 interface Article {
   id: number;

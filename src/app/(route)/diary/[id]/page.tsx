@@ -6,7 +6,7 @@ import {
   fetchCommentList,
   insertChildComment,
   insertComment,
-} from "@/api/diaryDetail";
+} from "@/api/diary/diaryDetail";
 import useFetchArticle from "@/hooks/useFetchArticle";
 import useLikeHandler from "@/hooks/useLikeHandler";
 import useAuthStore from "@/store/authStore";
