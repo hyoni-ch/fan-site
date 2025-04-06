@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import useAuthStore from "@/store/authStore";
 import useLikeStore from "@/store/diaryLikeStore";
-import { likeArticle } from "@/api/diaryDetail";
+import { likeArticle } from "@/api/diary/diaryDetail";
 
 interface LikeHandlerProps {
   articleId: number;

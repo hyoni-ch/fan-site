@@ -3,7 +3,7 @@
 import { Box } from "@mui/material";
 import DiaryImage from "@/components/diaryPage/diaryImage";
 import { useEffect, useState } from "react";
-import getLatestDiaryEntries, { FourArticle } from "@/api/getLatestDiary";
+import getLatestDiaryEntries, { FourArticle } from "@/api/diary/getLatestDiary";
 
 function Diary() {
   const [diaryImages, setDiaryImages] = useState<FourArticle[]>([]);
