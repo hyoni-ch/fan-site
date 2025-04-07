@@ -26,12 +26,13 @@ export interface DramaImage {
 //콘서트 인터페이스 정의
 export interface ConcertList {
   id: number;
-  title: string;
-  year: number;
-  concertImages: ConcertImage[];
+  concertName: string;
+  concertDate: number;
+  place: string;
+  // concertImages: ConcertImage[];
   // imageUrl: string;
 }
-export interface ConcertImage {
-  id: number;
-  url: string;
-}
+// export interface ConcertImage {
+//   id: number;
+//   url: string;
+// }

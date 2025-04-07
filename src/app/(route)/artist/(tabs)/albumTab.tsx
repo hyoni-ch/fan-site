@@ -51,6 +51,7 @@ function AlbumTab() {
                   width={200}
                   height={200}
                   objectFit="contain"
+                  style={{ borderRadius: "8px" }}
                 />
                 <Typography variant="body2" fontWeight={600} mt={2}>
                   {album.title}
@@ -71,7 +72,6 @@ function AlbumTab() {
           src="https://open.spotify.com/embed/playlist/3f9oODTECIUKiQweioS0mS?utm_source=generator&theme=0"
           width="300"
           height="380"
-          frameBorder="0"
           allowFullScreen
           allow="encrypted-media"
           loading="lazy"
