@@ -50,8 +50,7 @@ function AlbumTab() {
                   alt={album.title}
                   width={200}
                   height={200}
-                  objectFit="contain"
-                  style={{ borderRadius: "8px" }}
+                  style={{ borderRadius: "8px", objectFit: "contain" }}
                 />
                 <Typography variant="body2" fontWeight={600} mt={2}>
                   {album.title}
