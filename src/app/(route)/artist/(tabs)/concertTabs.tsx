@@ -1,7 +1,7 @@
 import { getConcertList } from "@/api/profile";
 import { ConcertList } from "@/types/iprofile";
 import { Box, Typography } from "@mui/material";
-import Image from "next/image";
+// import Image from "next/image";
 import { useEffect, useState } from "react";
 
 function ConcertTab() {
@@ -29,18 +29,21 @@ function ConcertTab() {
             marginTop: 4,
           }}
         >
-          <Image
+          {/* <Image
             src={`/api${concert.concertImages[0]?.url}`}
             alt={concert.title}
             width={200}
             height={282}
             objectFit="contain"
-          />
-          <Typography variant="body2" fontWeight={600} mt={2}>
-            {concert.title}
+          /> */}
+          <Typography style={{ fontSize: "0.7rem", color: "#000000" }}>
+            {concert.concertDate}
+          </Typography>
+          <Typography variant="body2" fontWeight={600} mt={1}>
+            {concert.concertName}
           </Typography>
           <Typography style={{ fontSize: "0.7rem", color: "#9c9c9c" }}>
-            {concert.year}
+            {concert.place}
           </Typography>
         </Box>
       ))}

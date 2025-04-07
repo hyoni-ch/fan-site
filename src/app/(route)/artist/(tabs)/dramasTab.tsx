@@ -36,8 +36,9 @@ function DramasTab({ inView }: { inView: boolean }) {
             src={`/api${drama.careerImages[0]?.url}`}
             alt={drama.careerName}
             width={200}
-            height={282}
+            height={280}
             objectFit="contain"
+            style={{ borderRadius: "8px" }}
           />
           <Typography variant="body2" fontWeight={600} mt={2}>
             {drama.careerName}

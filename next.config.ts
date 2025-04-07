@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: ipAddress,
-        port: "8080",
+        port: "3001",
         pathname: "/images/**",
         search: "",
       },
