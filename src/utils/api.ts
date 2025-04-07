@@ -34,11 +34,12 @@ api.interceptors.response.use(
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true; // 무한 루프 방지
         const username = getUserName();
+        const token = getAccessToken();
 
         try {
           const { data } = await axios.post(
             `${API_BASED_URL}/refresh`,
-            { username },
+            { username, token },
             { withCredentials: true }
           );
 

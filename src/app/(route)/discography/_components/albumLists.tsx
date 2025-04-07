@@ -3,7 +3,7 @@
 // 앨범 썸네일, 제목, 카테고리 정보 표시
 // 페이지 네이션, 카테고리 필터링 예정 (검색은 미예정)
 // 앨범 클릭시 상위 컴포넌트의 albumclick 함수 호출하기
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { AlbumInfo } from "@/types/idiscography";
 import { Box, Container, IconButton, Typography } from "@mui/material";
@@ -41,9 +41,9 @@ function AlbumLists({ albums, category, onAlbumClick }: AlbumListsProps) {
   };
 
   // 태그 변경할때마다 페이지 초기화
-  useEffect(() => {
-    setPage(0);
-  }, [category]);
+  // useEffect(() => {
+  //   setPage(0);
+  // }, [category]);
 
   // 마우스 hover시 효과
   const [hoveredAlbumId, setHoveredAlbumId] = useState<number | null>(null);
@@ -87,7 +87,7 @@ function AlbumLists({ albums, category, onAlbumClick }: AlbumListsProps) {
                 width: "340px",
                 height: "340px",
                 position: "relative",
-                backgroundColor: "#414141",
+                backgroundColor: "#f7ecec",
                 zIndex: 1,
                 borderRadius: "8px",
                 display: "flex",
