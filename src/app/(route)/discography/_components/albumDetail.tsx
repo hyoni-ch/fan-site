@@ -46,19 +46,24 @@ function AlbumDetail({ album }: AlbumDetailProps) {
         <Box sx={{ ml: 10 }}>
           <Typography variant="h6">TITLE</Typography>
           <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
-            <Typography variant="subtitle1">{album.title}, </Typography>
-            <Typography variant="subtitle2">{album.description}</Typography>
+            <Typography variant="subtitle1" color="#797979">
+              {album.title}
+            </Typography>
           </Box>
 
           <Typography variant="h6" sx={{ mt: 3 }}>
             INTRO
           </Typography>
-          <Typography variant="subtitle2">{album.description}</Typography>
+          <Typography variant="subtitle2" color="#797979">
+            {album.description}
+          </Typography>
 
           <Typography variant="h6" sx={{ mt: 3 }}>
             DATE
           </Typography>
-          <Typography variant="subtitle2">{album.releaseDate}</Typography>
+          <Typography variant="subtitle2" color="#797979">
+            {album.releaseDate}
+          </Typography>
 
           <Typography variant="h6" sx={{ mt: 3 }}>
             트랙 목록
