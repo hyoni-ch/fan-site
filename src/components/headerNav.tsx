@@ -9,6 +9,8 @@ import {
   AccountCircle,
   ShoppingBag,
   AdminPanelSettings,
+  Menu as MenuIcon,
+  Close as CloseIcon,
 } from "@mui/icons-material";
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import {
@@ -19,22 +21,19 @@ import {
   iconButtonStyle,
 } from "@/styles/headerStyles";
 import useAuthStore from "@/store/authStore";
+import { motion, AnimatePresence } from "framer-motion";
 
 function HeaderNav() {
   const router = useRouter();
   const scrolling = useScrollAnimation();
 
-  const { username, accessToken, roles } = useAuthStore();
-  const [isHydrated, setIsHydrated] = useState(false);
+  const { accessToken, roles } = useAuthStore();
   const [isMainPage, setIsMainPage] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
-    setIsHydrated(true);
     setIsMainPage(window.location.pathname === "/");
-    if (isHydrated) {
-      console.log("헤더에서 상태:", { username, accessToken, roles });
-    }
-  }, [isHydrated, username, accessToken, roles]);
+  }, []);
 
   const handleRoute = (path: string) => {
     router.push(path);
@@ -48,68 +47,187 @@ function HeaderNav() {
     }
   };
 
-  // admin만 이동 가능
   const handleAdminPageClick = () => {
     router.push("/admin");
   };
 
-  if (!isHydrated) {
-    return <div>Loading...</div>;
-  }
+  const menuItems = [
+    { text: "ARTIST", href: "/artist" },
+    { text: "DISCOGRAPHY", href: "/discography" },
+    { text: "GOODS", href: "/goods" },
+    { text: "DIARY", href: "/diary" },
+  ];
 
   return (
     <>
-      {/* 네비게이션 메뉴 */}
       <AppBar sx={appBarStyle(scrolling, isMainPage)}>
-        <Toolbar sx={toolbarStyle}>
-          {/* 로고 */}
-          <Box sx={logoBoxStyle}>
-            <Link href="/">
-              <Image
-                src="/images/jjoul.png"
-                alt="Logo"
-                width={140}
-                height={140}
-                style={{ objectFit: "cover", cursor: "pointer" }}
-              />
-            </Link>
-          </Box>
-
-          {/* 메뉴바 */}
-          <Box sx={menuBoxStyle}>
-            {["diary", "goods", "discography", "artist"].map((tab) => (
-              <Typography
-                key={tab}
-                variant="h6"
-                component={Link}
-                href={`/${tab}`}
-                sx={{
-                  textDecoration: "none",
-                  color: "#FCC422",
-                  fontWeight: "bold",
-                  "&:hover": { opacity: 0.5 },
-                }}
+        {/* <Toolbar> */}
+        <Toolbar sx={{ ...toolbarStyle, justifyContent: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              maxWidth: "1200px",
+              alignItems: "center",
+            }}
+          >
+            {/* Hamburger Menu for smaller screens */}
+            <Box sx={{ display: { xs: "block", md: "none" }, mr: 2 }}>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => setIsDrawerOpen(true)}
               >
-                {tab.toUpperCase()}
-              </Typography>
-            ))}
-          </Box>
-          {/* 마이페이지 & 장바구니 아이콘 */}
-          <Box sx={iconButtonStyle}>
-            {roles && roles.includes("ROLE_ADMIN") && (
-              <IconButton color="inherit" onClick={handleAdminPageClick}>
-                <AdminPanelSettings sx={{ color: "#FCC422" }} />
+                <MenuIcon sx={{ color: "#FCC422", fontSize: 36 }} />
               </IconButton>
-            )}
-            <IconButton color="inherit" onClick={handleMyPageClick}>
-              <AccountCircle sx={{ color: "#FCC422" }} />
-            </IconButton>
-            <IconButton color="inherit" onClick={() => handleRoute("/cart")}>
-              <ShoppingBag sx={{ color: "#FCC422" }} />
-            </IconButton>
+            </Box>
+
+            {/* Logo */}
+            <Box sx={logoBoxStyle}>
+              <Link href="/">
+                <Image
+                  src="/images/jjoul.png"
+                  alt="Logo"
+                  width={170}
+                  height={100}
+                  style={{ objectFit: "cover", cursor: "pointer" }}
+                />
+              </Link>
+            </Box>
+
+            {/* Menu Bar for larger screens */}
+            <Box
+              sx={{
+                ...menuBoxStyle,
+                display: { xs: "none", md: "flex" },
+                flexGrow: 1,
+                justifyContent: "center",
+                ml: 40,
+              }}
+            >
+              {menuItems.map((item) => (
+                <Typography
+                  key={item.text}
+                  variant="h5"
+                  component={Link}
+                  href={item.href}
+                  sx={{
+                    textDecoration: "none",
+                    color: "#FCC422",
+                    fontWeight: 600,
+                    fontSize: "1rem",
+                    transition: "opacity 0.2s",
+                    "&:hover": { opacity: 0.6 },
+                    ml: 3,
+                  }}
+                >
+                  {item.text}
+                </Typography>
+              ))}
+            </Box>
+
+            {/* My Page & Cart Icons */}
+            <Box sx={{ ...iconButtonStyle, ml: "auto" }}>
+              {roles && roles.includes("ROLE_ADMIN") && (
+                <IconButton
+                  color="inherit"
+                  onClick={handleAdminPageClick}
+                  sx={{ ml: 1 }}
+                >
+                  <AdminPanelSettings sx={{ color: "#FCC422", fontSize: 30 }} />
+                </IconButton>
+              )}
+              <IconButton
+                color="inherit"
+                onClick={handleMyPageClick}
+                sx={{ ml: 1 }}
+              >
+                <AccountCircle sx={{ color: "#FCC422", fontSize: 30 }} />
+              </IconButton>
+              <IconButton
+                color="inherit"
+                onClick={() => handleRoute("/cart")}
+                sx={{ ml: 1 }}
+              >
+                <ShoppingBag sx={{ color: "#FCC422", fontSize: 30 }} />
+              </IconButton>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
+
+      {/* Full Screen Mobile Menu */}
+      <AnimatePresence>
+        {isDrawerOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.4 }}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              zIndex: 1300,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgba(10, 10, 10, 0.95)",
+              backdropFilter: "blur(5px)",
+            }}
+          >
+            <IconButton
+              onClick={() => setIsDrawerOpen(false)}
+              sx={{
+                position: "absolute",
+                top: 20,
+                right: 20,
+                color: "#fff",
+              }}
+            >
+              <CloseIcon sx={{ fontSize: 36 }} />
+            </IconButton>
+
+            {menuItems.map((item) => (
+              <Typography
+                key={item.text}
+                component={Link}
+                href={item.href}
+                onClick={() => setIsDrawerOpen(false)}
+                sx={{
+                  fontSize: "2rem",
+                  color: "#FCC422",
+                  fontWeight: "bold",
+                  mb: 3,
+                  textDecoration: "none",
+                  "&:hover": { opacity: 0.6 },
+                }}
+              >
+                {item.text}
+              </Typography>
+            ))}
+
+            <Box sx={{ mt: 5 }}>
+              <IconButton onClick={handleMyPageClick} sx={{ mx: 2 }}>
+                <AccountCircle sx={{ color: "#FCC422", fontSize: 36 }} />
+              </IconButton>
+              <IconButton onClick={() => handleRoute("/cart")} sx={{ mx: 2 }}>
+                <ShoppingBag sx={{ color: "#FCC422", fontSize: 36 }} />
+              </IconButton>
+              {roles && roles.includes("ROLE_ADMIN") && (
+                <IconButton onClick={handleAdminPageClick} sx={{ mx: 2 }}>
+                  <AdminPanelSettings sx={{ color: "#FCC422", fontSize: 36 }} />
+                </IconButton>
+              )}
+            </Box>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

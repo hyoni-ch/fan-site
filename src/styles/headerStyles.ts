@@ -6,7 +6,7 @@ export const appBarStyle = (scrolling: boolean, isMainPage: boolean) => ({
   right: 0,
   backgroundColor: "rgba(0, 0, 0, 0)",
   height: "100px",
-  zIndex: 1000,
+  zIndex: 1100,
   boxShadow: "none",
   transform: scrolling ? "translateY(-10px)" : "translateY(10px)",
   transition: "transform 0.3s ease-in-out",
@@ -15,30 +15,25 @@ export const appBarStyle = (scrolling: boolean, isMainPage: boolean) => ({
 export const toolbarStyle = {
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
   height: "100%",
-  px: 3,
+  px: { xs: 2, md: 4 },
 };
 
 export const logoBoxStyle = {
   display: "flex",
-  flex: "20%",
-  width: "140px",
-  height: "140px",
-  overflow: "hidden",
   alignItems: "center",
-  justifyContent: "center",
+  cursor: "pointer",
 };
 
 export const menuBoxStyle = {
   display: "flex",
-  flex: "70%",
-  gap: 5,
-  flexDirection: "row-reverse",
+  alignItems: "center",
+  gap: 4,
 };
 
 export const iconButtonStyle = {
   display: "flex",
-  flex: "10%",
-  gap: 2,
-  flexDirection: "row-reverse",
+  alignItems: "center",
+  gap: 1.5,
 };

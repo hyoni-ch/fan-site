@@ -1,37 +1,71 @@
 "use client";
 
 import { verifyEmail } from "@/api/auth";
+import {
+  Alert,
+  Container,
+  Snackbar,
+  CircularProgress,
+  styled,
+} from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
+interface StyledSnackbarProps {
+  severity: "success" | "error";
+}
+
+const StyledSnackbar = styled(Snackbar)<StyledSnackbarProps>(
+  ({ theme, severity }) => ({
+    "& .MuiAlert-root": {
+      fontWeight: "500",
+      fontSize: "1rem",
+      backgroundColor:
+        severity === "success"
+          ? theme.palette.success.dark
+          : theme.palette.error.dark,
+      color: theme.palette.common.white,
+      opacity: 0.9,
+      boxShadow: theme.shadows[5],
+    },
+  })
+);
 
 function VerifyEmailServer() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  const [isVerified, setIsVerified] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
-  const [verificationMessage, setVerificationMessage] = useState<string>("");
 
-  //! 여기 인증 완료 되면 login페이지로 라우팅 되기 직전 alert창 또는 다른 육감적인 표시 해주기
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackBarMessage] = useState<string | null>(null);
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+    router.push(snackbarSeverity === "success" ? "/login" : "/error");
+  };
+
   useEffect(() => {
     const handleVerifyEmail = async (verificationToken: string) => {
       setLoading(true);
       const result = await verifyEmail(verificationToken);
-      setIsVerified(result.success);
-      setVerificationMessage(result.message);
-
-      if (result.success) {
-        alert(result.message + "\n로그인 페이지로 이동합니다.");
-        router.push("/login");
-      } else {
-        alert(
-          "이메일 인증에 실패했습니다: " +
-            result.message +
-            "에러 페이지로 이동합니다."
-        );
-        router.push("/error");
-      }
       setLoading(false);
+
+      setSnackBarMessage(result.message);
+      setSnackbarSeverity(result.success ? "success" : "error");
+      setSnackbarOpen(true);
+
+      setTimeout(() => {
+        setLoading(false);
+        if (result.success) {
+          router.push("/login");
+        } else {
+          router.push("/error");
+        }
+      }, 3000);
     };
 
     if (token) {
@@ -39,18 +73,36 @@ function VerifyEmailServer() {
     }
   }, [token, router]);
 
-  if (loading) {
-    return <p>인증 중...</p>;
-  }
-
   return (
-    <div>
-      {isVerified ? (
-        <p>{verificationMessage}</p>
+    <Container
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "relative",
+      }}
+    >
+      {loading ? (
+        <CircularProgress size={60} />
       ) : (
-        <p>{verificationMessage || "인증을 진행하는 동안 오류가 발생"}</p>
+        <StyledSnackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          severity={snackbarSeverity}
+        >
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={snackbarSeverity}
+            sx={{ width: "100%" }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </StyledSnackbar>
       )}
-    </div>
+    </Container>
   );
 }
 

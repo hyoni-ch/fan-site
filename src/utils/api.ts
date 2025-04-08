@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import useAuthStore, { getAccessToken, getUserName } from "@/store/authStore";
-import { API_BASED_URL } from "@/constants/apiUrl";
 
 const api = axios.create({
   baseURL: "/api", // 서버 기본 URL
@@ -37,11 +36,10 @@ api.interceptors.response.use(
         const token = getAccessToken();
 
         try {
-          const { data } = await axios.post(
-            `${API_BASED_URL}/refresh`,
-            { username, token },
-            { withCredentials: true }
-          );
+          const { data } = await api.post(`/refresh`, {
+            username,
+            token,
+          });
 
           if (data.accessToken) {
             useAuthStore.getState().setAccessToken(data.accessToken);
@@ -62,8 +60,6 @@ api.interceptors.response.use(
 
       if (error.response.status === 400) {
         useAuthStore.getState().logout();
-        const router = useRouter();
-        router.push("/login");
       }
     }
 

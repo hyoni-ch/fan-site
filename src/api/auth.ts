@@ -1,10 +1,14 @@
 //* 인증 관련 유틸 함수 관리
 import useAuthStore from "@/store/authStore";
+import { ErrorAlertProps } from "@/types/ialertProp";
 import api from "@/utils/api";
 import { AxiosError, AxiosResponse } from "axios";
 
 // 로그인 처리 함수 //!에러 처리 필요
-export const login = async (username: string, password: string) => {
+export const login = async (
+  username: string,
+  password: string
+): Promise<ErrorAlertProps> => {
   try {
     const response = await api.post("/login", { username, password });
 
@@ -22,16 +26,22 @@ export const login = async (username: string, password: string) => {
       return { success: false, message: "로그인 실패" };
     }
   } catch (error) {
-    const axiosError = error as AxiosError;
+    console.log(error);
+    const axiosError = error as AxiosError<ErrorAlertProps>;
 
     if (axiosError.response?.status === 488) {
       return { success: false, message: "이메일 인증이 완료되지 않았습니다." };
+    } else if (axiosError.response?.status === 400) {
+      return {
+        success: false,
+        message: "잘못된 유저 정보입니다. 다시 입력해주세요.",
+      };
     }
     return { success: false, message: "로그인 요청 실패" };
   }
 };
 
-// 회원가입 처리 함수 //!에러 처리 필요
+// 회원가입 처리 함수
 export const join = async ({
   username,
   password,
@@ -40,20 +50,34 @@ export const join = async ({
   username: string;
   password: string;
   nickname: string;
-}) => {
+}): Promise<ErrorAlertProps> => {
   try {
-    const response = await api.post("/member/join", {
+    const response = await api.post<ErrorAlertProps>("/member/join", {
       username,
       password,
       nickname,
     });
-    if (response.data) {
-      return { success: true, message: "회원가입 성공" };
-    } else {
-      return { success: false, message: "회원가입 실패" };
-    }
+    return { success: true, message: response.data.message || "회원가입 성공" };
   } catch (error) {
-    console.error("회원가입 에러: ", error);
+    console.log(error);
+    const axiosError = error as AxiosError<ErrorAlertProps>;
+
+    if (axiosError.response?.status === 409) {
+      return {
+        success: false,
+        message:
+          axiosError.response.data?.message ||
+          "중복된 이메일 혹은 닉네임 입니다.",
+      };
+    } else if (axiosError.response?.status === 400) {
+      return {
+        success: false,
+        message:
+          axiosError.response.data?.message ||
+          "비밀번호는 7자 이상으로 설정해주세요.",
+      };
+    }
+    return { success: false, message: "회원가입 요청 실패" };
   }
 };
 
@@ -73,14 +97,8 @@ export const getUser = () => {
 };
 
 // 회원가입 메일 인증 요청
-interface ErrorResponse {
-  message?: string;
-  code?: string | number;
-}
 
-export const verifyEmail = async (
-  token: string
-): Promise<{ success: boolean; message: string }> => {
+export const verifyEmail = async (token: string): Promise<ErrorAlertProps> => {
   try {
     const response: AxiosResponse<void> = await api.post(
       `/member/verify-email?token=${token}`
@@ -88,23 +106,26 @@ export const verifyEmail = async (
     console.log("이메일 인증 성공:", response.status);
     return { success: true, message: "이메일 인증이 완료되었습니다." };
   } catch (error) {
-    const axiosError = error as AxiosError<ErrorResponse>;
-    console.error("이메일 인증 실패:", axiosError.response?.status, axiosError);
-
-    let errorMessage = "이메일 인증에 실패했습니다.";
+    console.log(error);
+    const axiosError = error as AxiosError<ErrorAlertProps>;
 
     if (axiosError.response?.status === 404) {
-      errorMessage = "유효하지 않은 인증 링크입니다.";
+      return {
+        success: false,
+        message:
+          axiosError.response.data?.message || "유효하지 않은 인증 링크입니다.",
+      };
     } else if (axiosError.response?.status === 400) {
-      errorMessage = "잘못된 요청입니다. 다시 시도해주세요.";
-    } else if (axiosError.message === "Network Error") {
-      errorMessage = "네트워크 연결에 실패했습니다. 잠시 후 다시 시도해주세요.";
-    } else if (axiosError.response?.data?.message) {
-      errorMessage = axiosError.response.data.message;
-    } else if (axiosError.response?.data?.code) {
-      errorMessage = `오류 코드: ${axiosError.response.data.code}. 관리자에게 문의해주세요.`;
+      return {
+        success: false,
+        message:
+          axiosError.response.data?.message ||
+          "요청 시간이 만료되었습니다. 다시 시도해주세요.",
+      };
     }
-
-    return { success: false, message: errorMessage };
+    return {
+      success: false,
+      message: "예기치 못한 오류가 발생하였습니다. 관리자에게 문의해주세요.",
+    };
   }
 };
