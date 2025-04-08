@@ -12,7 +12,7 @@ export const writeDiary = async (
     if (image) {
       formData.append("image", image);
     }
-    const response = await api.post("/write", formData, {
+    const response = await api.post("/article/write", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
