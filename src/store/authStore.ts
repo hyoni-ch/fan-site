@@ -9,6 +9,8 @@ interface AuthState {
   setUsername: (username: string | null) => void;
   setAccessToken: (accessToken: string | null) => void;
   setUserNickname: (userNickname: string | null) => void;
+  setAuth: (token: string, userName: string) => void;
+  clearAuth: () => void;
   setRoles: (roles: string[] | null) => void;
   logout: () => void;
 }
@@ -29,9 +31,12 @@ const useAuthStore = create<AuthState>()(
           username: null,
           accessToken: null,
           userNickname: null,
-          roles: null, // roles도 set 함수 내부에서 설정
+          roles: null,
         });
       },
+      setAuth: (token, userName) =>
+        set({ accessToken: token, username: userName }),
+      clearAuth: () => set({ accessToken: null, username: null }),
     }),
     {
       name: "auth-storage",
