@@ -61,42 +61,24 @@ function HeaderNav() {
   return (
     <>
       <AppBar sx={appBarStyle(scrolling, isMainPage)}>
-        {/* <Toolbar> */}
-        <Toolbar sx={{ ...toolbarStyle, justifyContent: "center" }}>
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              maxWidth: "1200px",
-              alignItems: "center",
-            }}
-          >
-            {/* Hamburger Menu for smaller screens */}
-            <Box sx={{ display: { xs: "block", md: "none" }, mr: 2 }}>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                onClick={() => setIsDrawerOpen(true)}
-              >
-                <MenuIcon sx={{ color: "#FCC422", fontSize: 36 }} />
-              </IconButton>
-            </Box>
-
-            {/* Logo */}
-            <Box sx={logoBoxStyle}>
-              <Link href="/">
-                <Image
-                  src="/images/jjoul.png"
-                  alt="Logo"
-                  width={170}
-                  height={100}
-                  style={{ objectFit: "cover", cursor: "pointer" }}
-                />
-              </Link>
-            </Box>
-
+        <Toolbar sx={{ ...toolbarStyle, justifyContent: "space-between" }}>
+          {" "}
+          {/* justifyContent 변경 */}
+          {/* Logo */}
+          <Box sx={logoBoxStyle}>
+            <Link href="/">
+              <Image
+                src="/images/jjoul.png"
+                alt="Logo"
+                width={170}
+                height={100}
+                style={{ objectFit: "cover", cursor: "pointer" }}
+              />
+            </Link>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {" "}
+            {/* 아이콘들을 묶는 Box */}
             {/* Menu Bar for larger screens */}
             <Box
               sx={{
@@ -127,7 +109,6 @@ function HeaderNav() {
                 </Typography>
               ))}
             </Box>
-
             {/* My Page & Cart Icons */}
             <Box sx={{ ...iconButtonStyle, ml: "auto" }}>
               {roles && roles.includes("ROLE_ADMIN") && (
@@ -154,11 +135,25 @@ function HeaderNav() {
                 <ShoppingBag sx={{ color: "#FCC422", fontSize: 30 }} />
               </IconButton>
             </Box>
+            {/* Hamburger Menu for smaller screens (moved to the right) */}
+            <Box sx={{ display: { xs: "block", md: "none" }, ml: 2 }}>
+              {" "}
+              {/* ml 추가 */}
+              <IconButton
+                size="large"
+                edge="end"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => setIsDrawerOpen(true)}
+              >
+                <MenuIcon sx={{ color: "#FCC422", fontSize: 36 }} />
+              </IconButton>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
 
-      {/* Full Screen Mobile Menu */}
+      {/* Full Screen Mobile Menu (slide from right) */}
       <AnimatePresence>
         {isDrawerOpen && (
           <motion.div
@@ -169,7 +164,7 @@ function HeaderNav() {
             style={{
               position: "fixed",
               top: 0,
-              left: 0,
+              right: 0,
               width: "100vw",
               height: "100vh",
               zIndex: 1300,
@@ -186,7 +181,7 @@ function HeaderNav() {
               sx={{
                 position: "absolute",
                 top: 20,
-                right: 20,
+                left: 20,
                 color: "#fff",
               }}
             >
