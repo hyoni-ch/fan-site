@@ -6,8 +6,12 @@ import { User } from "@/types/iadmin";
 import { getUserInfo, postAddRole } from "@/api/admin";
 import useAuthStore, { getUserRoles } from "@/store/authStore";
 import UserListTable from "./_component/userListTable";
+import GoodsManager from "./_component/goodsManager";
+import { Box, Button } from "@mui/material";
+import PeopleIcon from "@mui/icons-material/People";
 
 const AdminUserListPage: React.FC = () => {
+  const [activeMenu, setActiveMenu] = useState("userMenu");
   const [userList, setUserList] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -21,6 +25,13 @@ const AdminUserListPage: React.FC = () => {
   const getRoleLabel = useCallback((role: string) => {
     return role.replace(/^ROLE_/, "");
   }, []);
+
+  const menuItems = [
+    { label: "대시보드", value: "dashboard", icon: <PeopleIcon /> },
+    { label: "전체 사용자 목록", value: "userMenu", icon: <PeopleIcon /> },
+    { label: "굿즈 관리", value: "goodsMenu", icon: <PeopleIcon /> },
+    // 필요 시 더 추가 가능
+  ];
 
   useEffect(() => {
     const checkAdminRole = () => {
@@ -79,17 +90,83 @@ const AdminUserListPage: React.FC = () => {
   }
 
   return (
-    <div style={{ height: "100vh", padding: 16 }}>
-      <h1>전체 사용자 목록</h1>
-      <UserListTable
-        users={userList} // 사용자 목록
-        allRoles={allRoles} // 모든 역할 목록
-        onSaveRoles={handleSaveRoles} // 역할 저장 함수
-        loading={loading}
-        error={error}
-        getRoleLabel={getRoleLabel} // 역할 레이블 변환
-      />
-    </div>
+    <Box
+      sx={{
+        minHeight: 800,
+        maxWidth: 1200,
+        display: "flex",
+        margin: "30px auto",
+        borderRadius: "25px",
+        boxShadow: 1,
+        boxSizing: "border-box",
+        overflow: "hidden",
+      }}
+    >
+      <Box
+        sx={{
+          width: 280,
+          p: 3,
+          display: "flex",
+          flexDirection: "column",
+          borderRight: "1px solid #e0e0e0",
+          boxShadow: 1,
+          gap: 2,
+        }}
+      >
+        {menuItems.map((item, idx) => (
+          <Button
+            key={idx}
+            variant="text"
+            onClick={() => setActiveMenu(item.value)}
+            startIcon={item.icon}
+            sx={{
+              p: 2,
+              textAlign: "left",
+              fontWeight: "bold",
+              justifyContent: "flex-start",
+              backgroundColor:
+                activeMenu === item.value ? "#FCC422" : "transparent",
+              color: activeMenu === item.value ? "#000" : "inherit",
+              "&:hover": {
+                backgroundColor:
+                  activeMenu === item.value ? "#FCC422" : "#f5f5f5",
+              },
+            }}
+          >
+            {item.label}
+          </Button>
+        ))}
+      </Box>
+
+      <Box sx={{ flex: 1 }}>
+        {activeMenu === "userMenu" ? (
+          <Box
+            sx={{
+              padding: 3,
+            }}
+          >
+            <UserListTable
+              users={userList} // 사용자 목록
+              allRoles={allRoles} // 모든 역할 목록
+              onSaveRoles={handleSaveRoles} // 역할 저장 함수
+              loading={loading}
+              error={error}
+              getRoleLabel={getRoleLabel} // 역할 레이블 변환
+            />
+          </Box>
+        ) : activeMenu === "goodsMenu" ? (
+          <Box
+            sx={{
+              padding: 3,
+            }}
+          >
+            <GoodsManager />
+          </Box>
+        ) : (
+          <Box></Box>
+        )}
+      </Box>
+    </Box>
   );
 };
 
