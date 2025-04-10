@@ -152,13 +152,20 @@ const GoodsManager = () => {
       return;
     }
 
+    const priceAsNumber = parseInt(newGoods.price, 10);
+
+    if (isNaN(priceAsNumber)) {
+      alert("가격은 숫자로 입력해야 합니다.");
+      return;
+    }
+
     try {
       if (isEditMode && editingGoods) {
         // 수정 API 호출
         await updateGoods(
           editingGoods.id,
           newGoods.name,
-          newGoods.price,
+          priceAsNumber,
           newGoods.description,
           image || null
         );
@@ -167,7 +174,7 @@ const GoodsManager = () => {
         // 추가 API 호출
         await createGoods(
           newGoods.name,
-          newGoods.price,
+          priceAsNumber,
           newGoods.description,
           image!
         );
