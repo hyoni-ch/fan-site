@@ -6,6 +6,7 @@ import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { getUser, logout } from "@/api/auth";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
 interface UserInfo {
   username: string;
@@ -14,69 +15,82 @@ interface UserInfo {
 
 function Mypage() {
   const [activeMenu, setActiveMenu] = useState("profile");
-  const [oldPassword, setOldPassword] = useState<string>("");
-  const [newPassword, setNewPassword] = useState<string>("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [nickname, setNickname] = useState<string>("");
+  const [nickname, setNickname] = useState("");
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const router = useRouter();
-  const { accessToken } = useAuthStore();
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const setAuth = useAuthStore((state) => state.setAuth);
 
   useEffect(() => {
-    if (!accessToken) {
+    // localStorage에서 zustand로 auth 정보 설정
+    const token = localStorage.getItem("accessToken");
+    const userName = localStorage.getItem("userName");
+
+    if (token && userName) {
+      setAuth(token, userName);
+    }
+    setLoading(false);
+  }, [setAuth]);
+
+  useEffect(() => {
+    if (!loading && !accessToken) {
       router.push("/login");
     }
-  }, [accessToken, router]);
+  }, [loading, accessToken, router]);
 
-  // 회원 정보 get
+  // 사용자 정보 가져오기
   const fetchUserInfo = async () => {
-    const fetchUser = await getUser();
     try {
-      setUserInfo(fetchUser?.data);
-      setNickname(fetchUser?.data.nickname);
+      const response = await getUser();
+      if (response?.data) {
+        setUserInfo(response.data);
+        setNickname(response.data.nickname);
+      }
     } catch (error) {
       console.error("유저 정보를 불러오지 못했습니다.", error);
     }
   };
 
   useEffect(() => {
-    fetchUserInfo();
-  }, []);
+    if (accessToken) fetchUserInfo();
+  }, [accessToken]);
 
+  // 로그아웃
   const handleLogout = () => {
     logout();
   };
 
-  const onNicknameSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // 닉네임 수정
+  const onNicknameSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    if (!nickname) {
+    if (!nickname.trim()) {
       alert("닉네임 칸이 비어 있습니다.");
-      console.error("닉네임이 비어 있습니다.");
       return;
     }
 
-    const body = { nickname };
-
-    api
-      .post("/member/updateNickname", body)
-      .then((response) => {
-        console.log("📌 서버 응답 데이터:", response.data);
-        if (response.data) {
-          alert("닉네임 수정 완료");
-        }
-      })
-      .catch((err) => {
-        console.log("❌ 오류 발생:", err);
-      });
+    try {
+      const response = await api.post("/member/updateNickname", { nickname });
+      if (response.data) {
+        alert("닉네임 수정 완료");
+        fetchUserInfo(); // 갱신
+      }
+    } catch (err) {
+      console.error("❌ 닉네임 수정 오류:", err);
+    }
   };
 
-  const onPasswordSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // 비밀번호 변경
+  const onPasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     if (!oldPassword || !newPassword) {
       alert("모든 칸을 채워주세요!");
-      console.error("현재 비밀번호 또는 새 비밀번호가 비어 있습니다.");
       return;
     }
 
@@ -85,20 +99,23 @@ function Mypage() {
       return;
     }
 
-    const body = { oldPassword, newPassword };
-
-    api
-      .post("/member/updatePassword", body)
-      .then((response) => {
-        console.log("📌 서버 응답 데이터:", response.data);
-        if (response.data) {
-          alert("비밀번호 수정 완료되었습니다!");
-        }
-      })
-      .catch((err) => {
-        console.log("❌ 오류 발생:", err);
-      });
+    try {
+      const body = { oldPassword, newPassword };
+      const response = await api.post("/member/updatePassword", body);
+      if (response.data) {
+        alert("비밀번호가 변경되었습니다!");
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      }
+    } catch (err) {
+      console.error("❌ 비밀번호 수정 오류:", err);
+    }
   };
+
+  if (loading || !accessToken) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <Box sx={{ display: "flex", padding: 3, maxWidth: 1200, margin: "0 auto" }}>
@@ -141,13 +158,7 @@ function Mypage() {
       {/* 오른쪽 내용 */}
       <Box sx={{ flex: 1, paddingLeft: 3 }}>
         {activeMenu === "profile" && userInfo ? (
-          <Box
-            sx={{
-              padding: 3,
-              borderRadius: 2,
-              boxShadow: 1,
-            }}
-          >
+          <Box sx={{ padding: 3, borderRadius: 2, boxShadow: 1 }}>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
               기본 정보
             </Typography>
@@ -161,34 +172,16 @@ function Mypage() {
                 variant="outlined"
                 fullWidth
                 value={nickname}
-                onChange={(e) => setNickname(e.currentTarget.value)}
-                sx={{
-                  marginBottom: 2,
-                }}
+                onChange={(e) => setNickname(e.target.value)}
+                sx={{ marginBottom: 2 }}
               />
-
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                sx={{
-                  padding: 1.5,
-                  textTransform: "none",
-                }}
-              >
+              <Button type="submit" variant="contained" fullWidth>
                 닉네임 수정
               </Button>
             </form>
           </Box>
         ) : activeMenu === "security" ? (
-          <Box
-            sx={{
-              padding: 3,
-              borderRadius: 2,
-              boxShadow: 1,
-            }}
-          >
+          <Box sx={{ padding: 3, borderRadius: 2, boxShadow: 1 }}>
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
               비밀번호 변경
             </Typography>
@@ -200,46 +193,28 @@ function Mypage() {
               <TextField
                 label="현재 비밀번호"
                 type="password"
-                variant="outlined"
                 fullWidth
                 value={oldPassword}
-                onChange={(e) => setOldPassword(e.currentTarget.value)}
-                sx={{
-                  marginBottom: 2,
-                }}
+                onChange={(e) => setOldPassword(e.target.value)}
+                sx={{ marginBottom: 2 }}
               />
               <TextField
                 label="새 비밀번호"
                 type="password"
-                variant="outlined"
                 fullWidth
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.currentTarget.value)}
-                sx={{
-                  marginBottom: 2,
-                }}
+                onChange={(e) => setNewPassword(e.target.value)}
+                sx={{ marginBottom: 2 }}
               />
               <TextField
                 label="비밀번호 확인"
                 type="password"
-                variant="outlined"
                 fullWidth
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.currentTarget.value)}
-                sx={{
-                  marginBottom: 2,
-                }}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                sx={{ marginBottom: 2 }}
               />
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                sx={{
-                  padding: 1.5,
-                  textTransform: "none",
-                }}
-              >
+              <Button type="submit" variant="contained" fullWidth>
                 비밀번호 변경
               </Button>
             </form>
