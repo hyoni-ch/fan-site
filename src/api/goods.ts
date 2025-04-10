@@ -3,8 +3,8 @@ import api from "@/utils/api";
 // 굿즈 CREATE
 export const createGoods = async (
   name: string,
+  price: number,
   description: string,
-  price: string,
   image: File
 ) => {
   if (!name || !description || !price || !image) {
@@ -14,10 +14,10 @@ export const createGoods = async (
 
   try {
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("price", price);
     formData.append("image", image);
+    formData.append("name", name);
+    formData.append("price", price.toString());
+    formData.append("description", description);
 
     const result = await api.post("/goods/add", formData, {
       headers: {
@@ -64,8 +64,8 @@ export const getGoodsDetail = async (id: number) => {
 export const updateGoods = async (
   id: number,
   name: string,
+  price: number,
   description: string,
-  price: string,
   image: File | null
 ) => {
   if (!name || !description || !price) {
@@ -75,8 +75,8 @@ export const updateGoods = async (
   try {
     const formData = new FormData();
     formData.append("name", name);
+    formData.append("price", price.toString());
     formData.append("description", description);
-    formData.append("price", price);
     if (image) {
       formData.append("image", image);
     }
