@@ -7,12 +7,23 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { createGoods } from "@/api/goods";
+import { updateGoods } from "@/api/goods";
 
-function GoodsCreate() {
-  const [name, setName] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+interface GoodsProps {
+  id: number;
+  currentName: string;
+  currentPrice: string;
+  currentDescription: string;
+}
+function GoodsUpdate({
+  id,
+  currentName,
+  currentPrice,
+  currentDescription,
+}: GoodsProps) {
+  const [name, setName] = useState<string>(currentName);
+  const [price, setPrice] = useState<string>(currentPrice);
+  const [description, setDescription] = useState<string>(currentDescription);
   const [image, setImage] = useState<File | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,24 +36,19 @@ function GoodsCreate() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !price || !description || !image) {
+    if (!name || !price || !description) {
       alert("모두 채워주세요!");
       return;
     }
 
     try {
-      const result = await createGoods(name, description, price, image);
+      const result = await updateGoods(id, name, description, price, image);
 
       console.log(result);
-      alert("굿즈가 추가 되었습니다!");
-
-      setName("");
-      setPrice("");
-      setDescription("");
-      setImage(null);
+      alert("굿즈가 수정 되었습니다!");
     } catch (error) {
-      console.error("굿즈 업로드 실패:", error);
-      alert("굿즈 업로드에 실패했습니다.");
+      console.error("굿즈 업데이트 실패:", error);
+      alert("굿즈 업데이트에 실패했습니다.");
     }
   };
 
@@ -53,7 +59,7 @@ function GoodsCreate() {
           variant="h5"
           sx={{ fontWeight: "bold", textAlign: "center" }}
         >
-          굿즈 추가하기
+          굿즈 수정하기
         </Typography>
         <form onSubmit={onSubmit}>
           <Stack spacing={3}>
@@ -79,7 +85,6 @@ function GoodsCreate() {
                   type="file"
                   hidden
                   onChange={handleImageChange}
-                  required
                   accept="image/*"
                 />
               </Button>
@@ -131,7 +136,7 @@ function GoodsCreate() {
                 textTransform: "none",
               }}
             >
-              추가하기
+              수정하기
             </Button>
           </Stack>
         </form>
@@ -140,4 +145,4 @@ function GoodsCreate() {
   );
 }
 
-export default GoodsCreate;
+export default GoodsUpdate;

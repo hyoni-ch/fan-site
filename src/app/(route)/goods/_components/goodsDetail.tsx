@@ -10,7 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import ListIcon from "@mui/icons-material/List";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import useCartStore from "@/store/cartStore";
+import useAuthStore from "@/store/authStore";
+import { deleteGoods } from "@/api/goods";
+import { useRouter } from "next/navigation";
 
 interface GoodsImage {
   id: number;
@@ -33,6 +38,8 @@ function GoodsDetail({ goods }: GoodsProps) {
   const [count, setCount] = useState<number>(1);
   const [tabValue, setTabValue] = useState<string>("info");
   const addItemToCart = useCartStore((state) => state.addItemToCart);
+  const roles = useAuthStore((state) => state.roles);
+  const router = useRouter();
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -61,6 +68,22 @@ function GoodsDetail({ goods }: GoodsProps) {
 
   const handleBuy = () => {
     alert("구매가 완료 되었습니다.");
+  };
+
+  const handleDelete = async () => {
+    const isConfirmed = window.confirm("정말로 이 굿즈를 삭제하시겠습니까?");
+    if (isConfirmed) {
+      try {
+        await deleteGoods(goods.id);
+        alert("삭제되었습니다.");
+        router.push("/goods");
+      } catch (error) {
+        alert("삭제에 실패했습니다.");
+        console.error(error);
+      }
+    } else {
+      alert("삭제가 취소되었습니다.");
+    }
   };
 
   if (!goods) {
@@ -133,7 +156,13 @@ function GoodsDetail({ goods }: GoodsProps) {
             />
           </Box>
 
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
+            }}
+          >
             <Button
               variant="contained"
               color="primary"
@@ -163,6 +192,50 @@ function GoodsDetail({ goods }: GoodsProps) {
               구매하기
             </Button>
           </Box>
+          {roles?.includes("ROLE_ARTIST") && (
+            <Box sx={{ display: "flex", gap: 2, alignItems: "center", mt: 3 }}>
+              <Link href={`/goods/${goods.id}/update`}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#FCC422",
+                    textTransform: "none",
+                    fontWeight: "bold",
+                    borderRadius: "50px",
+                    p: "12px 24px",
+                    ":hover": {
+                      backgroundColor: "#f8b602",
+                      transform: "scale(1.05)",
+                      transition: "transform 0.2s ease",
+                    },
+                  }}
+                  startIcon={<EditIcon />}
+                >
+                  수정
+                </Button>
+              </Link>
+
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#FF4D4D",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  borderRadius: "50px",
+                  p: "12px 24px",
+                  ":hover": {
+                    backgroundColor: "#f44336",
+                    transform: "scale(1.05)",
+                    transition: "transform 0.2s ease",
+                  },
+                }}
+                onClick={handleDelete}
+                startIcon={<DeleteIcon />}
+              >
+                삭제
+              </Button>
+            </Box>
+          )}
         </Box>
       </Box>
 

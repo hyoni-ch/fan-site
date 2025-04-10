@@ -81,7 +81,7 @@ function GoodsListPage() {
             mb: 2,
           }}
         >
-          {roles && roles.includes("ROLE_ADMIN") ? (
+          {roles && roles.includes("ROLE_ARTIST") ? (
             <Link href="/goods/create">
               <Button
                 variant="contained"
