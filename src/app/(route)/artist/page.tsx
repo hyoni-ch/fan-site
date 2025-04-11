@@ -12,7 +12,7 @@ const Profile = () => {
       flexDirection="column"
       alignItems="center"
       height="100%"
-      paddingBottom={30}
+      paddingBottom={10}
     >
       <ProfileHeader />
       <ProfileInfo />
