@@ -41,8 +41,21 @@ function GoodsUpdate({
       return;
     }
 
+    const priceAsNumber = parseInt(price, 10);
+
+    if (isNaN(priceAsNumber)) {
+      alert("가격은 숫자로 입력해야 합니다.");
+      return;
+    }
+
     try {
-      const result = await updateGoods(id, name, description, price, image);
+      const result = await updateGoods(
+        id,
+        name,
+        priceAsNumber,
+        description,
+        image
+      );
 
       console.log(result);
       alert("굿즈가 수정 되었습니다!");
