@@ -1,7 +1,9 @@
 "use client";
 
+import RetryErrorBox from "@/components/commonProfileTab/refetchButton";
+import LoadingIndicator from "@/components/LoadingIndicator";
 import useFetchAlbums from "@/hooks/useProfileTabApi/useFetchAlbum";
-import { Box, CircularProgress, Typography, Button } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
@@ -9,36 +11,24 @@ import { useState } from "react";
 const ITEMS_PER_PAGE = 6;
 
 function AlbumTab() {
-  const { albumsData, loading, error } = useFetchAlbums();
+  const { data: albumsData, loading, error, refetch } = useFetchAlbums();
+  // const { albumsData, loading, error } = useFetchAlbums();
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  // null 체크 (초기 로딩 이후에도 data가 없을 수 있으니까)
+  if (!albumsData) return null;
   const visibleAlbums = albumsData.slice(0, visibleCount);
   const hasMore = visibleCount < albumsData.length;
 
   if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight={200}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingIndicator message="앨범 정보를 불러오는 중입니다..." />;
   }
 
   if (error) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight={200}
-      >
-        <Typography color="error">
-          앨범 정보를 불러오는 중 오류가 발생했습니다: {error.message}
-        </Typography>
-      </Box>
+      <RetryErrorBox
+        message="앨범 정보를 불러오는 중 오류가 발생했습니다"
+        onRetry={refetch}
+      />
     );
   }
 

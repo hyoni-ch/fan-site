@@ -1,39 +1,27 @@
 import useFetchConcerts from "@/hooks/useProfileTabApi/useFetchConcerts";
-import { Box, CircularProgress, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import groupConcertsByYear from "@/utils/groupConcertsByYear";
 import ConcertItem from "@/components/commonProfileTab/ConcertItem";
+import LoadingIndicator from "@/components/LoadingIndicator";
+import RetryErrorBox from "@/components/commonProfileTab/refetchButton";
 
 function ConcertTab() {
-  const { concertsData, loading, error } = useFetchConcerts();
+  const { data: concertsData, loading, error, refetch } = useFetchConcerts();
 
   if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight={200}
-      >
-        <Typography sx={{ mr: 2 }}>콘서트 정보를 불러오는 중...</Typography>
-        <CircularProgress size={20} />
-      </Box>
-    );
+    return <LoadingIndicator message="콘서트 정보를 불러오는 중입니다..." />;
   }
 
   if (error) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight={200}
-      >
-        <Typography color="error">
-          콘서트 정보를 불러오는 중 오류가 발생했습니다
-        </Typography>
-      </Box>
+      <RetryErrorBox
+        message="콘서트 정보를 불러오는 중 오류가 발생했습니다"
+        onRetry={refetch}
+      />
     );
   }
+
+  if (!concertsData) return null;
 
   // 년도별로 정리 유틸 함수로 분리
   const groupedConcerts = groupConcertsByYear(concertsData);

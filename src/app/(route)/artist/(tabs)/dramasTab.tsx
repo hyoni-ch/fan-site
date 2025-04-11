@@ -1,52 +1,26 @@
+import RetryErrorBox from "@/components/commonProfileTab/refetchButton";
+import LoadingIndicator from "@/components/LoadingIndicator";
 import useFetchDramas from "@/hooks/useProfileTabApi/useFetchDramas";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 
-interface ProfileDramaTabProps {
-  isInView: boolean;
-}
-
-function DramasTab({ isInView }: ProfileDramaTabProps) {
-  const { dramasData, loading, error } = useFetchDramas();
-  const isFetched = useRef(false);
-
-  useEffect(() => {
-    if (isInView && !isFetched.current) {
-      isFetched.current = true;
-    }
-  }, [isInView]);
+function DramasTab() {
+  const { data: dramasData, loading, error, refetch } = useFetchDramas();
 
   if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight={200}
-      >
-        <Typography sx={{ ml: 2 }}>
-          서버에서 드라마 정보를 불러오는 중...
-        </Typography>
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingIndicator message="드라마 정보를 불러오는 중입니다..." />;
   }
 
   if (error) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight={200}
-      >
-        <Typography color="error">
-          드라마 정보를 불러오는 중 오류가 발생했습니다
-        </Typography>
-      </Box>
+      <RetryErrorBox
+        message="드라마 정보를 불러오는 중 오류가 발생했습니다"
+        onRetry={refetch}
+      />
     );
   }
+
+  if (!dramasData) return null;
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
