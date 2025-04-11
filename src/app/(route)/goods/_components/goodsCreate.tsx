@@ -30,8 +30,15 @@ function GoodsCreate() {
       return;
     }
 
+    const priceAsNumber = parseInt(price, 10);
+
+    if (isNaN(priceAsNumber)) {
+      alert("가격은 숫자로 입력해야 합니다.");
+      return;
+    }
+
     try {
-      const result = await createGoods(name, description, price, image);
+      const result = await createGoods(name, priceAsNumber, description, image);
 
       console.log(result);
       alert("굿즈가 추가 되었습니다!");
