@@ -9,6 +9,8 @@ import UserListTable from "./_component/userListTable";
 import GoodsManager from "./_component/goodsManager";
 import { Box, Button } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
 
 const AdminUserListPage: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState("userMenu");
@@ -27,9 +29,9 @@ const AdminUserListPage: React.FC = () => {
   }, []);
 
   const menuItems = [
-    { label: "대시보드", value: "dashboard", icon: <PeopleIcon /> },
+    { label: "대시보드", value: "dashboard", icon: <DashboardIcon /> },
     { label: "전체 사용자 목록", value: "userMenu", icon: <PeopleIcon /> },
-    { label: "굿즈 관리", value: "goodsMenu", icon: <PeopleIcon /> },
+    { label: "굿즈 관리", value: "goodsMenu", icon: <LocalMallIcon /> },
     // 필요 시 더 추가 가능
   ];
 
