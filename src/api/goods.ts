@@ -81,7 +81,7 @@ export const updateGoods = async (
       formData.append("image", image);
     }
 
-    const result = await api.post(`/goods/${id}/update`, formData, {
+    const result = await api.put(`/goods/${id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -98,7 +98,7 @@ export const updateGoods = async (
 // 굿즈 DELETE
 export const deleteGoods = async (id: number) => {
   try {
-    const response = await api.delete(`/goods/${id}/delete`);
+    const response = await api.delete(`/goods/${id}`);
     return response.data;
   } catch (error) {
     console.error("굿즈 삭제 Error:", error);
