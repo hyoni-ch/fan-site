@@ -1,50 +1,69 @@
-import { getConcertList } from "@/api/profile";
-import { ConcertList } from "@/types/iprofile";
-import { Box, Typography } from "@mui/material";
-// import Image from "next/image";
-import { useEffect, useState } from "react";
+import useFetchConcerts from "@/hooks/useProfileTabApi/useFetchConcerts";
+import { Box, CircularProgress, Divider, Typography } from "@mui/material";
+import groupConcertsByYear from "@/utils/groupConcertsByYear";
+import ConcertItem from "@/components/commonProfileTab/ConcertItem";
 
 function ConcertTab() {
-  const [concerts, setConcerts] = useState<ConcertList[]>([]);
+  const { concertsData, loading, error } = useFetchConcerts();
 
-  //마운트시 getConcerList함수 실행 후 목록 저장.
-  useEffect(() => {
-    const fetchConcertList = async () => {
-      const concertList = await getConcertList();
-      setConcerts(concertList);
-    };
-    console.log("AlbumTab 렌더링됨");
-    fetchConcertList();
-  }, []);
+  if (loading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight={200}
+      >
+        <Typography sx={{ mr: 2 }}>콘서트 정보를 불러오는 중...</Typography>
+        <CircularProgress size={20} />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight={200}
+      >
+        <Typography color="error">
+          콘서트 정보를 불러오는 중 오류가 발생했습니다
+        </Typography>
+      </Box>
+    );
+  }
+
+  // 년도별로 정리 유틸 함수로 분리
+  const groupedConcerts = groupConcertsByYear(concertsData);
+  /* 객체를 배열로 변환 --> [[연도, 콘서트 배열]형태의 튜플] */
+  // 연도(문자열)를 숫자로 바꿔서 최신순 정렬
+  //! 즉, a=['2023',[...]] , b=['2024',[...]] 더 좋은 정렬 방법 있는지 생각해보기
+  const concertYears = Object.entries(groupedConcerts).sort(
+    (a, b) => Number(b[0]) - Number(a[0])
+  );
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
-      {concerts.map((concert) => (
-        <Box
-          key={concert.id}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: 4,
-          }}
-        >
-          {/* <Image
-            src={`/api${concert.concertImages[0]?.url}`}
-            alt={concert.title}
-            width={200}
-            height={282}
-            objectFit="contain"
-          /> */}
-          <Typography style={{ fontSize: "0.7rem", color: "#000000" }}>
-            {concert.concertDate}
+    <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
+      {concertYears.map(([year, concerts], index) => (
+        <Box key={year} width="100%" maxWidth="600px" mb={4}>
+          <Typography variant="subtitle1" fontWeight={600} mb={1}>
+            {year}
           </Typography>
-          <Typography variant="body2" fontWeight={600} mt={1}>
-            {concert.concertName}
-          </Typography>
-          <Typography style={{ fontSize: "0.7rem", color: "#9c9c9c" }}>
-            {concert.place}
-          </Typography>
+          <Box component="ul" sx={{ pl: 3, m: 0 }}>
+            {concerts.map((concert) => (
+              <ConcertItem
+                key={concert.id}
+                concertName={concert.concertName}
+                concertDate={concert.concertDate}
+                place={concert.place}
+              />
+            ))}
+          </Box>
+          {index < concertYears.length - 1 && (
+            <Divider sx={{ mt: 3, borderColor: "rgba(0,0,0,0.1)" }} />
+          )}
         </Box>
       ))}
     </Box>
