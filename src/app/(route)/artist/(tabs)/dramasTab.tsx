@@ -1,28 +1,56 @@
-import { getDramaList } from "@/api/profile";
-import { DramaList } from "@/types/iprofile";
-import { Box, Typography } from "@mui/material";
+import useFetchDramas from "@/hooks/useProfileTabApi/useFetchDramas";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-function DramasTab({ inView }: { inView: boolean }) {
-  const [dramas, setDramas] = useState<DramaList[]>([]);
+interface ProfileDramaTabProps {
+  isInView: boolean;
+}
+
+function DramasTab({ isInView }: ProfileDramaTabProps) {
+  const { dramasData, loading, error } = useFetchDramas();
   const isFetched = useRef(false);
 
   useEffect(() => {
-    if (inView && !isFetched.current) {
-      const fetchDramaList = async () => {
-        const dramaList = await getDramaList();
-        setDramas(dramaList);
-        console.log("메롱", dramaList);
-        isFetched.current = true;
-      };
-      fetchDramaList();
+    if (isInView && !isFetched.current) {
+      isFetched.current = true;
     }
-  }, [inView]);
+  }, [isInView]);
+
+  if (loading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight={200}
+      >
+        <Typography sx={{ ml: 2 }}>
+          서버에서 드라마 정보를 불러오는 중...
+        </Typography>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight={200}
+      >
+        <Typography color="error">
+          드라마 정보를 불러오는 중 오류가 발생했습니다
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      {dramas.map((drama) => (
+      {dramasData.map((drama) => (
         <Box
           key={drama.id}
           sx={{
