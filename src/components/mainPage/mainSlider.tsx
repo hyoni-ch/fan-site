@@ -8,6 +8,7 @@ import Image from "next/image";
 import { getAlbumList } from "@/api/discography";
 import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
+import Link from "next/link";
 
 interface AlbumImage {
   id: number;
@@ -31,27 +32,24 @@ function MainSlider() {
     className: "center",
     centerMode: true,
     infinite: true,
-    centerPadding: "100px",
-    slidesToShow: 3,
+    centerPadding: "0px",
+    slidesToShow: 5,
     speed: 500,
-    // focusOnSelect: true, centerMonde와 충돌
+    arrows: false,
+    autoplay: true,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 3,
+          centerPadding: "0px",
         },
       },
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
+          centerPadding: "100px",
         },
       },
     ],
@@ -61,7 +59,16 @@ function MainSlider() {
     const fetchAlbum = async () => {
       try {
         const album = await getAlbumList();
-        setAlbumList(album);
+
+        const sorted = album
+          .sort(
+            (a: Album, b: Album) =>
+              new Date(b.releaseDate).getTime() -
+              new Date(a.releaseDate).getTime()
+          )
+          .slice(0, 7);
+
+        setAlbumList(sorted);
       } catch (err) {
         alert("앨범 리스트를 불러오는데 실패했습니다.");
         console.error(err);
@@ -76,23 +83,23 @@ function MainSlider() {
         <Slider {...settings}>
           {albumList?.map((album) => (
             <Box key={album.id} className="slide-items">
-              {album.albumImages.map((image) => (
-                <Box key={image.id}>
+              {album.albumImages.length > 0 && (
+                <Link href="/discography">
                   <Box className="slide-image-wrapper">
                     <Image
-                      src={`/api${image.url}`}
+                      src={`/api${album.albumImages[0].url}`}
                       alt={`앨범 ${album.id}`}
-                      width={300}
-                      height={300}
+                      fill
+                      sizes="(max-width: 768px) 80vw, 300px"
+                      style={{ objectFit: "cover" }}
                     />
                   </Box>
-
                   <Box className="slide-album-info">
                     <Box>{album.title}</Box>
-                    <Box sx={{ color: "#757575" }}>{album.releaseDate}</Box>
+                    <Box>{album.releaseDate}</Box>
                   </Box>
-                </Box>
-              ))}
+                </Link>
+              )}
             </Box>
           ))}
         </Slider>
