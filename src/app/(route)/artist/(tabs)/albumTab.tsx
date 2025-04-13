@@ -14,10 +14,6 @@ function AlbumTab() {
   const { data: albumsData, loading, error, refetch } = useFetchAlbums();
   // const { albumsData, loading, error } = useFetchAlbums();
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
-  // null 체크 (초기 로딩 이후에도 data가 없을 수 있으니까)
-  if (!albumsData) return null;
-  const visibleAlbums = albumsData.slice(0, visibleCount);
-  const hasMore = visibleCount < albumsData.length;
 
   if (loading) {
     return <LoadingIndicator message="앨범 정보를 불러오는 중입니다..." />;
@@ -31,6 +27,11 @@ function AlbumTab() {
       />
     );
   }
+
+  // null 체크 (초기 로딩 이후에도 data가 없을 수 있으니까)
+  if (!albumsData) return null;
+  const visibleAlbums = albumsData.slice(0, visibleCount);
+  const hasMore = visibleCount < albumsData.length;
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
