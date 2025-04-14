@@ -1,7 +1,8 @@
 "use client";
 
+import AlbumSkeleton from "@/components/commonProfileTab/AlbumSkeleton";
 import RetryErrorBox from "@/components/commonProfileTab/refetchButton";
-import LoadingIndicator from "@/components/LoadingIndicator";
+// import LoadingIndicator from "@/components/LoadingIndicator";
 import useFetchAlbums from "@/hooks/useProfileTabApi/useFetchAlbum";
 import { Box, Typography, Button } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,14 +10,32 @@ import Image from "next/image";
 import { useState } from "react";
 
 const ITEMS_PER_PAGE = 6;
+// 최소 로딩 시간 0.5초
+const MIN_LOADING_TIME = 500;
 
 function AlbumTab() {
-  const { data: albumsData, loading, error, refetch } = useFetchAlbums();
   // const { albumsData, loading, error } = useFetchAlbums();
+  // const { data: albumsData, loading, error, refetch } = useFetchAlbums();
+  const {
+    data: albumsData,
+    loading,
+    error,
+    refetch,
+  } = useFetchAlbums(MIN_LOADING_TIME);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
+  // if (loading) {
+  //   return <LoadingIndicator message="앨범 정보를 불러오는 중입니다..." />;
+  // }
   if (loading) {
-    return <LoadingIndicator message="앨범 정보를 불러오는 중입니다..." />;
+    return (
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <AlbumSkeleton /> {/* 로딩 중에는 스켈레톤 UI 표시 */}
+        <Typography variant="body2" color="textSecondary" mt={2}>
+          앨범 정보를 불러오는 중입니다...
+        </Typography>
+      </Box>
+    );
   }
 
   if (error) {
