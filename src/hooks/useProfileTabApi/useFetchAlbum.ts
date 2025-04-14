@@ -31,12 +31,12 @@
 
 // export default useFetchAlbums;
 
-import useFetchData from "./useFetchProfileData";
+import useFetchProfileData from "./useFetchProfileData";
 import { getAlbumList } from "@/api/discography";
 import { Album } from "@/types/iprofile";
 
-function useFetchAlbums() {
-  return useFetchData<Album[]>(getAlbumList);
+function useFetchAlbums(minLoadingTime: number = 0) {
+  return useFetchProfileData<Album[]>(getAlbumList, minLoadingTime);
 }
 
 export default useFetchAlbums;

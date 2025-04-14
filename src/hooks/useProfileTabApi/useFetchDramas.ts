@@ -31,12 +31,12 @@
 
 // export default useFetchDramas;
 
-import useFetchData from "./useFetchProfileData";
+import useFetchProfileData from "./useFetchProfileData";
 import { getDramaList } from "@/api/profile";
 import { DramaList } from "@/types/iprofile";
 
 function useFetchDramas() {
-  return useFetchData<DramaList[]>(getDramaList);
+  return useFetchProfileData<DramaList[]>(getDramaList);
 }
 
 export default useFetchDramas;

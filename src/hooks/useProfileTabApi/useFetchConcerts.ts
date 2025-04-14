@@ -31,12 +31,12 @@
 
 // export default useFetchConcerts;
 
-import useFetchData from "./useFetchProfileData";
+import useFetchProfileData from "./useFetchProfileData";
 import { getConcertList } from "@/api/profile";
 import { ConcertList } from "@/types/iprofile";
 
 function useFetchConcerts() {
-  return useFetchData<ConcertList[]>(getConcertList);
+  return useFetchProfileData<ConcertList[]>(getConcertList);
 }
 
 export default useFetchConcerts;
