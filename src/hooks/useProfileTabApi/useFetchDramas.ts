@@ -31,7 +31,7 @@
 
 // export default useFetchDramas;
 
-import useFetchData from "./useFetchData";
+import useFetchData from "./useFetchProfileData";
 import { getDramaList } from "@/api/profile";
 import { DramaList } from "@/types/iprofile";
 

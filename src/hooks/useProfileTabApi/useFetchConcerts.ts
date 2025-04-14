@@ -31,7 +31,7 @@
 
 // export default useFetchConcerts;
 
-import useFetchData from "./useFetchData";
+import useFetchData from "./useFetchProfileData";
 import { getConcertList } from "@/api/profile";
 import { ConcertList } from "@/types/iprofile";
 

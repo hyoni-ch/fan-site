@@ -31,7 +31,7 @@
 
 // export default useFetchAlbums;
 
-import useFetchData from "./useFetchData";
+import useFetchData from "./useFetchProfileData";
 import { getAlbumList } from "@/api/discography";
 import { Album } from "@/types/iprofile";
 

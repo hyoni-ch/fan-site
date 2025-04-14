@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-function useFetchData<T>(fetchFunction: () => Promise<T>) {
+function useFetchProfileData<T>(fetchFunction: () => Promise<T>) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -30,4 +30,4 @@ function useFetchData<T>(fetchFunction: () => Promise<T>) {
   return { data, loading, error, refetch: fetchData };
 }
 
-export default useFetchData;
+export default useFetchProfileData;
