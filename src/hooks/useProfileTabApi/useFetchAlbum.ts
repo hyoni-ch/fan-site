@@ -35,8 +35,14 @@ import useFetchProfileData from "./useFetchProfileData";
 import { getAlbumList } from "@/api/discography";
 import { Album } from "@/types/iprofile";
 
+const REQUEST_TIMEOUT = 4000;
+
 function useFetchAlbums(minLoadingTime: number = 0) {
-  return useFetchProfileData<Album[]>(getAlbumList, minLoadingTime);
+  return useFetchProfileData<Album[]>(
+    getAlbumList,
+    minLoadingTime,
+    REQUEST_TIMEOUT
+  );
 }
 
 export default useFetchAlbums;

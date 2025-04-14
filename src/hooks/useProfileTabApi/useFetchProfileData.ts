@@ -3,7 +3,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
 function useFetchProfileData<T>(
   fetchFunction: () => Promise<T>,
   // 최소 로딩 시간 (ms)
-  minLoadingTime: number = 0
+  minLoadingTime: number = 0,
+  // 타임아웃 시간 (ms), 기본값 10초
+  timeout: number = 10000
 ) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
@@ -11,13 +13,21 @@ function useFetchProfileData<T>(
   // 타이머 직접 설정
   const loadingTimer = useRef<NodeJS.Timeout | null>(null);
   const hasFetched = useRef(false); // 첫 데이터 로딩 완료 여부 추적
+  const timeoutTimer = useRef<NodeJS.Timeout | null>(null);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
+    hasFetched.current = false;
 
     // 시작 시간 받기
     const startTime = Date.now();
+
+    // 타임아웃 설정하기
+    timeoutTimer.current = setTimeout(() => {
+      setLoading(false);
+      setError(new Error("요청 시간 초과되었습니다. 다시 시도해주세요."));
+    }, timeout);
 
     try {
       const response = await fetchFunction();
@@ -45,17 +55,20 @@ function useFetchProfileData<T>(
       if (err instanceof Error) {
         setError(err);
       } else {
-        setError(new Error("Unknown error occurred"));
+        setError(new Error("알 수 없는 오류가 발생했습니다."));
       }
     } finally {
       if (loadingTimer.current) {
         clearTimeout(loadingTimer.current);
       }
+      if (timeoutTimer.current) {
+        clearTimeout(timeoutTimer.current);
+      }
       if (!hasFetched.current) {
         setLoading(false);
       }
     }
-  }, [fetchFunction, minLoadingTime]);
+  }, [fetchFunction, minLoadingTime, timeout]);
 
   useEffect(() => {
     fetchData();
