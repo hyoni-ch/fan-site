@@ -7,6 +7,7 @@ import HeaderNav from "@/components/headerNav";
 import Footer from "@/components/footer";
 import "./globals.css";
 import SubLayout from "./subLayout";
+import Providers from "./provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -29,14 +30,16 @@ export default function RootLayout({
     return (
       <html lang="ko">
         <body className={roboto.variable}>
-          <AppRouterCacheProvider>
-            <ThemeProvider theme={theme}>
-              <HeaderNav />
-              {/* <div style={{ marginTop: "100px" }}>{children}</div> */}
-              <SubLayout>{children}</SubLayout>
-              <Footer />
-            </ThemeProvider>
-          </AppRouterCacheProvider>
+          <Providers>
+            <AppRouterCacheProvider>
+              <ThemeProvider theme={theme}>
+                <HeaderNav />
+                {/* <div style={{ marginTop: "100px" }}>{children}</div> */}
+                <SubLayout>{children}</SubLayout>
+                <Footer />
+              </ThemeProvider>
+            </AppRouterCacheProvider>
+          </Providers>
         </body>
       </html>
     );
