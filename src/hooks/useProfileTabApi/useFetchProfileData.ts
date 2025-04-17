@@ -25,8 +25,12 @@ function useFetchProfileData<T>(
 
     // 타임아웃 설정하기
     timeoutTimer.current = setTimeout(() => {
-      setLoading(false);
-      setError(new Error("요청 시간 초과되었습니다. 다시 시도해주세요."));
+      // 이미 데이터를 가져왔다면 에러 상태를 업데이트하지 않음
+      if (!hasFetched.current) {
+        setLoading(false);
+        setError(new Error("요청 시간 초과되었습니다. 다시 시도해주세요."));
+      }
+      // 타임아웃 발생 시 hasFetched를 true로 설정하지 않음.
     }, timeout);
 
     try {
@@ -57,15 +61,13 @@ function useFetchProfileData<T>(
       } else {
         setError(new Error("알 수 없는 오류가 발생했습니다."));
       }
+      setLoading(false);
     } finally {
       if (loadingTimer.current) {
         clearTimeout(loadingTimer.current);
       }
       if (timeoutTimer.current) {
         clearTimeout(timeoutTimer.current);
-      }
-      if (!hasFetched.current) {
-        setLoading(false);
       }
     }
   }, [fetchFunction, minLoadingTime, timeout]);
