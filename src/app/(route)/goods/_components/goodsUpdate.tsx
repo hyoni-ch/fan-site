@@ -12,7 +12,7 @@ import { updateGoods } from "@/api/goods";
 interface GoodsProps {
   id: number;
   currentName: string;
-  currentPrice: string;
+  currentPrice: number;
   currentDescription: string;
 }
 function GoodsUpdate({
@@ -22,7 +22,7 @@ function GoodsUpdate({
   currentDescription,
 }: GoodsProps) {
   const [name, setName] = useState<string>(currentName);
-  const [price, setPrice] = useState<string>(currentPrice);
+  const [price, setPrice] = useState<number>(currentPrice);
   const [description, setDescription] = useState<string>(currentDescription);
   const [image, setImage] = useState<File | null>(null);
 
@@ -41,21 +41,8 @@ function GoodsUpdate({
       return;
     }
 
-    const priceAsNumber = parseInt(price, 10);
-
-    if (isNaN(priceAsNumber)) {
-      alert("가격은 숫자로 입력해야 합니다.");
-      return;
-    }
-
     try {
-      const result = await updateGoods(
-        id,
-        name,
-        priceAsNumber,
-        description,
-        image
-      );
+      const result = await updateGoods(id, name, price, description, image);
 
       console.log(result);
       alert("굿즈가 수정 되었습니다!");
@@ -121,7 +108,7 @@ function GoodsUpdate({
               label="가격"
               variant="outlined"
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => setPrice(Number(e.target.value))}
               fullWidth
               required
             />

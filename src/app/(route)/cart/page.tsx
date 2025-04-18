@@ -39,13 +39,19 @@ function Page() {
 
   const handleBuy = () => {
     if (selectedItems.length === 0) {
-      alert("구매할 상품을 체크해주세요!");
+      alert("구매할 굿즈를 체크해주세요!");
     } else {
-      alert("구매가 완료 되었습니다.");
-      selectedItems.forEach((itemId) => {
-        removeItemFromCart(itemId);
-      });
-      setSelectedItems([]);
+      const isConfirmed = window.confirm("선택한 굿즈를 구매하시겠습니까?");
+
+      if (isConfirmed) {
+        alert("구매가 완료되었습니다.");
+        selectedItems.forEach((itemId) => {
+          removeItemFromCart(itemId);
+        });
+        setSelectedItems([]);
+      } else {
+        alert("구매가 취소되었습니다.");
+      }
     }
   };
 
@@ -86,9 +92,6 @@ function Page() {
         p: 2,
       }}
     >
-      {/* <h1>메롱</h1>
-      <button onClick={handleLogout}>로그아웃</button>
-       */}
       <Typography variant="h3" sx={{ fontWeight: 600, mb: 3 }}>
         장바구니
       </Typography>
@@ -186,7 +189,14 @@ function Page() {
                 />
                 <IconButton
                   aria-label="delete"
-                  onClick={() => removeItemFromCart(item.id)}
+                  onClick={() => {
+                    const isConfirmed = window.confirm(
+                      "선택한 상품을 정말 삭제하시겠습니까?"
+                    );
+                    if (isConfirmed) {
+                      removeItemFromCart(item.id);
+                    }
+                  }}
                   sx={{
                     color: "#ff3b30",
                     "&:hover": {
