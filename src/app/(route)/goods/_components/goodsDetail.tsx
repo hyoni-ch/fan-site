@@ -16,19 +16,7 @@ import useCartStore from "@/store/cartStore";
 import useAuthStore from "@/store/authStore";
 import { deleteGoods } from "@/api/goods";
 import { useRouter } from "next/navigation";
-
-interface GoodsImage {
-  id: number;
-  url: string;
-}
-
-interface Goods {
-  id: number;
-  goodsName: string;
-  price: number;
-  description: string;
-  goodsImages: GoodsImage[];
-}
+import { Goods } from "@/types/igoods";
 
 interface GoodsProps {
   goods: Goods;
@@ -67,7 +55,13 @@ function GoodsDetail({ goods }: GoodsProps) {
   };
 
   const handleBuy = () => {
-    alert("구매가 완료 되었습니다.");
+    const isConfirmed = window.confirm("구매하시겠습니까?");
+
+    if (isConfirmed) {
+      alert("구매가 완료되었습니다.");
+    } else {
+      alert("구매가 취소되었습니다.");
+    }
   };
 
   const handleDelete = async () => {

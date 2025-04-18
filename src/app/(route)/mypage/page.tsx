@@ -7,11 +7,7 @@ import { useRouter } from "next/navigation";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { getUser, logout } from "@/api/auth";
 import LoadingIndicator from "@/components/LoadingIndicator";
-
-interface UserInfo {
-  username: string;
-  nickname: string;
-}
+import { User } from "@/types/iadmin";
 
 function Mypage() {
   const [activeMenu, setActiveMenu] = useState("profile");
@@ -19,7 +15,7 @@ function Mypage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
@@ -221,7 +217,7 @@ function Mypage() {
           </Box>
         ) : (
           <Box>
-            <Typography variant="h6">결제 내역</Typography>
+            <Typography variant="h6">X</Typography>
           </Box>
         )}
       </Box>

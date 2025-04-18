@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  CircularProgress,
   Grid,
   IconButton,
   InputBase,
@@ -17,20 +18,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getGoodsList } from "@/api/goods";
 import useAuthStore from "@/store/authStore";
-
-interface GoodsImage {
-  id: number;
-  url: string;
-}
-
-interface Goods {
-  id: number;
-  goodsName: string;
-  price: number;
-  goodsImages: GoodsImage[];
-}
-
-type GoodsList = Goods[];
+import { GoodsList } from "@/types/igoods";
 
 function GoodsListPage() {
   const [goodsList, setGoodsList] = useState<GoodsList | null>(null);
@@ -38,6 +26,9 @@ function GoodsListPage() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
   const sortData = [
     { label: "최신등록순", value: "last" },
     { label: "낮은가격순", value: "asc" },
@@ -46,6 +37,8 @@ function GoodsListPage() {
   const roles = useAuthStore((state) => state.roles);
 
   const fetchGoodsList = async () => {
+    setIsLoading(true);
+    setError(null);
     try {
       const fetchGoods = await getGoodsList({
         sort,
@@ -57,6 +50,9 @@ function GoodsListPage() {
       setTotalPages(fetchGoods.totalPages);
     } catch (error) {
       console.error("굿즈 리스트를 불러오지 못했습니다.", error);
+      setError("굿즈 리스트를 불러오지 못했습니다.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -162,64 +158,88 @@ function GoodsListPage() {
         </Box>
       </Box>
 
-      <Grid container spacing={3}>
-        {goodsList?.map((goods) => (
-          <Grid item xs={12} sm={6} md={3} key={goods.id}>
-            <Box
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                backgroundColor: "#fff",
-                borderRadius: 2,
-                boxShadow: 2,
-                overflow: "hidden",
-                textAlign: "center",
-                transition: "transform 0.3s ease-in-out",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                  boxShadow: 4,
-                },
-              }}
-            >
-              {goods.goodsImages.length > 0 && (
-                <Link href={`/goods/${goods.id}`}>
-                  <Box
-                    key={goods.goodsImages[0].id}
-                    sx={{
-                      position: "relative",
-                      width: "100%",
-                      height: 300,
-                      overflow: "hidden",
-                    }}
+      {isLoading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+          <CircularProgress />
+        </Box>
+      ) : error ? (
+        <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+          <Typography
+            sx={{
+              color: "#d32f2f",
+              fontWeight: "bold",
+              backgroundColor: "#ffe5e5",
+              borderRadius: "8px",
+              padding: "12px 20px",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              textAlign: "center",
+              width: "100%",
+              maxWidth: "500px",
+            }}
+          >
+            {error}
+          </Typography>
+        </Box>
+      ) : (
+        <Grid container spacing={3}>
+          {goodsList?.map((goods) => (
+            <Grid item xs={12} sm={6} md={3} key={goods.id}>
+              <Box
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  backgroundColor: "#fff",
+                  borderRadius: 2,
+                  boxShadow: 2,
+                  overflow: "hidden",
+                  textAlign: "center",
+                  transition: "transform 0.3s ease-in-out",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                    boxShadow: 4,
+                  },
+                }}
+              >
+                {goods.goodsImages.length > 0 && (
+                  <Link href={`/goods/${goods.id}`}>
+                    <Box
+                      key={goods.goodsImages[0].id}
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        height: 300,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Image
+                        src={`/api${goods.goodsImages[0].url}`}
+                        alt={`굿즈 ${goods.id}`}
+                        fill
+                        priority
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        style={{ objectFit: "cover" }}
+                      />
+                    </Box>
+                  </Link>
+                )}
+                <Box sx={{ p: 2 }}>
+                  <Typography sx={{ fontWeight: "bold", mb: 1 }}>
+                    {goods.goodsName}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "#757575", fontSize: "16px" }}
                   >
-                    <Image
-                      src={`/api${goods.goodsImages[0].url}`}
-                      alt={`굿즈 ${goods.id}`}
-                      fill
-                      priority
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      style={{ objectFit: "cover" }}
-                    />
-                  </Box>
-                </Link>
-              )}
-              <Box sx={{ p: 2 }}>
-                <Typography sx={{ fontWeight: "bold", mb: 1 }}>
-                  {goods.goodsName}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{ color: "#757575", fontSize: "16px" }}
-                >
-                  ₩{goods.price.toLocaleString()}
-                </Typography>
+                    ₩{goods.price.toLocaleString()}
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
+            </Grid>
+          ))}
+        </Grid>
+      )}
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <IconButton

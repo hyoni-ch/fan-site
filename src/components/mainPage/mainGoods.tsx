@@ -19,20 +19,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ShoppingCart, Search } from "@mui/icons-material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
-interface GoodsImage {
-  id: number;
-  url: string;
-}
-
-interface Goods {
-  id: number;
-  goodsName: string;
-  price: number;
-  goodsImages: GoodsImage[];
-}
-
-type GoodsList = Goods[];
+import { Goods, GoodsList } from "@/types/igoods";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -85,7 +72,6 @@ function MainGoods() {
         const goods = await getGoodsList(params);
         setGoodsList(goods.content);
       } catch (err) {
-        alert("굿즈 리스트를 불러오는데 실패했습니다.");
         console.error(err);
         // 에러 발생 시에도 로딩 상태는 해제
         setLoading(false);
@@ -109,7 +95,7 @@ function MainGoods() {
       // 만약 fetch 후 goodsList가 여전히 null이면 여기서도 로딩 해제
       setLoading(false);
     }
-  }, [goodsList, loading]); // loading도 의존성 배열에 추가
+  }, [goodsList, loading]);
 
   const handleAddToCart = (goods: Goods) => {
     const imageUrl =
@@ -119,7 +105,7 @@ function MainGoods() {
       id: goods.id,
       goodsName: goods.goodsName,
       price: goods.price,
-      quantity: 1, // 기본 수량 1로 설정
+      quantity: 1,
       imageUrl: imageUrl,
     };
 
@@ -129,7 +115,6 @@ function MainGoods() {
 
   // --- 로딩 중 표시 ---
   if (loading) {
-    // 로딩 표시기 높이도 부모 Flex 컨테이너에 맞게 조정될 수 있음
     return (
       <Box
         sx={{
@@ -161,7 +146,7 @@ function MainGoods() {
   }
 
   return (
-    <Box sx={{ overflow: "hidden" }}>
+    <Box sx={{ overflow: "hidden", position: "relative" }}>
       <motion.div
         ref={ref}
         initial={{ opacity: 0, y: 200 }}
@@ -195,8 +180,8 @@ function MainGoods() {
               margin: "0 auto",
               height: "100%",
               display: "flex",
-              flexDirection: "column", // 버튼 아래에 넣기 위해 column
-              alignItems: "flex-end", // 버튼 가운데 정렬 (오른쪽으로 바꾸려면 'flex-end')
+              flexDirection: "column",
+              alignItems: "flex-end",
             }}
           >
             <Box
