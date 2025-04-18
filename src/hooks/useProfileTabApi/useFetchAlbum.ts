@@ -19,10 +19,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAlbumList } from "@/api/discography";
 import { Album } from "@/types/iprofile";
+import { useAlbumStore } from "@/store/albumStore";
 
 const REQUEST_TIMEOUT = 5000;
 
 function useFetchAlbums(minLoadingTime: number = 0) {
+  // zustand와 동기화하기
+  const setAlbums = useAlbumStore((state) => state.setAlbums);
+
   return useQuery<Album[]>({
     queryKey: ["profile", "albums"], // 캐시 키
     queryFn: async () => {
@@ -40,6 +44,10 @@ function useFetchAlbums(minLoadingTime: number = 0) {
       if (elapsed < minLoadingTime) {
         await new Promise((res) => setTimeout(res, minLoadingTime - elapsed));
       }
+
+      // 💾 상태 저장
+      setAlbums(result);
+
       return result;
     },
     staleTime: 1000 * 60 * 5, // 5분 동안은 새로 요청 안 함
