@@ -5,13 +5,7 @@ import { Box } from "@mui/material";
 import { useParams } from "next/navigation";
 import GoodsUpdate from "./../../_components/goodsUpdate";
 import { getGoodsDetail } from "@/api/goods";
-
-interface Goods {
-  goodsName: string;
-  price: string;
-  description: string;
-  goodsImages: { id: number; url: string }[];
-}
+import { Goods } from "@/types/igoods";
 
 function GoodsUpdatePage() {
   const { id } = useParams();
