@@ -1,20 +1,3 @@
-// // 직접 최소 로딩 시간 및 타임아웃 시간을 지정하여 사용하는 훅 부분
-// import useFetchProfileData from "./useFetchProfileData";
-// import { getAlbumList } from "@/api/discography";
-// import { Album } from "@/types/iprofile";
-
-// const REQUEST_TIMEOUT = 5000;
-
-// function useFetchAlbums(minLoadingTime: number = 0) {
-//   return useFetchProfileData<Album[]>(
-//     getAlbumList,
-//     minLoadingTime,
-//     REQUEST_TIMEOUT
-//   );
-// }
-
-// export default useFetchAlbums;
-
 // hooks/useProfileTabApi/useFetchAlbums.ts
 import { useQuery } from "@tanstack/react-query";
 import { getAlbumList } from "@/api/discography";
