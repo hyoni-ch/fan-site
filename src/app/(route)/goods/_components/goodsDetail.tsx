@@ -17,6 +17,7 @@ import useAuthStore from "@/store/authStore";
 import { deleteGoods } from "@/api/goods";
 import { useRouter } from "next/navigation";
 import { Goods } from "@/types/igoods";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 
 interface GoodsProps {
   goods: Goods;
@@ -40,7 +41,10 @@ function GoodsDetail({ goods }: GoodsProps) {
 
   const handleAddToCart = () => {
     const imageUrl =
-      goods.goodsImages.length > 0 ? `/api${goods.goodsImages[0].url}` : "";
+      // goods.goodsImages.length > 0 ? `/api${goods.goodsImages[0].url}` : "";
+      goods.goodsImages.length > 0
+        ? `${S3_IMAGE_BASE_URL}${goods.goodsImages[0].url}`
+        : "";
 
     const cartItem = {
       id: goods.id,
@@ -100,7 +104,7 @@ function GoodsDetail({ goods }: GoodsProps) {
                 }}
               >
                 <Image
-                  src={`/api${image.url}`}
+                  src={`${S3_IMAGE_BASE_URL}${image.url}`}
                   alt={`Goods Image ${index + 1}`}
                   width={500}
                   height={500}

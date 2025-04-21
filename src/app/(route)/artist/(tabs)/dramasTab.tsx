@@ -1,5 +1,6 @@
 import RetryErrorBox from "@/components/commonProfileTab/refetchButton";
 import LoadingIndicator from "@/components/LoadingIndicator";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 import useFetchDramas from "@/hooks/useProfileTabApi/useFetchDramas";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
@@ -35,12 +36,13 @@ function DramasTab() {
           }}
         >
           <Image
-            src={`/api${drama.careerImages[0]?.url}`}
+            src={`${S3_IMAGE_BASE_URL}${drama.careerImages[0]?.url}`}
+            // 레거시 이미지 src
+            // src={`/api${drama.careerImages[0]?.url}`}
             alt={drama.careerName}
             width={200}
             height={280}
-            objectFit="contain"
-            style={{ borderRadius: "8px" }}
+            style={{ borderRadius: "8px", objectFit: "contain" }}
           />
           <Typography variant="body2" fontWeight={600} mt={2}>
             {drama.careerName}
