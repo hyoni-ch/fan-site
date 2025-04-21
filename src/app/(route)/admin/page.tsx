@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 
 import { User } from "@/types/iadmin";
 import { getUserInfo, postAddRole } from "@/api/admin";
-import useAuthStore, { getUserRoles } from "@/store/authStore";
+import useAuthStore from "@/store/authStore";
 import UserListTable from "./_component/userListTable";
 import GoodsManager from "./_component/goodsManager";
 import { Box, Button } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
+import { getUserRoles } from "@/utils/authUtils";
 
 const AdminUserListPage: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState("userMenu");
