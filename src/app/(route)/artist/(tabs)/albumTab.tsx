@@ -2,6 +2,7 @@
 
 import AlbumSkeleton from "@/components/commonProfileTab/AlbumSkeleton";
 import RetryErrorBox from "@/components/commonProfileTab/refetchButton";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 import useFetchAlbums from "@/hooks/useProfileTabApi/useFetchAlbum";
 import { Box, Typography, Button } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
@@ -80,7 +81,8 @@ function AlbumTab() {
                 bgcolor="#fafafa"
               >
                 <Image
-                  src={`/api${album.albumImages[0]?.url}`}
+                  // src={`/api${album.albumImages[0]?.url}`}
+                  src={`${S3_IMAGE_BASE_URL}${album.albumImages[0]?.url}`}
                   alt={album.title}
                   width={200}
                   height={200}

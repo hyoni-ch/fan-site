@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { AlbumInfo } from "@/types/idiscography";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 
 type AlbumList = AlbumInfo[];
 
@@ -107,7 +108,8 @@ function MainSlider() {
                 <Box>
                   <Box className="slide-image-wrapper">
                     <Image
-                      src={`/api${album.albumImages[0].url}`}
+                      // src={`/api${album.albumImages[0].url}`}
+                      src={`${S3_IMAGE_BASE_URL}${album.albumImages[0].url}`}
                       alt={`앨범 ${album.id}`}
                       fill
                       sizes="(max-width: 768px) 80vw, 300px"
