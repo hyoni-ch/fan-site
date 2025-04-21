@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const tabComponents = {
   album: <AlbumTab />,
-  drama: <DramasTab isInView={true} />,
+  drama: <DramasTab />,
   concert: <ConcertTab />,
   awards: <AwardsTab />,
 };
