@@ -27,12 +27,7 @@ export interface DramaImage {
 export interface ConcertList {
   id: number;
   concertName: string;
-  concertDate: number;
+  concertDate: string;
+  // concertDate: number;
   place: string;
-  // concertImages: ConcertImage[];
-  // imageUrl: string;
 }
-// export interface ConcertImage {
-//   id: number;
-//   url: string;
-// }

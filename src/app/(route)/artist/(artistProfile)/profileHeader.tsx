@@ -1,5 +1,6 @@
+import FadeInUpWrapper from "@/components/commonAnimation/FadeInUpWrapper";
 import { Box, Typography } from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 const ProfileHeader = () => {
@@ -15,11 +16,7 @@ const ProfileHeader = () => {
         />
       </Box>
       <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <FadeInUpWrapper>
           <Box mt={10} textAlign="center">
             <Typography variant="h3" fontWeight={600}>
               Profile
@@ -39,7 +36,7 @@ const ProfileHeader = () => {
               </Typography>
             </Box>
           </Box>
-        </motion.div>
+        </FadeInUpWrapper>
       </AnimatePresence>
     </>
   );

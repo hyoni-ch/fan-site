@@ -1,28 +1,30 @@
-import { getDramaList } from "@/api/profile";
-import { DramaList } from "@/types/iprofile";
+import RetryErrorBox from "@/components/commonProfileTab/refetchButton";
+import LoadingIndicator from "@/components/LoadingIndicator";
+import useFetchDramas from "@/hooks/useProfileTabApi/useFetchDramas";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 
-function DramasTab({ inView }: { inView: boolean }) {
-  const [dramas, setDramas] = useState<DramaList[]>([]);
-  const isFetched = useRef(false);
+function DramasTab() {
+  const { data: dramasData, loading, error, refetch } = useFetchDramas();
 
-  useEffect(() => {
-    if (inView && !isFetched.current) {
-      const fetchDramaList = async () => {
-        const dramaList = await getDramaList();
-        setDramas(dramaList);
-        console.log("메롱", dramaList);
-        isFetched.current = true;
-      };
-      fetchDramaList();
-    }
-  }, [inView]);
+  if (loading) {
+    return <LoadingIndicator message="드라마 정보를 불러오는 중입니다..." />;
+  }
+
+  if (error) {
+    return (
+      <RetryErrorBox
+        message="드라마 정보를 불러오는 중 오류가 발생했습니다"
+        onRetry={refetch}
+      />
+    );
+  }
+
+  if (!dramasData) return null;
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      {dramas.map((drama) => (
+      {dramasData.map((drama) => (
         <Box
           key={drama.id}
           sx={{
