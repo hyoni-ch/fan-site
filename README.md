@@ -1,4 +1,4 @@
-# ❤ 쪼율링큐 JJOYURINGQ
+# ❤ 쪼율링큐 JJOYURINGQ ❤
 
 ![image]()
 
@@ -46,6 +46,10 @@
 
 - 다이어리 게시글과 댓글/대댓글의 생성, 조회, 수정, 삭제, 좋아요 및 페이지네이션
 
+#### 장바구니 Zustand / 로컬스토리지
+
+- 장바구니 추가, 수정, 삭제
+
 <br>
 
 ## 🔨 주요 기술
@@ -56,11 +60,11 @@
 
 **Frontend**
 
-<img alt="next.js" src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextjs&logoColor=black"> <img alt="zustand" src="https://img.shields.io/badge/zustand-ffffff?style=for-the-badge&logo=zustand&logoColor=white"> <img  src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
+<img alt="next.js" src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=black"> <img alt="zustand" src="https://img.shields.io/badge/zustand-ffffff?style=for-the-badge&logo=zustand&logoColor=white"> <img  src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
 
 **Backend**
 
-<img alt="spring boot" src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=spring.js&logoColor=white"> <img alt="amazon ec2" src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img  src="https://img.shields.io/badge/amazons3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
+<img alt="spring boot" src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img alt="amazon ec2" src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img  src="https://img.shields.io/badge/amazons3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
 
 <br>
 
@@ -87,7 +91,6 @@
 **Front-end**
 
 ```
-
 
 ├─ public
 │ ├─ images
@@ -116,6 +119,15 @@
 │ │ └─ profile.ts
 │ ├─ app
 │ │ ├─ (route)
+│ │ │ ├─ admin
+│ │ │ ├─ artist
+│ │ │ ├─ cart
+│ │ │ ├─ diary
+│ │ │ ├─ discography
+│ │ │ ├─ goods
+│ │ │ ├─ login
+│ │ │ ├─ mypage
+│ │ │ └─ verifyemail
 │ │ ├─ globals.css
 │ │ ├─ layout.tsx
 │ │ ├─ page.tsx
