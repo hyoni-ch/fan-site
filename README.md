@@ -1,6 +1,6 @@
 # ❤ 쪼율링큐 JJOYURINGQ ❤
 
-![image]()
+![Image](https://github.com/user-attachments/assets/5da9f8e8-a375-4534-bafb-cd4201162cb4)
 
 조유리 팬사이트
 
@@ -70,7 +70,7 @@
 
 ## 💄 디자인 시안
 
-![image]()
+![Image](https://github.com/user-attachments/assets/4d27882b-0187-4a71-a586-c3fff9c89e94)
 
 [🔗 피그마 링크](https://www.figma.com/design/zVrrcqACtcAJARs9xpiGqu/%E3%85%86%E3%84%B7%E3%85%8A?node-id=0-1&p=f&t=dQLguBhm3RIdrKr3-0)
 
