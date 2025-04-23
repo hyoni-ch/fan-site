@@ -49,7 +49,7 @@ function MainSlider() {
   useEffect(() => {
     const fetchAlbum = async () => {
       try {
-        const album = await getAlbumList();
+        const album = await getAlbumList({ page: 0, size: 999 });
 
         const sorted = album
           .sort(

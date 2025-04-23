@@ -20,7 +20,7 @@ function useFetchAlbums(minLoadingTime: number = 0) {
           reject(new Error("요청 시간이 초과되었습니다."));
         }, REQUEST_TIMEOUT)
       );
-      const dataPromise = getAlbumList();
+      const dataPromise = getAlbumList({ page: 0, size: 999 });
 
       const result = await Promise.race([dataPromise, timeoutPromise]);
 

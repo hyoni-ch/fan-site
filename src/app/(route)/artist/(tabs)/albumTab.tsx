@@ -21,6 +21,8 @@ function AlbumTab() {
   } = useFetchAlbums(MIN_LOADING_TIME);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
+  console.log("albumsData", albumsData);
+
   if (isLoading) {
     return (
       <Box display="flex" flexDirection="column" alignItems="center">
