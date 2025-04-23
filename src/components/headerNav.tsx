@@ -7,10 +7,11 @@ import Image from "next/image";
 import useScrollAnimation from "@/utils/scrollUtils";
 import {
   AccountCircle,
-  ShoppingBag,
+  ShoppingCart,
   AdminPanelSettings,
   Menu as MenuIcon,
   Close as CloseIcon,
+  ShoppingBag,
 } from "@mui/icons-material";
 import {
   AppBar,
@@ -73,8 +74,6 @@ function HeaderNav() {
     <>
       <AppBar sx={appBarStyle(scrolling, isMainPage)}>
         <Toolbar sx={{ ...toolbarStyle, justifyContent: "space-between" }}>
-          {" "}
-          {/* justifyContent 변경 */}
           {/* Logo */}
           <Box sx={logoBoxStyle}>
             <Link href="/">
@@ -88,8 +87,6 @@ function HeaderNav() {
             </Link>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {" "}
-            {/* 아이콘들을 묶는 Box */}
             {/* Menu Bar for larger screens */}
             <Box
               sx={{
@@ -148,10 +145,8 @@ function HeaderNav() {
                 </Badge>
               </IconButton>
             </Box>
-            {/* Hamburger Menu for smaller screens (moved to the right) */}
+            {/* Hamburger Menu for smaller screens  */}
             <Box sx={{ display: { xs: "block", md: "none" }, ml: 2 }}>
-              {" "}
-              {/* ml 추가 */}
               <IconButton
                 size="large"
                 edge="end"
@@ -225,7 +220,7 @@ function HeaderNav() {
                 <AccountCircle sx={{ color: "#FCC422", fontSize: 36 }} />
               </IconButton>
               <IconButton onClick={() => handleRoute("/cart")} sx={{ mx: 2 }}>
-                <ShoppingBag sx={{ color: "#FCC422", fontSize: 36 }} />
+                <ShoppingCart sx={{ color: "#FCC422", fontSize: 36 }} />
               </IconButton>
               {roles && roles.includes("ROLE_ADMIN") && (
                 <IconButton onClick={handleAdminPageClick} sx={{ mx: 2 }}>

@@ -3,12 +3,13 @@
 // 앨범 썸네일, 제목, 카테고리 정보 표시
 // 페이지 네이션, 카테고리 필터링 예정 (검색은 미예정)
 // 앨범 클릭시 상위 컴포넌트의 albumclick 함수 호출하기
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { AlbumInfo } from "@/types/idiscography";
 import { Box, Container, IconButton, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 
 interface AlbumListsProps {
   albums: AlbumInfo[] | null;
@@ -41,9 +42,9 @@ function AlbumLists({ albums, category, onAlbumClick }: AlbumListsProps) {
   };
 
   // 태그 변경할때마다 페이지 초기화
-  // useEffect(() => {
-  //   setPage(0);
-  // }, [category]);
+  useEffect(() => {
+    setPage(0);
+  }, [category]);
 
   // 마우스 hover시 효과
   const [hoveredAlbumId, setHoveredAlbumId] = useState<number | null>(null);
@@ -105,7 +106,8 @@ function AlbumLists({ albums, category, onAlbumClick }: AlbumListsProps) {
                 }}
               >
                 <Image
-                  src={`/api${album.albumImages[0]?.url}`}
+                  src={`${S3_IMAGE_BASE_URL}${album.albumImages[0]?.url}`}
+                  // src={`/api${album.albumImages[0]?.url}`}
                   alt={album.title}
                   fill
                   objectFit="cover"

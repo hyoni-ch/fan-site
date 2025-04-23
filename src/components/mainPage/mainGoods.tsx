@@ -20,6 +20,7 @@ import { useInView } from "react-intersection-observer";
 import { ShoppingCart, Search } from "@mui/icons-material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Goods, GoodsList } from "@/types/igoods";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -257,7 +258,8 @@ function MainGoods() {
                         >
                           {goods.goodsImages.length > 0 ? (
                             <Image
-                              src={`/api${goods.goodsImages[0].url}`}
+                              // src={`/api${goods.goodsImages[0].url}`}
+                              src={`${S3_IMAGE_BASE_URL}${goods.goodsImages[0].url}`}
                               alt={`굿즈 ${goods.goodsName}`}
                               fill
                               style={{ objectFit: "cover" }}

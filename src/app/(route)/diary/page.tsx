@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import DiaryImage from "@/components/diaryPage/diaryImage";
 import { useEffect, useState } from "react";
 import getLatestDiaryEntries, { FourArticle } from "@/api/diary/getLatestDiary";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 
 function Diary() {
   const [diaryImages, setDiaryImages] = useState<FourArticle[]>([]);
@@ -41,7 +42,11 @@ function Diary() {
         <DiaryImage
           key={image.id}
           id={image.id}
-          src={`/api${image.articleImageList[0]?.url}` || "/images/diary1.png"}
+          src={
+            `${S3_IMAGE_BASE_URL}${image.articleImageList[0]?.url}` ||
+            "/images/diary1.png"
+          }
+          // src={`/api${image.articleImageList[0]?.url}` || "/images/diary1.png"}
           alt={image.title}
           diaryTitle={image.title}
           createDate={image.createDate}

@@ -7,6 +7,7 @@ import {
   insertChildComment,
   insertComment,
 } from "@/api/diary/diaryDetail";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 import useFetchArticle from "@/hooks/useFetchArticle";
 import useLikeHandler from "@/hooks/useLikeHandler";
 import useAuthStore from "@/store/authStore";
@@ -239,7 +240,7 @@ const DiaryDetail = () => {
         <Image
           src={
             article.images?.[0].url
-              ? `/api${article.images[0].url}`
+              ? `${S3_IMAGE_BASE_URL}${article.images[0].url}`
               : "/images/diary1.png"
           }
           alt="Diary Detail Image"

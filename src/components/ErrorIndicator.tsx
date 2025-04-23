@@ -1,15 +1,15 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
-interface LoadingIndicatorProps {
+interface ErrorIndicatorProps {
   message?: string;
   minHeight?: number;
 }
 
-export default function LoadingIndicator({
-  message = "데이터를 불러오는 중입니다...",
+export default function ErrorIndicator({
+  message = "데이터를 불러오는 중 오류가 발생했습니다",
   minHeight = 200,
-}: LoadingIndicatorProps) {
+}: ErrorIndicatorProps) {
   return (
     <Box
       display="flex"
@@ -20,8 +20,7 @@ export default function LoadingIndicator({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <Typography sx={{ mr: 2 }}>{message}</Typography>
-      <CircularProgress size={24} />
+      <Typography color="error">{message}</Typography>
     </Box>
   );
 }

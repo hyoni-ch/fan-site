@@ -7,6 +7,13 @@ import AwardsTab from "./awardsTab";
 import { useInView } from "react-intersection-observer";
 import { motion, AnimatePresence } from "framer-motion";
 
+const tabComponents = {
+  album: <AlbumTab />,
+  drama: <DramasTab />,
+  concert: <ConcertTab />,
+  awards: <AwardsTab />,
+};
+
 const ProfileTabs = () => {
   const [activeTab, setActiveTab] = useState<
     "album" | "drama" | "concert" | "awards"
@@ -37,26 +44,28 @@ const ProfileTabs = () => {
               <Typography variant="h3" fontWeight={600}>
                 Works
               </Typography>
-              <Box
-                sx={{
-                  width: "100%",
-                  mx: "auto",
-                }}
-              >
+
+              <Box>
                 <Tabs
                   value={activeTab}
                   onChange={(_, newValue) => setActiveTab(newValue)}
                   textColor="inherit"
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
                     width: "100%",
-                    "& .MuiTabs-indicator": { backgroundColor: "#FCC422" },
+                    maxWidth: 600,
                     mb: 6,
                     mt: 2,
+                    "& .MuiTabs-flexContainer": {
+                      display: "flex",
+                      justifyContent: "center",
+                      flexWrap: "wrap",
+                      gap: 1,
+                    },
+                    "& .MuiTabs-indicator": {
+                      backgroundColor: "#FCC422",
+                      transition: "all 0.3s ease",
+                    },
                   }}
-                  centered
                 >
                   {["album", "drama", "concert", "awards"].map((tab) => (
                     <Tab
@@ -64,10 +73,19 @@ const ProfileTabs = () => {
                       value={tab}
                       label={tab.toUpperCase()}
                       sx={{
-                        color: activeTab === tab ? "#FCC422" : "gray",
-                        fontWeight: activeTab === tab ? "bold" : "normal",
-                        transition: "color 0.3s",
-                        minWidth: 100,
+                        textTransform: "none",
+                        fontWeight: activeTab === tab ? 700 : 500,
+                        color: activeTab === tab ? "#FCC422" : "#474747",
+                        fontSize: {
+                          xs: "0.8rem",
+                          sm: "0.9rem",
+                          md: "1rem",
+                        },
+                        width: { xs: "80px", sm: "120px", md: "130px" },
+                        minWidth: "unset",
+                        maxWidth: "unset",
+                        flex: "unset",
+                        textAlign: "center",
                       }}
                     />
                   ))}
@@ -78,38 +96,16 @@ const ProfileTabs = () => {
                 sx={{
                   width: "100%",
                   maxWidth: 800,
-                  display: "flex",
-                  justifyContent: "center",
                 }}
               >
-                {activeTab === "album" && <AlbumTab />}
-                {activeTab === "drama" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <DramasTab inView={inView} />
-                  </motion.div>
-                )}
-                {activeTab === "concert" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <ConcertTab />
-                  </motion.div>
-                )}
-                {activeTab === "awards" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <AwardsTab />
-                  </motion.div>
-                )}
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {tabComponents[activeTab]}
+                </motion.div>
               </Box>
             </Box>
           </motion.div>

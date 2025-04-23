@@ -9,6 +9,7 @@ import Image from "next/image";
 // selectedAlbum 상태를 통해 데이터 전달받기.
 
 import React from "react";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 
 interface AlbumDetailProps {
   album: AlbumDetailInfo | null;
@@ -34,7 +35,8 @@ function AlbumDetail({ album }: AlbumDetailProps) {
             }}
           >
             <Image
-              src={`/api${album.albumImages[0]?.url}`}
+              // src={`/api${album.albumImages[0]?.url}`}
+              src={`${S3_IMAGE_BASE_URL}${album.albumImages[0]?.url}`}
               alt={album.title}
               fill
               objectFit="cover"

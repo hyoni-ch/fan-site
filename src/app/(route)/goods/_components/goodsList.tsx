@@ -19,6 +19,7 @@ import Image from "next/image";
 import { getGoodsList } from "@/api/goods";
 import useAuthStore from "@/store/authStore";
 import { GoodsList } from "@/types/igoods";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 
 function GoodsListPage() {
   const [goodsList, setGoodsList] = useState<GoodsList | null>(null);
@@ -214,7 +215,7 @@ function GoodsListPage() {
                       }}
                     >
                       <Image
-                        src={`/api${goods.goodsImages[0].url}`}
+                        src={`${S3_IMAGE_BASE_URL}${goods.goodsImages[0].url}`}
                         alt={`굿즈 ${goods.id}`}
                         fill
                         priority

@@ -1,14 +1,17 @@
+import FadeInUpWrapper from "@/components/commonAnimation/FadeInUpWrapper";
 import { Box, Typography } from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+
+const debutDates = [
+  "2018 10/29 IZ*ONE",
+  "2021 10/07 (솔로)",
+  "2022 07/22 (배우)",
+];
 
 const ProfileInfo = () => {
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <FadeInUpWrapper>
         <Box
           display="flex"
           justifyContent="space-evenly"
@@ -26,9 +29,11 @@ const ProfileInfo = () => {
               </Typography>
             </Box>
             <Box mt={1} mr={2}>
-              <Typography variant="body2">2018 10/29 IZ*ONE</Typography>
-              <Typography variant="body2">2021 10/07 (솔로) </Typography>
-              <Typography variant="body2">2022 07/22 (배우)</Typography>
+              {debutDates.map((date, idx) => (
+                <Typography key={idx} variant="body2">
+                  {date}
+                </Typography>
+              ))}
             </Box>
           </Box>
           <Box display="flex">
@@ -42,7 +47,7 @@ const ProfileInfo = () => {
             </Box>
           </Box>
         </Box>
-      </motion.div>
+      </FadeInUpWrapper>
     </AnimatePresence>
   );
 };

@@ -14,6 +14,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import EditIcon from "@mui/icons-material/Edit";
 import useAuthStore from "@/store/authStore";
+import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 
 function EveryDiary() {
   const diaryList = useDiaryStore((state) => state.diaryList);
@@ -141,15 +142,16 @@ function EveryDiary() {
                   height="250"
                   image={
                     diary.articleImageList[0]?.url
-                      ? `/api/${diary.articleImageList[0].url}`
+                      ? `${S3_IMAGE_BASE_URL}${diary.articleImageList[0].url}`
                       : "/images/diary1.png"
                   }
+                  // ? `/api/${diary.articleImageList[0].url}`
                   alt={diary.title}
                   sx={{
-                    objectFit: "cover",
                     borderTopLeftRadius: 2,
                     borderTopRightRadius: 2,
                   }}
+                  style={{ objectFit: "cover" }}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography
