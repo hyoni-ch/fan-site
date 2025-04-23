@@ -11,8 +11,16 @@ import {
   AdminPanelSettings,
   Menu as MenuIcon,
   Close as CloseIcon,
+  ShoppingBag,
 } from "@mui/icons-material";
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  IconButton,
+  Toolbar,
+  Typography,
+  Badge,
+} from "@mui/material";
 import {
   appBarStyle,
   toolbarStyle,
@@ -22,14 +30,18 @@ import {
 } from "@/styles/headerStyles";
 import useAuthStore from "@/store/authStore";
 import { motion, AnimatePresence } from "framer-motion";
+import useCartStore from "@/store/cartStore";
 
 function HeaderNav() {
   const router = useRouter();
   const scrolling = useScrollAnimation();
+  const { items } = useCartStore();
 
   const { accessToken, roles } = useAuthStore();
   const [isMainPage, setIsMainPage] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const totalCartQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
     setIsMainPage(window.location.pathname === "/");
@@ -128,7 +140,9 @@ function HeaderNav() {
                 onClick={() => handleRoute("/cart")}
                 sx={{ ml: 1 }}
               >
-                <ShoppingCart sx={{ color: "#FCC422", fontSize: 30 }} />
+                <Badge badgeContent={totalCartQuantity} color="error">
+                  <ShoppingBag sx={{ color: "#FCC422", fontSize: 30 }} />
+                </Badge>
               </IconButton>
             </Box>
             {/* Hamburger Menu for smaller screens  */}
