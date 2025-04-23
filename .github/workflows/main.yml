@@ -34,16 +34,37 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Upload to S3
-        run: |
-          aws s3 cp joyuri.zip s3://mybucket-ces-joyuri/front/joyuri.zip
+      # - name: Upload to S3
+      #   run: |
+      #     aws s3 cp joyuri.zip s3://mybucket-ces-joyuri/front/joyuri.zip
           
 
-      - name: Trigger CodeDeploy deployment
+      # - name: Trigger CodeDeploy deployment
+      #   run: |
+      #     aws deploy create-deployment \
+      #       --application-name next-js-app \
+      #       --deployment-group-name next-js-dg \
+      #       --s3-location bucket=mybucket-ces-joyuri,bundleType=zip,key=front/joyuri.zip \
+      #       --deployment-config-name CodeDeployDefault.AllAtOnce \
+      #       --file-exists-behavior OVERWRITE
+      - name: write .env.production
         run: |
-          aws deploy create-deployment \
-            --application-name next-js-app \
-            --deployment-group-name next-js-dg \
-            --s3-location bucket=mybucket-ces-joyuri,bundleType=zip,key=front/joyuri.zip \
-            --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --file-exists-behavior OVERWRITE
+          cat << EOF >> application.properties
+          NEXT_PUBLIC_API_BASED_URL = http://back-svc:8080
+          EOF
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1 
+
+      - name: Build and Push Docker image
+        run: |
+         docker build -t joyuri-front:latest .
+         docker tag joyuri-backend:latest 575108943098.dkr.ecr.ap-northeast-2.amazonaws.com/joyuri-frontend:latest
+         docker push 575108943098.dkr.ecr.ap-northeast-2.amazonaws.com/joyuri-frontend:latest
+
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --region ap-northeast-2 --name my-eks-cluster
+
+      - name: Deploy to EKS (using latest tag) 🚀
+        run: |
+          kubectl set image deployment/frontend-deployment \
+          frontend-container=575108943098.dkr.ecr.ap-northeast-2.amazonaws.com/joyuri-frontend:latest \
