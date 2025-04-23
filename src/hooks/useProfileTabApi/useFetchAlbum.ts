@@ -54,7 +54,7 @@ export default function useFetchAlbums(minLoadingTime = 0) {
   const setAlbums = useAlbumStore((state) => state.setAlbums);
   return useProfileTabData<Album>({
     queryKey: ["profile", "albums"],
-    fetchFn: getAlbumList,
+    fetchFn: () => getAlbumList({ page: 0, size: 999 }),
     setZustand: setAlbums,
     zustandData: albums,
     minLoadingTime,
