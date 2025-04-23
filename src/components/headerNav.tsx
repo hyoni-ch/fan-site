@@ -40,6 +40,11 @@ function HeaderNav() {
   const { accessToken, roles } = useAuthStore();
   const [isMainPage, setIsMainPage] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const totalCartQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -140,9 +145,11 @@ function HeaderNav() {
                 onClick={() => handleRoute("/cart")}
                 sx={{ ml: 1 }}
               >
-                <Badge badgeContent={totalCartQuantity} color="error">
-                  <ShoppingBag sx={{ color: "#FCC422", fontSize: 30 }} />
-                </Badge>
+                {isClient && (
+                  <Badge badgeContent={totalCartQuantity} color="error">
+                    <ShoppingBag sx={{ color: "#FCC422", fontSize: 30 }} />
+                  </Badge>
+                )}
               </IconButton>
             </Box>
             {/* Hamburger Menu for smaller screens  */}
