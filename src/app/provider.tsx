@@ -2,13 +2,13 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useEffect, useState } from "react";
-import { prefetchAlbums } from "./lib/react-query/prefetchAlbums";
+import { prefetchAllProfileTabs } from "./lib/react-query/prefetchProfileTabs";
 
 export default function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
 
   useEffect(() => {
-    prefetchAlbums(queryClient);
+    prefetchAllProfileTabs(queryClient);
   }, [queryClient]);
 
   return (
