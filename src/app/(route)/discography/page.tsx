@@ -31,7 +31,7 @@ function Discography() {
     async function fetchData() {
       // setLoading(true);
       try {
-        const albumListData = await getAlbumList(); // 초기 페이지 데이터 가져오기
+        const albumListData = await getAlbumList({ page: 0, size: 999 }); // 초기 페이지 데이터 가져오기
         setAlbums(albumListData);
 
         //* 초기 로딩 || 카테고리 변경 후 첫 번째 앨범 선택

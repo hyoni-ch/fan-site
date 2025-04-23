@@ -12,8 +12,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CheckIcon from "@mui/icons-material/Check";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Pagination from "@/components/pagination";
 import Link from "next/link";
 import Image from "next/image";
 import { getGoodsList } from "@/api/goods";
@@ -241,24 +240,11 @@ function GoodsListPage() {
           ))}
         </Grid>
       )}
-
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-        <IconButton
-          disabled={currentPage === 0}
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          <ArrowBackIosNewIcon />
-        </IconButton>
-        <Typography variant="body2" sx={{ alignSelf: "center" }}>
-          {currentPage + 1} / {totalPages}
-        </Typography>
-        <IconButton
-          disabled={currentPage === totalPages - 1}
-          onClick={() => setCurrentPage(currentPage + 1)}
-        >
-          <ArrowForwardIosIcon />
-        </IconButton>
-      </Box>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </Box>
   );
 }
