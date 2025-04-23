@@ -57,8 +57,8 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-         docker build -t joyuri-front:latest .
-         docker tag joyuri-backend:latest 575108943098.dkr.ecr.ap-northeast-2.amazonaws.com/joyuri-frontend:latest
+         docker build -t joyuri-frontend:latest .
+         docker tag joyuri-frontend:latest 575108943098.dkr.ecr.ap-northeast-2.amazonaws.com/joyuri-frontend:latest
          docker push 575108943098.dkr.ecr.ap-northeast-2.amazonaws.com/joyuri-frontend:latest
 
       - name: Update kubeconfig
