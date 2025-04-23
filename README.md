@@ -36,7 +36,7 @@
 
 #### 앨범 API
 
-- 앨범의 생성, 조회, 삭제 / 트랙 추가
+- 앨범의 생성, 조회, 삭제 / 트랙 생성
 
 #### 굿즈 관리 API
 
@@ -64,7 +64,7 @@
 
 **Backend**
 
-<img alt="spring boot" src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img alt="amazon ec2" src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img  src="https://img.shields.io/badge/amazons3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
+<img alt="spring boot" src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img alt="jwt" src="https://img.shields.io/badge/jwt-FF9900?style=for-the-badge&logo=jwt&logoColor=white"> <img  alt="jpa" src="https://img.shields.io/badge/jpa-569A31?style=for-the-badge&logo=jpa&logoColor=white"> <img  alt="mysql" src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 
 <br>
 
