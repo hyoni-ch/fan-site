@@ -95,12 +95,6 @@
 ├─ public
 │ ├─ images
 │ │ ├─ icon
-│ │ │ ├─ facebookIcon.png
-│ │ │ ├─ instagramIcon.png
-│ │ │ ├─ spotifyIcon.png
-│ │ │ ├─ tiktokIcon.png
-│ │ │ ├─ xIcon.png
-│ │ │ └─ youtubeIcon.png
 │ │ ├─ diary1.png
 │ │ ├─ jjoul.png
 │ │ ├─ mainImg.jpg
