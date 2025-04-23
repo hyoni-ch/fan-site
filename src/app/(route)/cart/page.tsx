@@ -39,7 +39,7 @@ function Page() {
 
   const handleBuy = () => {
     if (selectedItems.length === 0) {
-      alert("구매할 굿즈를 체크해주세요!");
+      alert("구매하실 굿즈를 선택해주세요!");
     } else {
       const isConfirmed = window.confirm("선택한 굿즈를 구매하시겠습니까?");
 
@@ -92,7 +92,7 @@ function Page() {
         p: 2,
       }}
     >
-      <Typography variant="h3" sx={{ fontWeight: 600, mb: 3 }}>
+      <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
         장바구니
       </Typography>
       <Box
@@ -154,11 +154,11 @@ function Page() {
                       alt={item.goodsName}
                       width={100}
                       height={100}
-                      layout="intrinsic"
                       style={{
                         borderRadius: "8px",
                         objectFit: "cover",
-                        marginRight: "16px",
+                        width: "100%",
+                        height: "100%",
                       }}
                     />
                   )}
