@@ -1,6 +1,6 @@
 "use client";
 
-import AlbumSkeleton from "@/components/commonProfileTab/AlbumSkeleton";
+import AlbumSkeleton from "@/app/(route)/artist/(tabSkeleton)/AlbumSkeleton";
 import RetryErrorBox from "@/components/commonProfileTab/refetchButton";
 import { S3_IMAGE_BASE_URL } from "@/constants/s3Image";
 import useFetchAlbums from "@/hooks/useProfileTabApi/useFetchAlbum";
@@ -24,8 +24,8 @@ function AlbumTab() {
   if (isLoading) {
     return (
       <Box display="flex" flexDirection="column" alignItems="center">
-        <AlbumSkeleton /> {/* 로딩 중에는 스켈레톤 UI 표시 */}
-        <Typography variant="body2" color="textSecondary" mt={2}>
+        <AlbumSkeleton />
+        <Typography variant="body2" color="textSecondary" mt={4}>
           앨범 정보를 불러오는 중입니다...
         </Typography>
       </Box>

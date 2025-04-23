@@ -10,7 +10,7 @@ interface Props {
 const RetryErrorBox = ({ message, onRetry }: Props) => (
   <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
     <ErrorIndicator message={message} />
-    <Button onClick={onRetry} sx={{ mt: 2 }} variant="outlined">
+    <Button onClick={onRetry} sx={{ mt: 0 }} variant="outlined">
       다시 시도
     </Button>
   </Box>
