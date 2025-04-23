@@ -2,17 +2,34 @@ import useFetchConcerts from "@/hooks/useProfileTabApi/useFetchConcerts";
 import { Box, Divider, Typography } from "@mui/material";
 import groupConcertsByYear from "@/utils/groupConcertsByYear";
 import ConcertItem from "@/components/commonProfileTab/ConcertItem";
-import LoadingIndicator from "@/components/LoadingIndicator";
 import RetryErrorBox from "@/components/commonProfileTab/refetchButton";
+import ConcertsSkeleton from "@/app/(route)/artist/(tabSkeleton)/ConcertSkeleton";
 
 function ConcertTab() {
-  const { data: concertsData, loading, error, refetch } = useFetchConcerts();
+  const {
+    data: concertsData,
+    isLoading,
+    isError,
+    refetch,
+  } = useFetchConcerts();
 
-  if (loading) {
-    return <LoadingIndicator message="콘서트 정보를 불러오는 중입니다..." />;
+  if (isLoading) {
+    return (
+      <Box>
+        <ConcertsSkeleton />
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          mt={2}
+          textAlign={"center"}
+        >
+          콘서트 정보를 불러오는 중입니다...
+        </Typography>
+      </Box>
+    );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <RetryErrorBox
         message="콘서트 정보를 불러오는 중 오류가 발생했습니다"

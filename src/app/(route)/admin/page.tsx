@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 
 import { User } from "@/types/iadmin";
 import { getUserInfo, postAddRole } from "@/api/admin";
-import useAuthStore, { getUserRoles } from "@/store/authStore";
+import useAuthStore from "@/store/authStore";
+import { getUserRoles } from "@/utils/authUtils";
 import UserManager from "./_component/manager/user";
 import GoodsManager from "./_component/manager/goods";
 import DiscographyManager from "./_component/manager/discography";

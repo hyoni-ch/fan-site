@@ -1,4 +1,4 @@
-// 이 부분은 react-query를 도입함으로써 사용하지 않게된 레거시 코드 부분
+//TODO 이 부분은 react-query를 도입함으로써 사용하지 않게된 레거시 코드 부분
 import { useState, useEffect, useCallback, useRef } from "react";
 
 function useFetchProfileData<T>(

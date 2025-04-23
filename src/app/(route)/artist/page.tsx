@@ -11,7 +11,8 @@ const Profile = () => {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      height="100%"
+      minHeight="100vh"
+      bgcolor="#fafafa"
       paddingBottom={10}
     >
       <ProfileHeader />

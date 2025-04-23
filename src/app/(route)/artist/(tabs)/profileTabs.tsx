@@ -6,12 +6,18 @@ import ConcertTab from "./concertTabs";
 import AwardsTab from "./awardsTab";
 import { useInView } from "react-intersection-observer";
 import { motion, AnimatePresence } from "framer-motion";
+import FadeInUpWrapper from "@/components/commonAnimation/FadeInUpWrapper";
 
 const tabComponents = {
-  album: <AlbumTab />,
-  drama: <DramasTab />,
-  concert: <ConcertTab />,
-  awards: <AwardsTab />,
+  // 함수형으로 수정, 추후 props 전달 유연성 증가
+  album: () => <AlbumTab />,
+  drama: () => <DramasTab />,
+  concert: () => <ConcertTab />,
+  awards: () => <AwardsTab />,
+  // album: <AlbumTab />,
+  // drama: <DramasTab />,
+  // concert: <ConcertTab />,
+  // awards: <AwardsTab />,
 };
 
 const ProfileTabs = () => {
@@ -28,11 +34,7 @@ const ProfileTabs = () => {
     <Box ref={ref}>
       <AnimatePresence>
         {inView && (
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <motion.div {...FadeInUpWrapper}>
             <Box
               sx={{
                 display: "flex",
@@ -104,7 +106,8 @@ const ProfileTabs = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
                 >
-                  {tabComponents[activeTab]}
+                  {/* {tabComponents[activeTab]} */}
+                  {tabComponents[activeTab]()}
                 </motion.div>
               </Box>
             </Box>
