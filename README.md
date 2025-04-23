@@ -192,9 +192,7 @@
 
 - Discord
 
-  -
-
-- Gitlab
+- Github
 
   - 코딩 컨벤션을 준수하며 프로젝트를 진행하였습니다.
   - Merge Request를 요청하고 팀원들과 코드리뷰를 진행하였습니다.
