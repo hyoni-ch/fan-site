@@ -1,42 +1,49 @@
-// import { useState, useEffect } from "react";
+// import useFetchProfileData from "./useFetchProfileData";
 // import { getConcertList } from "@/api/profile";
 // import { ConcertList } from "@/types/iprofile";
 
 // function useFetchConcerts() {
-//   const [concertsData, setConcertsData] = useState<ConcertList[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<Error | null>(null);
-
-//   useEffect(() => {
-//     const fetchConcerts = async () => {
-//       try {
-//         const concertList = await getConcertList();
-//         setConcertsData(concertList);
-//         setLoading(false);
-//       } catch (error: unknown) {
-//         if (error instanceof Error) {
-//           setError(error);
-//         } else {
-//           setError(new Error("Unknown error occurred"));
-//         }
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchConcerts();
-//   }, []);
-
-//   return { concertsData, loading, error };
+//   return useFetchProfileData<ConcertList[]>(getConcertList);
 // }
 
 // export default useFetchConcerts;
 
-import useFetchProfileData from "./useFetchProfileData";
-import { getConcertList } from "@/api/profile";
+//TODO 1차 리팩
+// // hooks/useProfileTabApi/useFetchConcerts.ts
+// import { useConcertStore } from "@/store/profile/concertStore";
+// import { useProfileTabQuery } from "./useProfileTabQuery";
+// import { getConcertList } from "@/api/profile";
+
+// export default function useFetchConcerts(minLoadingTime = 0) {
+//   // const { concerts, setConcerts } = useConcertStore();
+//   // ✅ 상태와 setter만 선택적으로 가져옴
+//   const concerts = useConcertStore((state) => state.concerts);
+//   const setConcerts = useConcertStore((state) => state.setConcerts);
+//   return useProfileTabQuery(
+//     "concerts",
+//     getConcertList,
+//     setConcerts,
+//     concerts,
+//     minLoadingTime
+//   );
+// }
+
+//TODO 2차 리팩
+// hooks/useProfileTabApi/useFetchConcerts.ts
+import { useConcertStore } from "@/store/profile/concertStore";
+import { useProfileTabData } from "./useProfileTabData";
 import { ConcertList } from "@/types/iprofile";
+import { getConcertList } from "@/api/profile";
 
-function useFetchConcerts() {
-  return useFetchProfileData<ConcertList[]>(getConcertList);
+export default function useFetchConcerts(minLoadingTime = 0) {
+  const concerts = useConcertStore((state) => state.concerts);
+  const setConcerts = useConcertStore((state) => state.setConcerts);
+  // const { concerts, setConcerts } = useConcertStore();
+  return useProfileTabData<ConcertList>({
+    queryKey: ["profile", "concerts"],
+    fetchFn: getConcertList,
+    setZustand: setConcerts,
+    zustandData: concerts,
+    minLoadingTime,
+  });
 }
-
-export default useFetchConcerts;

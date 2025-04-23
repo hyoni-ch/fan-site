@@ -1,42 +1,27 @@
-// import { useState, useEffect } from "react";
+// import useFetchProfileData from "./useFetchProfileData";
 // import { getDramaList } from "@/api/profile";
 // import { DramaList } from "@/types/iprofile";
 
 // function useFetchDramas() {
-//   const [dramasData, setDramasData] = useState<DramaList[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<Error | null>(null);
-
-//   useEffect(() => {
-//     const fetchDramas = async () => {
-//       try {
-//         const dramaList = await getDramaList();
-//         setDramasData(dramaList);
-//         setLoading(false);
-//       } catch (error: unknown) {
-//         if (error instanceof Error) {
-//           setError(error);
-//         } else {
-//           setError(new Error("Unknown error occurred"));
-//         }
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchDramas();
-//   }, []);
-
-//   return { dramasData, loading, error };
+//   return useFetchProfileData<DramaList[]>(getDramaList);
 // }
 
 // export default useFetchDramas;
 
-import useFetchProfileData from "./useFetchProfileData";
+// hooks/useProfileTabApi/useFetchDramas.ts
+import { useDramaStore } from "@/store/profile/dramaStore";
+import { useProfileTabData } from "./useProfileTabData";
 import { getDramaList } from "@/api/profile";
 import { DramaList } from "@/types/iprofile";
 
-function useFetchDramas() {
-  return useFetchProfileData<DramaList[]>(getDramaList);
+export default function useFetchDramas(minLoadingTime = 0) {
+  const dramas = useDramaStore((state) => state.dramas);
+  const setDramas = useDramaStore((state) => state.setDramas);
+  return useProfileTabData<DramaList>({
+    queryKey: ["profile", "dramas"],
+    fetchFn: getDramaList,
+    setZustand: setDramas,
+    zustandData: dramas,
+    minLoadingTime,
+  });
 }
-
-export default useFetchDramas;
