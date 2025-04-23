@@ -24,13 +24,18 @@ const ProfileInfo = () => {
         >
           <Box display="flex">
             <Box>
-              <Typography variant="h6" fontWeight={500} mr={2}>
-                Debut
+              <Typography
+                variant="subtitle2"
+                fontWeight={500}
+                mr={1}
+                color="#7a7a7a"
+              >
+                데뷔일
               </Typography>
             </Box>
-            <Box mt={1} mr={2}>
+            <Box mr={2}>
               {debutDates.map((date, idx) => (
-                <Typography key={idx} variant="body2">
+                <Typography key={idx} variant="body2" fontWeight={500}>
                   {date}
                 </Typography>
               ))}
@@ -38,12 +43,19 @@ const ProfileInfo = () => {
           </Box>
           <Box display="flex">
             <Box>
-              <Typography variant="h6" fontWeight={500} mr={2}>
-                Birth
+              <Typography
+                variant="subtitle2"
+                fontWeight={500}
+                mr={1}
+                color="#7a7a7a"
+              >
+                출생
               </Typography>
             </Box>
-            <Box mt={1}>
-              <Typography variant="body2">2001년 10월 22일</Typography>
+            <Box>
+              <Typography variant="body2" fontWeight={500}>
+                2001년 10월 22일
+              </Typography>
             </Box>
           </Box>
         </Box>
