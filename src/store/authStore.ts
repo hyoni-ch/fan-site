@@ -60,6 +60,7 @@ interface AuthState {
   accessToken?: string;
   userNickname?: string;
   roles?: string[];
+  setAuth: (token: string, userName: string) => void;
   setAuthData: (data: {
     username: string;
     accessToken: string;
@@ -83,6 +84,10 @@ const useAuthStore = create<AuthState>()(
 
       setAuthData: ({ username, accessToken, userNickname, roles }) =>
         set({ username, accessToken, userNickname, roles }),
+
+      // 수정 예정
+      setAuth: (token, userName) =>
+        set({ accessToken: token, username: userName }),
 
       setUsername: (username: string) => set({ username }),
       setAccessToken: (accessToken: string) => set({ accessToken }),

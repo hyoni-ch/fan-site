@@ -1,5 +1,4 @@
 // 원래 가용되던 로딩 인디케이터 부분은 스켈레톤 UI를 사용하고, 약간의 텍스트만 가미된 UI를 제공
-//! 즉, 레거시 코드가 됨. 이후 제거 요망
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
@@ -8,7 +7,7 @@ interface LoadingIndicatorProps {
   minHeight?: number;
 }
 
-export default function LoadingIndicator({
+function LoadingIndicator({
   message = "데이터를 불러오는 중입니다...",
   minHeight = 200,
 }: LoadingIndicatorProps) {
@@ -27,3 +26,5 @@ export default function LoadingIndicator({
     </Box>
   );
 }
+
+export default LoadingIndicator;

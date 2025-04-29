@@ -89,7 +89,7 @@ export const logout = () => {
   if (typeof window !== "undefined") {
     window.location.href = "/login"; // ✅ router 대체
   }
-  alert("로그아웃 완료");
+  alert("로그아웃 완료에헤헷");
 };
 
 // 현재 로그인한 회원 정보 get 요청!
