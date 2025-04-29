@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import getLatestDiaryEntries, { FourArticle } from "@/api/diary/getLatestDiary";
-import DiaryGrid from "./_components/DiaryGrid";
+import DiaryGrid from "./DiaryGrid";
 
-export default function Four() {
+export default function DiaryMain() {
   const [diaryList, setDiaryList] = useState<FourArticle[]>([]);
 
   useEffect(() => {

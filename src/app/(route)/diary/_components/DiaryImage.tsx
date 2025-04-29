@@ -1,15 +1,14 @@
-"use client";
-
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-interface DiaryImageContentProps {
+interface Props {
   src: string;
   alt: string;
+  isSelected: boolean;
   index: number;
 }
 
-function DiaryImageContent({ src, alt, index }: DiaryImageContentProps) {
+export default function DiaryImage({ src, alt, isSelected, index }: Props) {
   return (
     <motion.div
       initial={{ opacity: 0, x: -100 }}
@@ -20,13 +19,16 @@ function DiaryImageContent({ src, alt, index }: DiaryImageContentProps) {
       <Image
         src={src}
         alt={alt}
-        fill
-        sizes="(max-width: 768px) 100vw, 1200px"
-        style={{ objectFit: "cover" }}
-        priority={true}
+        width={1500}
+        height={840}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transform: isSelected ? "scale(1.05)" : "scale(1)",
+          transition: "transform 0.3s ease",
+        }}
       />
     </motion.div>
   );
 }
-
-export default DiaryImageContent;
