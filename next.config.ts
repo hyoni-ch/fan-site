@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
       //   search: "",
       // },
       {
-        protocol: "https",
+        protocol: "http",
         hostname: "mybucket-ces-joyuri-images.s3.ap-northeast-2.amazonaws.com",
         pathname: "/images/**",
         search: "",
