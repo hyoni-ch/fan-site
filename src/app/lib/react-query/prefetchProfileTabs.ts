@@ -14,7 +14,8 @@ export async function prefetchAllProfileTabs(queryClient: QueryClient) {
       prefetchProfileTabData(
         queryClient,
         ["profile", "albums"],
-        getAlbumList,
+        // getAlbumList,
+        () => getAlbumList({ page: 0, size: 999 }),
         useAlbumStore.getState().setAlbums
       ),
       prefetchProfileTabData(

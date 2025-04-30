@@ -28,6 +28,5 @@ export interface ConcertList {
   id: number;
   concertName: string;
   concertDate: string;
-  // concertDate: number;
   place: string;
 }

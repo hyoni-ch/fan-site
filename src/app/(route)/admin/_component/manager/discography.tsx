@@ -11,10 +11,10 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import {
-  getAlbumListPage,
   createAlbum,
   deleteAlbum,
   createTrack,
+  getAlbumList,
 } from "@/api/discography";
 import { AlbumInfo } from "@/types/idiscography";
 import ManagerTable from "../managerTable";
@@ -56,7 +56,7 @@ const DiscographyManager = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const fetchAlbums = await getAlbumListPage({
+      const fetchAlbums = await getAlbumList({
         page: currentPage,
         size: 10,
       });
