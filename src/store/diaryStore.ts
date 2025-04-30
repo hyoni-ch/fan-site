@@ -36,10 +36,6 @@ const useDiaryStore = create<DiaryState>((set, get) => ({
       set({ isLoading: false, hasMore: false });
     }
   },
-
-  resetDiaryList: () => {
-    set({ diaryList: [], page: 0, hasMore: true, isLoading: false });
-  },
 }));
 
 export default useDiaryStore;

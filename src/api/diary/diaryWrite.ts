@@ -3,14 +3,14 @@ import api from "@/utils/api";
 export const writeDiary = async (
   title: string,
   content: string,
-  image: File | null
+  imageFile: File | null
 ) => {
   try {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
-    if (image) {
-      formData.append("image", image);
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
     const response = await api.post("/article/write", formData, {
       headers: {
