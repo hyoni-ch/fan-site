@@ -20,7 +20,7 @@ function DiaryImageList({ image }: Props) {
     <ImageWrapper>
       <Image
         src={image}
-        alt="uploaded"
+        alt="미리보기"
         fill
         style={{ objectFit: "contain" }}
         priority

@@ -24,17 +24,17 @@ function DiaryTextFields({
         fullWidth
         label="제목을 입력해주세요"
         value={title}
-        onChange={(e) => onTitleChange(e.target.value)}
         required
+        onChange={(e) => onTitleChange(e.target.value)}
       />
       <StyledTextField
         fullWidth
-        label="오늘의 이야기를 적어보세요..."
+        label="오늘의 이야기"
         multiline
-        rows={12}
+        rows={10}
         value={content}
-        onChange={(e) => onContentChange(e.target.value)}
         required
+        onChange={(e) => onContentChange(e.target.value)}
       />
     </>
   );
