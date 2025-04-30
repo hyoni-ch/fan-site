@@ -1,6 +1,6 @@
 import api from "@/utils/api";
 
-// 앨범 CREATE
+// 앨범 CREATE (POST 요청)
 export const createAlbum = async (
   title: string,
   description: string,
@@ -35,25 +35,13 @@ export const createAlbum = async (
   }
 };
 
-// 앨범 READ 페이징
-export async function getAlbumListPage(params: { page: number; size: number }) {
-  try {
-    const response = await api.get("/album/list", {
-      params,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("앨범 리스트 Error:", error);
-    throw error;
-  }
-}
-
-// 앨범 READ 전체
+// 앨범 READ 페이징 (GET 요청)
 export async function getAlbumList(params: { page: number; size: number }) {
   try {
     const response = await api.get("/album/list", {
       params,
     });
+    console.log(response);
     return response.data.albumResponseDTOList;
   } catch (error) {
     console.error("앨범 리스트 Error:", error);
@@ -61,7 +49,7 @@ export async function getAlbumList(params: { page: number; size: number }) {
   }
 }
 
-// 앨범 디테일 READ
+// 앨범 디테일 READ (GET 요청)
 export const getAlbumDetail = async (id: number) => {
   try {
     const response = await api.get(`/album/${id}`);
