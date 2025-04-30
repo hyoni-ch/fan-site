@@ -17,7 +17,7 @@ WORKDIR /app
 
 # 빌더 스테이지에서 package*.json 파일들을 복사
 COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/next.config.ts ./
 # 프로덕션 의존성만 설치! (devDepenencies 제외)
 RUN npm install --production
 
