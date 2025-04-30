@@ -20,7 +20,7 @@ export const login = async (
         roles: data.roles,
       });
 
-      console.log("로그인 후 상태:", useAuthStore.getState());
+      console.log("로그인 후 상태3:", useAuthStore.getState());
 
       return { success: true, message: "로그인 성공" };
     } else {
