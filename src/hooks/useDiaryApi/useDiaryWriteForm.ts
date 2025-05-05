@@ -21,6 +21,7 @@ type Action =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string | null }
   | { type: "RESET_FORM" };
+// 수정 타입 추가
 
 function reducer(
   state: typeof initialState,
@@ -45,6 +46,7 @@ function reducer(
       return { ...state, error: action.payload };
     case "RESET_FORM":
       return initialState;
+
     default:
       return state;
   }
