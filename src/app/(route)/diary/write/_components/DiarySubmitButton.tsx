@@ -1,4 +1,4 @@
-import { Button, styled } from "@mui/material";
+import { Button, CircularProgress, styled } from "@mui/material";
 
 const SubmitButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(4),
@@ -15,7 +15,7 @@ function DiarySubmitButton({ loading }: { loading: boolean }) {
       disabled={loading}
       fullWidth
     >
-      {loading ? "작성 중..." : "작성 완료"}
+      {loading ? <CircularProgress size={24} color="inherit" /> : "작성하기"}
     </SubmitButton>
   );
 }

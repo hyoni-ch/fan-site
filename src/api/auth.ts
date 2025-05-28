@@ -20,7 +20,7 @@ export const login = async (
         roles: data.roles,
       });
 
-      console.log("로그인 후 상태:", useAuthStore.getState());
+      console.log("로그인 후 상태3:", useAuthStore.getState());
 
       return { success: true, message: "로그인 성공" };
     } else {
@@ -89,7 +89,7 @@ export const logout = () => {
   if (typeof window !== "undefined") {
     window.location.href = "/login"; // ✅ router 대체
   }
-  alert("로그아웃 완료");
+  alert("로그아웃 완료에헤헷");
 };
 
 // 현재 로그인한 회원 정보 get 요청!

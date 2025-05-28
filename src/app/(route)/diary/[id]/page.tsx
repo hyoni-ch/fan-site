@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteDiary } from "@/api/diary/diaryDelUpdate";
 import {
   deleteComment,
   fetchChildCommentList,
@@ -54,6 +55,7 @@ const DiaryDetail = () => {
   const { id } = useParams();
   const articleId = Number(id);
   const article = useFetchArticle(articleId);
+  const roles = useAuthStore((state) => state.roles);
 
   const { likes, liked, handleLikeClick } = useLikeHandler({
     articleId,
@@ -208,7 +210,6 @@ const DiaryDetail = () => {
   };
 
   //! 대댓글 삭제
-
   const handleDeleteReplyComment = async (
     replyId: number,
     parentId: number
@@ -232,6 +233,17 @@ const DiaryDetail = () => {
       console.error(error);
     }
   };
+
+  //! 다이어리 삭제 하기
+  const handleDeleteDiary = async () => {
+    try {
+      await deleteDiary(articleId);
+      router.push("/diary"); // 삭제 후 리스트로 이동
+    } catch (error) {
+      console.error("삭제 실패:", error);
+    }
+  };
+
   if (!article) return <Typography>Loading...</Typography>;
 
   return (
@@ -254,6 +266,47 @@ const DiaryDetail = () => {
           <Typography variant="subtitle1" sx={subtitleStyle}>
             by{article.author}|{article.createDate}
           </Typography>
+          {roles?.includes("ROLE_ARTIST") && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: 1,
+                mt: 2,
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "white",
+                  boxShadow: 3,
+                  "&:hover": {
+                    backgroundColor: "primary.dark",
+                  },
+                }}
+                onClick={() => router.push(`/diary/${articleId}/edit`)}
+              >
+                수정하기
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                sx={{
+                  backgroundColor: "error.main",
+                  color: "white",
+                  boxShadow: 3,
+                  "&:hover": {
+                    backgroundColor: "error.dark",
+                  },
+                }}
+                onClick={handleDeleteDiary}
+              >
+                삭제하기
+              </Button>
+            </Box>
+          )}
         </Box>
       </Box>
       <CardContent sx={contentStyle}>
@@ -273,7 +326,7 @@ const DiaryDetail = () => {
       <Box sx={commentBoxStyle}>
         {comments.length > 0 ? (
           comments.map((comment, index) => (
-            <Box key={`$comment.id}-${index}`} sx={commentItemStyle}>
+            <Box key={`${comment.id}-${index}`} sx={commentItemStyle}>
               <Typography variant="body1" sx={commentTextStyle}>
                 {comment.author}
                 <span

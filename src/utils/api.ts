@@ -33,9 +33,15 @@ api.interceptors.response.use(
     if (error.response) {
       // 401 에러 발생 시 토큰 갱신
       if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true; // 무한 루프 방지
         const username = useAuthStore.getState().username;
         const token = useAuthStore.getState().accessToken;
+
+        if (!username || !token) {
+          // logout(); // or 그냥 return Promise.reject(error);
+          // return;
+          return Promise.reject(error);
+        }
+        originalRequest._retry = true; // 무한 루프 방지
 
         try {
           const { data } = await api.post(`/refresh`, {
